@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "title": "sidebar.user.title",
+            "icon": "el-icon-document",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/users",
+            "role": "ADMIN",
+            "children": []
+        },
+        {
+            "title": "sidebar.service.title",
+            "icon": "el-icon-bangzhu",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/services",
+            "role": "ADMIN|OPERATOR",
+            "children": []
+        },
+        {
+            "title": "sidebar.settings.title",
+            "icon": "el-icon-s-tools",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/settings",
+            "role": "ADMIN",
+            "children": []
+        }
+    ]
+}

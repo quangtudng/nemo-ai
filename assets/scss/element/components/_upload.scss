@@ -1,0 +1,11 @@
+.el-upload-dragger {
+    width: 100% !important;
+    height: 100% !important;
+}
+.el-upload-list__item-thumbnail {
+    height: 184px !important;
+    width: auto !important;
+    max-width: initial !important;
+    margin: 50%;
+    transform: translate(-50%, -50%);
+}

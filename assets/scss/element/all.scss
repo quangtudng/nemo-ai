@@ -1,0 +1,20 @@
+@import './components/card';
+@import './components/input';
+@import './components/loading';
+@import './components/footer';
+@import './components/menu';
+@import './components/tab';
+@import './components/upload';
+@import './theme/fonts';
+@import './theme/colors';
+@import "~element-ui/packages/theme-chalk/src/index";
+
+.no-caret {
+    .el-submenu__icon-arrow {
+        display: none !important;
+    }
+}
+
+button:focus {
+    outline: none !important;
+}

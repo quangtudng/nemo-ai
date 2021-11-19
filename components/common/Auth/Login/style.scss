@@ -1,0 +1,43 @@
+.login-content-wrapper {
+    .login-input-group {
+      .el-form-item {
+        .el-form-item__label {
+          font-size: 15px;
+          line-height: 19px;
+          color: var(--color-theme-1);
+          margin-bottom: 5px;
+        }
+        .el-input__inner {
+          border: none !important;
+          height: 40px;
+          background: #e6e9f0;
+          border-radius: 20px;
+        }
+      }
+    }
+    .login-input-remember {
+      .el-checkbox__inner {
+        transform: scale(1.5);
+        background-color: #e6e9f0;
+        border: #e6e9f0;
+        &::after {
+          border: 1.5px solid #ffffff;
+          border-left: 0;
+          border-top: 0;
+          left: 5px;
+          top: 1.5px;
+          width: 3px;
+        }
+      }
+      .el-checkbox__input.is-checked .el-checkbox__inner {
+        background-color: var(--color-theme-1);
+        border: var(--color-theme-1);
+      }
+      .el-checkbox__label {
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 19px;
+        color: var(--color-theme-1);
+      }
+    }
+  }

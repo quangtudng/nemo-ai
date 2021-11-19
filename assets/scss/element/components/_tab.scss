@@ -1,0 +1,26 @@
+.el-tabs__item {
+    font-size: 16px !important;
+    line-height: 50px !important;
+    height: 50px !important;
+    padding: 0 1rem !important;
+    color: #A0C9F1 !important;
+}
+.el-tabs__item.is-active {
+    color: var(--color-theme-1) !important;
+}
+.el-tabs__active-bar {
+    background-color: var(--color-theme-1) !important;
+    height: 3px !important;
+}
+
+.el-tabs__new-tab {
+    height: 30px !important;
+    width: 30px !important;
+    line-height: 30px !important;
+    background-color: var(--color-theme-1) !important;
+    border: none !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border-radius: 10px !important;
+    outline: none !important;
+}
