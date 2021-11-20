@@ -9,18 +9,26 @@ export default function ({ $axios, store, app }, inject) {
       Authorization: '',
     },
   })
-  authApi.onRequest(async (config) => {
-    // .setHeader doesn't work
-    // await authApi.setHeader('Authorization', store.state.auth.data.token)
-    config.headers.Authorization = await ('Bearer ' +
-      store.state.auth.data.token)
+  authApi.onRequest((config) => {
+    config.headers.Authorization = 'Bearer ' + store.state.auth.data.accessToken
     if (process.env.NODE_ENV === 'development') {
       Message('DevOnly | Authenticated API executed')
     }
     // Must return config
     return config
   })
+  authApi.onResponse((response) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(response)
+    }
+    // Must return config
+    return response
+  })
   authApi.onError((error) => {
+    if (process.env.NODE_ENV === 'development') {
+      Message.error('DevOnly | Authenticated API failed to execute')
+      console.log(error)
+    }
     if (error.response.data.message) {
       error.response.data.message.forEach((message) => {
         Message.error(app.i18n.t('error.' + message.code))
