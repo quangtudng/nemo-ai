@@ -1,17 +1,14 @@
 import { authMutations } from '~/constants/vuex'
 export default {
-  async fetchMe() {
-    const response = await this.$authApi.get('/auth/me')
-    return response
+  fetchMe() {
+    return this.$authApi.get('/auth/me')
   },
-  async updateMe({ rootState }, form) {
-    const response = await this.$authApi.post('/auth/me', form)
-    return response
+  updateMe({ rootState, dispatch }, form) {
+    return this.$authApi.post('/auth/me', form)
   },
-  async login({ commit }, { form, rememberPassword }) {
-    const response = await this.$clientApi.post('/auth/login', form)
-    const auth = response.data.data
-    console.log(response.data)
+  async login({ commit, dispatch }, { form, rememberPassword }) {
+    const response = await this.$clientApi.post('/auth/signin', form)
+    const auth = response.data
     if (rememberPassword) {
       localStorage.setItem('auth', JSON.stringify(auth))
     } else {

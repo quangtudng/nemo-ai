@@ -8,16 +8,17 @@
     }"
     @click="$router.push(item.to)"
   >
-    <i
+    <em
       :class="{
         [item.icon]: $store.state.options.sidebarCollapsed,
       }"
       :style="{ color: item['icon-color'] }"
-    ></i>
+    ></em>
     <span>{{ $t(item.title) }}</span>
   </el-menu-item>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     item: {
@@ -32,8 +33,13 @@ export default {
     },
   },
   computed: {
+    ...mapState({
+      auth: (state) => state.auth.data,
+    }),
     isAllowed() {
-      return this.item.role.includes(this.$store.state.auth.data.role)
+      const role = this.auth?.role
+      if (!role) return false
+      return this.item.role.includes(role)
     },
   },
 }

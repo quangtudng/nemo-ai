@@ -5,7 +5,7 @@
             "icon": "el-icon-document",
             "icon-color": "var(--color-theme-1)",
             "to": "/users",
-            "role": "ADMIN",
+            "role": "SUPERADMIN",
             "children": []
         },
         {
@@ -13,7 +13,7 @@
             "icon": "el-icon-bangzhu",
             "icon-color": "var(--color-theme-1)",
             "to": "/services",
-            "role": "ADMIN|OPERATOR",
+            "role": "SUPERADMIN",
             "children": []
         },
         {
@@ -21,7 +21,7 @@
             "icon": "el-icon-s-tools",
             "icon-color": "var(--color-theme-1)",
             "to": "/settings",
-            "role": "ADMIN",
+            "role": "SUPERADMIN",
             "children": []
         }
     ]

@@ -13,7 +13,7 @@ import {
   destinationMutations,
 } from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
-const permission = 'ADMIN|OPERATOR'
+const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],

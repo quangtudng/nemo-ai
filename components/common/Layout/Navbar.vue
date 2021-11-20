@@ -22,18 +22,11 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- <el-badge :is-dot="true" class="mt-5 mr-3">
-        <fa
-          class="text-light text-xl block"
-          :icon="['fas', 'bell']"
-          style="line-height: 60px;"
-        />
-      </el-badge> -->
       <el-dropdown @command="handleAvatarCommand">
         <el-avatar
           class="block"
           style="margin: 10px;"
-          :src="auth.avatar"
+          :src="avatar"
         ></el-avatar>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="me">
@@ -79,17 +72,17 @@ export default {
       auth: (state) => state.auth.data,
     }),
     avatar() {
-      if (this.auth) {
-        return this.auth.currentUser.avatar
+      if (this.auth?.avatar) {
+        return this.auth.avatar
       } else {
         return require('~/assets/img/default-man.png')
       }
     },
-    username() {
-      if (this.auth) {
-        return this.auth.currentUser.name
+    fullname() {
+      if (this.auth?.fullname) {
+        return this.auth.fullname
       } else {
-        return 'Super admin'
+        return 'Unknown User'
       }
     },
   },

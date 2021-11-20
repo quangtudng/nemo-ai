@@ -14,9 +14,20 @@ export default function ({ $axios, app }, inject) {
     // Must return config
     return config
   })
+  clientApi.onResponse((response) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(response)
+    }
+    // Must return config
+    return response
+  })
   clientApi.onError((error) => {
+    if (process.env.NODE_ENV === 'development') {
+      Message.error('DevOnly | Authenticated API failed to execute')
+      console.log(error.response.data.mesage)
+    }
     error.response.data.message.forEach((message) => {
-      Message.error(app.i18n.t('error.' + message.code))
+      Message.error(app.i18n.t('error.' + message.statusCode))
     })
   })
 
