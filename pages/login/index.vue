@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    async postLogin({ form, rememberPassword, role }) {
+    async postLogin({ form, rememberPassword }) {
       try {
         this.isLoading = true
         await this.$store.dispatch(authActions.LOGIN, {

@@ -88,7 +88,7 @@ import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
 import { FormWrapper, InputWrapper, Breadcrumb } from '~/components/common'
 import { roleActions } from '~/constants/vuex'
-const permission = 'ADMIN'
+const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb },
   middleware({ store, query, redirect }) {

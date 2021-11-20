@@ -197,7 +197,7 @@ import {
 } from '~/components/common'
 import { userActions, roleActions } from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
-const permission = 'ADMIN'
+const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],

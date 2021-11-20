@@ -10,7 +10,7 @@ import {
 import { dataTableMixin } from '~/mixins'
 // const pluralize = require('pluralize')
 // const moduleName = 'role' // Module name
-const permission = 'ADMIN'
+const permission = 'SUPERADMIN'
 
 export default {
   mixins: [dataTableMixin],

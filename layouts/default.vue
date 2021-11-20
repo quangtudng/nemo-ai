@@ -10,10 +10,10 @@
             <el-avatar
               class="mx-auto block"
               :size="90"
-              :src="auth.avatar"
+              :src="avatar"
             ></el-avatar>
             <h2 class="default-header-avatar-name">
-              {{ auth.fullName }}
+              {{ fullname }}
             </h2>
             <p class="default-header-avatar-status">
               <fa class="text-success" :icon="['fas', 'dot-circle']" />
@@ -24,7 +24,7 @@
             <el-avatar
               class="mx-auto mt-10 block visible"
               :size="40"
-              :src="auth.avatar"
+              :src="avatar"
             ></el-avatar>
             <fa
               class="text-success mx-auto mt-3 block visible"
@@ -50,7 +50,7 @@ import { mapMutations, mapState } from 'vuex'
 import { rootMutations } from '~/constants/vuex'
 import { Navbar, Sidebar } from '~/components/common'
 export default {
-  // middleware: ['authRequired'],
+  middleware: ['authRequired'],
   components: {
     Navbar,
     Sidebar,
@@ -60,6 +60,20 @@ export default {
       auth: (state) => state.auth.data,
       sidebarCollapsed: (state) => state.options.sidebarCollapsed,
     }),
+    avatar() {
+      if (this.auth?.avatar) {
+        return this.auth.avatar
+      } else {
+        return require('~/assets/img/default-man.png')
+      }
+    },
+    fullname() {
+      if (this.auth?.fullname) {
+        return this.auth.fullname
+      } else {
+        return 'Unknown User'
+      }
+    },
   },
   created() {
     // We store this configuration in localStorage because it lasts forever
@@ -103,6 +117,7 @@ export default {
     color: #012066;
     text-align: center;
     padding: 1rem;
+    word-wrap: break-word;
   }
   .default-header-avatar-status {
     line-height: 18px;
