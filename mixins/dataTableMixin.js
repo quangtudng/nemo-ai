@@ -34,6 +34,11 @@ export default {
   data() {
     return {
       selectedItems: null,
+      tableDataState: [],
+      query: {
+        page: 1,
+        limit: 10,
+      },
     }
   },
   methods: {

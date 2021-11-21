@@ -1,16 +1,15 @@
 import qs from 'qs'
-import { serviceCategoryMutations } from '~/constants/vuex'
 export default {
   async fetchData({ state, commit }) {
     const response = await this.$authApi.get(
       '/service_categories?' +
         qs.stringify(state.query, { arrayFormat: 'repeat' })
     )
-    commit(serviceCategoryMutations.SET.DATA, response.data.data, {
+    commit('service/category/SET_DATA', response.data.data, {
       root: true,
     })
     // Fix total later
-    commit(serviceCategoryMutations.SET.TOTAL, response.data.total, {
+    commit('service/category/SET_TOTAL', response.data.total, {
       root: true,
     })
     return response.data
@@ -20,7 +19,7 @@ export default {
       `/service_categories/${id}/children`
     )
     commit(
-      serviceCategoryMutations.SET.CHILDREN,
+      'service/category/SET_CHILDREN',
       { id, children: response.data.data },
       {
         root: true,

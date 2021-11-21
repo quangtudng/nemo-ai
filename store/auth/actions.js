@@ -1,4 +1,3 @@
-import { authMutations } from '~/constants/vuex'
 export default {
   fetchMe() {
     return this.$authApi.get('/auth/me')
@@ -14,11 +13,11 @@ export default {
     } else {
       sessionStorage.setItem('auth', JSON.stringify(auth))
     }
-    commit(authMutations.SET.AUTH, auth, { root: true }) // Mutating to store for client rendering
+    commit('auth/SET_AUTH', auth, { root: true }) // Mutating to store for client rendering
   },
   logout({ commit }) {
     localStorage.removeItem('auth')
     sessionStorage.removeItem('auth')
-    commit(authMutations.SET.AUTH, null, { root: true })
+    commit('auth/SET_AUTH', null, { root: true })
   },
 }

@@ -201,7 +201,6 @@ import {
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import { authActions, roleActions, authMutations } from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
@@ -209,7 +208,7 @@ export default {
   async fetch() {
     try {
       this.isLoading = true
-      const { data } = await this.$store.dispatch(authActions.FETCH.ME)
+      const { data } = await this.$store.dispatch('auth/fetchMe')
       this.form = { ...this.form, ...data.data }
       if (data.data.avatar) {
         this.imageList.push({ url: data.data.avatar })
@@ -241,17 +240,17 @@ export default {
   },
   computed: {
     ...mapState({
-      roles: (state) => state.user.role.data,
+      roles: (state) => state.role.data,
     }),
   },
   methods: {
     ...mapActions({
-      fetchRoles: roleActions.FETCH.DATA,
-      updateProfile: authActions.UPDATE.ME,
+      fetchRoles: 'role/fetchData',
+      updateProfile: 'auth/updateMe',
     }),
     ...mapMutations({
-      setAuthFullName: authMutations.SET.AUTH_FULLNAME,
-      setAuthAvatar: authMutations.SET.AUTH_AVATAR,
+      setAuthFullName: 'auth/SET_AUTH_FULLNAME',
+      setAuthAvatar: 'auth/SET_AUTH_AVATAR',
     }),
     async handleFileUploadChange(fileList) {
       /// ////////////////////////////////////
@@ -268,7 +267,7 @@ export default {
         this.setAuthFullName(this.form.fullName)
         this.setAuthAvatar(this.form.avatar)
         if (this.form.password === null || this.form.password === '') {
-          await delete this.form.password
+          delete this.form.password
         }
         this.isLoading = true
         await this.updateProfile(this.form)

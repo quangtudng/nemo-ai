@@ -10,7 +10,6 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import { rootMutations } from '~/constants/vuex'
 export default {
   middleware: 'authNotRequired',
   created() {
@@ -20,7 +19,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      SET_LANG: rootMutations.SET.LANG,
+      SET_LANG: 'SET_LANG',
     }),
   },
 }

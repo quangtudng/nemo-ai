@@ -22,14 +22,13 @@
           :limit="tableDataQuery.limit"
           :current-page="tableDataQuery.page"
           :multiple-choice="false"
+          :add-new-button="false"
           @my-table-edit="onEdit"
           @my-table-delete="onDelete"
-          @my-table-add-new="$router.push('/users/roles/create')"
           @my-table-size-change="onSizeChange"
           @my-table-page-change="onPageChange"
           @my-table-page-prev="onPagePrev"
           @my-table-page-next="onPageNext"
-          @my-table-selection-change="onSelectionChange"
           @my-table-sort-change="onSortChange"
           @my-table-limit-change="onLimitChange"
           @my-table-refresh="onRefresh"
@@ -37,7 +36,7 @@
           <el-table-column type="index" width="50" />
           <el-table-column
             :label="$t('roles.index.name')"
-            prop="name"
+            prop="label"
             sortable
           />
           <el-table-column

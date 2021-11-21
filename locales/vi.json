@@ -122,10 +122,9 @@
     "delete-filter": "Bỏ lọc",
     "role": {
       "title": "Chức vụ",
-      "ADMIN": "Quản trị viên",
-      "OPERATOR": "Điều hành viên",
-      "SALE": "Nhân viên bán hàng",
-      "INTERN": "Thực tập sinh"
+      "SUPERADMIN": "Quản trị viên",
+      "MODERATOR": "Người kiểm duyệt",
+      "PARTNER": "Doanh nghiệp"
     },
     "index": {
       "fullname": "Họ và tên",

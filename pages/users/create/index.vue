@@ -195,7 +195,6 @@ import {
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import { userActions, roleActions } from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
 const permission = 'SUPERADMIN'
 export default {
@@ -237,14 +236,14 @@ export default {
   },
   computed: {
     ...mapState({
-      roles: (state) => state.user.role.data,
+      roles: (state) => state.role.data,
     }),
   },
   methods: {
     ...mapActions({
-      fetchRoles: roleActions.FETCH.DATA,
-      reFetchUsers: userActions.FETCH.DATA,
-      submitSingleUser: userActions.SUBMIT.SINGLE,
+      fetchRoles: 'role/fetchData',
+      reFetchUsers: 'user/fetchData',
+      submitSingleUser: 'user/submitSingle',
     }),
     handleFileUploadChange(fileList) {
       console.log(fileList)

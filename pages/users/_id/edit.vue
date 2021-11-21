@@ -196,9 +196,8 @@ import {
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import { userActions, roleActions } from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
-const permission = 'ADMIN'
+const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],
@@ -211,10 +210,8 @@ export default {
   async fetch() {
     try {
       this.isLoading = true
-      const { data } = await this.$store.dispatch(
-        userActions.FETCH.SINGLE,
-        this.$route.params.id
-      )
+      const id = this.$route.params.id
+      const { data } = await this.$store.dispatch('user/fetchSingle', id)
       this.form = { ...this.form, ...data.data }
       if (data.data.avatar) {
         this.imageList.push({ url: data.data.avatar })
@@ -246,14 +243,14 @@ export default {
   },
   computed: {
     ...mapState({
-      roles: (state) => state.user.role.data,
+      roles: (state) => state.role.data,
     }),
   },
   methods: {
     ...mapActions({
-      fetchRoles: roleActions.FETCH.DATA,
-      reFetchUsers: userActions.FETCH.DATA,
-      updateSingleUser: userActions.UPDATE.SINGLE,
+      fetchRoles: 'role/fetchData',
+      reFetchUsers: 'user/fetchData',
+      updateSingleUser: 'user/updateSingle',
     }),
     async handleFileUploadChange(fileList) {
       /// ////////////////////////////////////

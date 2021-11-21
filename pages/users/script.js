@@ -3,11 +3,6 @@ import qs from 'qs'
 import { mapActions, mapState, mapMutations } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
-import {
-  userActions as moduleActions,
-  userMutations as moduleMutations,
-  roleActions,
-} from '~/constants/vuex'
 import { dataTableMixin } from '~/mixins'
 const pluralize = require('pluralize')
 const moduleName = 'user' // Module name
@@ -31,7 +26,7 @@ export default {
           query[key] = Number(query[key])
         }
       })
-      store.commit(moduleMutations.SET.QUERY, query)
+      store.commit('user/SET_QUERY', query)
     }
   },
   data() {
@@ -55,20 +50,20 @@ export default {
       tableData: (state) => state[moduleName].data,
       tableDataQuery: (state) => state[moduleName].query,
       tableDataTotal: (state) => state[moduleName].total,
-      roles: (state) => state.user.role.data,
+      roles: (state) => state.role.data,
     }),
   },
   methods: {
     ...mapActions({
-      fetchData: moduleActions.FETCH.DATA,
-      deleteSingle: moduleActions.DELETE.SINGLE,
-      fetchRoles: roleActions.FETCH.DATA,
+      // fetchData: 'user/fetchData',
+      deleteSingle: 'user/deleteSingle',
+      fetchRoles: 'role/fetchData',
     }),
     ...mapMutations({
-      setDataQuery: moduleMutations.SET.QUERY,
-      clearDataQuery: moduleMutations.CLEAR.QUERY,
-      incDataQueryPage: moduleMutations.INC.QUERY_PAGE,
-      subDataQueryPage: moduleMutations.SUB.QUERY_PAGE,
+      setDataQuery: 'user/SET_QUERY',
+      clearDataQuery: 'user/CLEAR_QUERY',
+      incDataQueryPage: 'user/INC_QUERY_PAGE',
+      subDataQueryPage: 'user/SUB_QUERY_PAGE',
     }),
     onEdit(payload) {
       this.$router.push(
@@ -83,8 +78,18 @@ export default {
         //
       }
     },
-    async onFilter() {
-      await this.setDataQuery({
+    async fetchData() {
+      const response = await this.$authApi.get(
+        '/users?' + qs.stringify(this.query, { arrayFormat: 'repeat' })
+      )
+      this.tableDataState = response.data.data
+      // commit('user/SET_DATA', response.data.data, { root: true })
+      // Fix total later
+      // commit('user/SET_TOTAL', response.data.total, { root: true })
+      return response.data.data
+    },
+    onFilter() {
+      this.setDataQuery({
         page: 1,
         filter: this.roleFilter ? 'role.id||$eq||' + this.roleFilter : null,
         s: this.searchString

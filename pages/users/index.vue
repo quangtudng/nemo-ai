@@ -16,7 +16,7 @@
           class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none float-right mt-3"
           round
           :loading="$fetchState.pending"
-          @click="$router.push('/users/roles')"
+          @click="$router.push('/roles')"
         >
           {{ $t('users.roles') }}
         </el-button>
@@ -50,7 +50,7 @@
               <el-option
                 v-for="role in roles"
                 :key="'role-' + role.id"
-                :label="$t('users.role.' + role.name)"
+                :label="$t('users.role.' + role.label)"
                 :value="role.id"
               >
               </el-option>
@@ -80,7 +80,7 @@
         <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
-          :data="tableData"
+          :data="tableDataState"
           :total="tableDataTotal"
           :limit="tableDataQuery.limit"
           :current-page="tableDataQuery.page"
@@ -100,12 +100,12 @@
           <el-table-column type="index" width="50" />
           <el-table-column
             :label="$t('users.index.fullname')"
-            prop="fullName"
+            prop="fullname"
             sortable
           />
           <el-table-column
-            :label="$t('users.index.phone')"
-            prop="phone"
+            :label="$t('users.index.phonenumber')"
+            prop="phoneNumber"
             sortable
           />
           <el-table-column

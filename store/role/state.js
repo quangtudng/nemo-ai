@@ -1,9 +1,8 @@
 export default () => ({
   query: {
     page: 1,
-    limit: 100,
+    limit: 10,
   },
   data: [],
-  regions: [],
   total: 0,
 })

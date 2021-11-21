@@ -26,6 +26,7 @@
       >
       </el-button>
       <el-button
+        v-if="addNewButton"
         class="float-right border-0 bg-theme-1 hover:bg-theme-1-600 text-light select-none"
         size="large"
         round
@@ -148,6 +149,11 @@ export default {
     currentPage: {
       type: Number,
       required: true,
+    },
+    addNewButton: {
+      type: Boolean,
+      default: true,
+      required: false,
     },
   },
   methods: {

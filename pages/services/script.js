@@ -2,12 +2,6 @@
 import qs from 'qs'
 import { mapActions, mapState, mapMutations } from 'vuex'
 import { DataTable, Breadcrumb } from '~/components/common'
-import {
-  serviceActions as moduleActions,
-  serviceMutations as moduleMutations,
-  serviceCategoryActions,
-  userActions,
-} from '~/constants/vuex'
 import { dataTableMixin } from '~/mixins'
 const pluralize = require('pluralize')
 const moduleName = 'service' // Module name
@@ -26,7 +20,7 @@ export default {
           query[key] = Number(query[key])
         }
       })
-      store.commit(moduleMutations.SET.QUERY, query)
+      store.commit('service/SET_QUERY', query)
     }
   },
   data() {
@@ -60,23 +54,23 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchUsers: userActions.FETCH.DATA,
-      fetchData: moduleActions.FETCH.DATA,
-      deleteSingle: moduleActions.DELETE.SINGLE,
-      fetchServiceCategories: serviceCategoryActions.FETCH.DATA,
-      fetchServiceCategoryChildren: serviceCategoryActions.FETCH.CHILDREN,
+      fetchUsers: 'user/fetchData',
+      fetchData: 'service/fetchData',
+      deleteSingle: 'service/deleteSingle',
+      fetchServiceCategories: 'service/category/fetchData',
+      fetchServiceCategoryChildren: 'service/category/fetchChildren',
     }),
     ...mapMutations({
-      setDataQuery: moduleMutations.SET.QUERY,
-      clearDataQuery: moduleMutations.CLEAR.QUERY,
-      incDataQueryPage: moduleMutations.INC.QUERY_PAGE,
-      subDataQueryPage: moduleMutations.SUB.QUERY_PAGE,
+      setDataQuery: 'service/SET_QUERY',
+      clearDataQuery: 'service/CLEAR_QUERY',
+      incDataQueryPage: 'service/INC_QUERY_PAGE',
+      subDataQueryPage: 'service/SUB_QUERY_PAGE',
     }),
     onEdit(payload) {
       if (
         payload.rowData.user.fullName ===
           this.$store.state.auth.data.fullName ||
-        this.$store.state.auth.data.role === 'ADMIN'
+        this.$store.state.auth.data.role === 'SUPERADMIN'
       ) {
         this.$router.push(
           `/${pluralize.plural(this.moduleName)}/${payload.rowData.id}/edit`
@@ -90,7 +84,7 @@ export default {
         if (
           payload.rowData.user.fullName ===
             this.$store.state.auth.data.fullName ||
-          this.$store.state.auth.data.role === 'ADMIN'
+          this.$store.state.auth.data.role === 'SUPERADMIN'
         ) {
           await this.deleteSingle(payload.rowData.id)
           this.$fetch()

@@ -5,9 +5,6 @@ export default {
   SET_TOTAL(state, total) {
     state.total = total
   },
-  SET_PERMISSIONS(state, permissions) {
-    state.permissions = permissions
-  },
   SET_QUERY(state, query) {
     // Delete empty properties
     let count = 0
@@ -25,7 +22,7 @@ export default {
   CLEAR_QUERY(state) {
     state.query = {
       page: 1,
-      limit: 100,
+      limit: 10,
     }
   },
   INC_QUERY_PAGE(state) {
