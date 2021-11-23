@@ -22,13 +22,20 @@ export default function ({ $axios, app }, inject) {
     return response
   })
   clientApi.onError((error) => {
-    if (process.env.NODE_ENV === 'development') {
-      Message.error('DevOnly | Authenticated API failed to execute')
-      console.log(error.response.data.mesage)
+    if (error.response.data.message) {
+      const messages = Array.isArray(error.response.data.message)
+        ? error.response.data.message
+        : [error.response.data.message]
+      messages.forEach((message) => {
+        Message.error(app.i18n.t('error.' + message))
+      })
     }
-    error.response.data.message.forEach((message) => {
-      Message.error(app.i18n.t('error.' + message.statusCode))
-    })
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(function () {
+        Message.error('DevOnly | Client API failed to execute')
+        console.log(error)
+      }, 500)
+    }
   })
 
   // Inject to context as $clientApi

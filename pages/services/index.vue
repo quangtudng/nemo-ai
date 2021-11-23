@@ -22,7 +22,7 @@
             </label>
             <el-input
               id="default-input-search"
-              v-model="searchString"
+              v-model="searchQuery"
               class="el-default-input"
               prefix-icon="el-icon-search"
               :placeholder="$t('services.search')"

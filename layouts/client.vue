@@ -1,7 +1,6 @@
 <template>
   <el-container class="default-layout-container h-full-vh">
     <el-aside class="default-layout-aside bg-white" width="400px">
-      <!-- el-main -->
       <nuxt class="relative" />
     </el-aside>
     <el-container class="flex-col unauth-bg relative"></el-container>
@@ -10,8 +9,8 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import { rootMutations } from '~/constants/vuex'
 export default {
+  name: 'Client',
   middleware: 'authNotRequired',
   created() {
     // We store this configuration in localStorage because it lasts forever
@@ -20,7 +19,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      SET_LANG: rootMutations.SET.LANG,
+      SET_LANG: 'SET_LANG',
     }),
   },
 }

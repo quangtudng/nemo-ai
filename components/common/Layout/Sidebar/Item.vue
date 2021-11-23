@@ -37,7 +37,7 @@ export default {
       auth: (state) => state.auth.data,
     }),
     isAllowed() {
-      const role = this.auth?.role
+      const role = this.auth?.role?.label
       if (!role) return false
       return this.item.role.includes(role)
     },

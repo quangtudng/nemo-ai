@@ -1,36 +1,27 @@
 import qs from 'qs'
-import { serviceMutations } from '~/constants/vuex'
 export default {
   async fetchData({ state, commit }) {
     const response = await this.$clientApi.get(
       '/services?' + qs.stringify(state.query, { arrayFormat: 'repeat' })
     )
-    commit(serviceMutations.SET.DATA, response.data.data, { root: true })
+    commit('service/SET_DATA', response.data.data, { root: true })
     // Fix total later
-    commit(serviceMutations.SET.TOTAL, response.data.total, { root: true })
+    commit('service/SET_TOTAL', response.data.total, { root: true })
     return response.data.data
   },
-  async fetchMoreData() {
-    const response = await this.$clientApi.get('/services')
-    return response
+  fetchMoreData() {
+    return this.$clientApi.get('/services')
   },
-  async fetchSingle({ rootState }, id) {
-    const response = await this.$clientApi.get('/services/' + id)
-    return response
+  fetchSingle({ rootState }, id) {
+    return this.$clientApi.get('/services/' + id)
   },
-  async submitSingle({ rootState }, form) {
-    const response = await this.$authApi.post('/services', form)
-    return response
+  submitSingle({ rootState }, form) {
+    return this.$authApi.post('/services', form)
   },
-  async updateSingle({ rootState }, data) {
-    const response = await this.$authApi.patch(
-      '/services/' + data.id,
-      data.form
-    )
-    return response
+  updateSingle({ rootState }, data) {
+    return this.$authApi.patch('/services/' + data.id, data.form)
   },
-  async deleteSingle({ rootState }, id) {
-    const response = await this.$authApi.delete('/services/' + id)
-    return response
+  deleteSingle({ rootState }, id) {
+    return this.$authApi.delete('/services/' + id)
   },
 }

@@ -18,7 +18,7 @@
                     </label>
                     <InputWrapper rules="required">
                       <el-input
-                        v-model="form.fullName"
+                        v-model="form.fullname"
                         class="el-default-input"
                       ></el-input>
                     </InputWrapper>
@@ -50,38 +50,11 @@
                     <label class="text-theme-1">
                       {{ $t('users.create.phone') }}
                     </label>
-                    <InputWrapper rules="required|numeric">
+                    <InputWrapper rules="required">
                       <el-input
-                        v-model="form.phone"
+                        v-model="form.phoneNumber"
                         class="el-default-input"
                       ></el-input>
-                    </InputWrapper>
-                  </div>
-                  <div class="mt-10">
-                    <label class="text-theme-1">
-                      {{ $t('users.create.gender') }}
-                    </label>
-                    <InputWrapper rules="required">
-                      <el-radio v-model="form.gender" label="MALE">
-                        {{ $t('users.create.gender-male') }}
-                      </el-radio>
-                      <el-radio v-model="form.gender" label="FEMALE">
-                        {{ $t('users.create.gender-female') }}
-                      </el-radio>
-                    </InputWrapper>
-                  </div>
-                  <div class="mt-5">
-                    <label class="text-theme-1">
-                      {{ $t('users.create.birthday') }}
-                    </label>
-                    <InputWrapper>
-                      <el-date-picker
-                        v-model="form.birthday"
-                        class="el-default-input"
-                        type="date"
-                        :placeholder="$t('users.create.birthday')"
-                      >
-                      </el-date-picker>
                     </InputWrapper>
                   </div>
                   <div class="mt-10">
@@ -93,8 +66,9 @@
                         <el-option
                           v-for="role in roles"
                           :key="'role-' + role.id"
-                          :label="$t('users.role.' + role.name)"
+                          :label="$t('users.role.' + role.label)"
                           :value="role.id"
+                          :disabled="role.id == 1"
                         >
                         </el-option>
                       </el-select>
@@ -116,27 +90,13 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.note') }}
-                    </label>
-                    <InputWrapper>
-                      <el-input
-                        v-model="form.note"
-                        class="el-default-input"
-                        type="textarea"
-                        :rows="4"
-                      >
-                      </el-input>
-                    </InputWrapper>
-                  </div>
-                  <div class="mt-10">
-                    <label class="text-theme-1">
                       {{ $t('users.create.status') }}
                     </label>
                     <el-switch
                       v-model="form.status"
                       active-color="#13ce66"
-                      active-value="ACTIVE"
-                      inactive-value="INACTIVE"
+                      :active-value="1"
+                      :inactive-value="0"
                     >
                     </el-switch>
                   </div>
@@ -146,7 +106,7 @@
                     <label class="text-theme-1">
                       {{ $t('users.create.avatar') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <FileUploader
                         v-model="imageList"
                         :limit="1"
@@ -187,7 +147,7 @@
   </el-main>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import { Message } from 'element-ui'
 import {
   FormWrapper,
@@ -195,14 +155,13 @@ import {
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import { userActions, roleActions } from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
 const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],
-  middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role)) {
+  middleware({ store, redirect }) {
+    if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
     }
@@ -210,7 +169,8 @@ export default {
   async fetch() {
     try {
       this.isLoading = true
-      await this.fetchRoles()
+      const allRoles = await this.fetchRoles()
+      this.roles = allRoles?.data?.data || []
       this.isLoading = false
     } catch (error) {
       this.isLoading = false
@@ -219,32 +179,24 @@ export default {
   data() {
     return {
       form: {
-        fullName: null,
+        fullname: null,
         email: null,
         password: null,
-        phone: null,
+        phoneNumber: null,
         avatar: null,
-        gender: 'MALE',
-        birthday: null,
         bio: null,
-        note: null,
-        status: 'ACTIVE',
-        roleId: 4,
+        status: 1,
+        roleId: null,
       },
       imageList: [],
       isLoading: false,
+      roles: [],
     }
-  },
-  computed: {
-    ...mapState({
-      roles: (state) => state.user.role.data,
-    }),
   },
   methods: {
     ...mapActions({
-      fetchRoles: roleActions.FETCH.DATA,
-      reFetchUsers: userActions.FETCH.DATA,
-      submitSingleUser: userActions.SUBMIT.SINGLE,
+      fetchRoles: 'role/fetchData',
+      submitSingleUser: 'user/submitSingle',
     }),
     handleFileUploadChange(fileList) {
       console.log(fileList)
@@ -255,30 +207,28 @@ export default {
         /// ////////////////////////////////////
         // Process images
         // resize() only return { raw: Image() } object, so you must spread it
-        const responseUrls = await this.uploadFilesToS3(
-          this.imageList,
-          'USER_IMAGES'
-        )
-        this.form.avatar = await responseUrls[0]
+        if (this.imageList) {
+          const responseUrls = await this.uploadFilesToS3(
+            this.imageList,
+            'USER_IMAGES'
+          )
+          this.form.avatar = await responseUrls[0]
+        }
         await this.submitSingleUser(this.form)
-        this.reFetchUsers()
-        this.$router.push('/users')
         // Reset form
         this.form = {
-          fullName: null,
+          fullname: null,
           email: null,
           password: null,
-          phone: null,
+          phoneNumber: null,
           avatar: null,
-          gender: 'MALE',
-          birthday: null,
           bio: null,
-          note: null,
-          status: 'ACTIVE',
-          roleId: 4,
+          status: 1,
+          roleId: null,
         }
         this.imageList = []
         this.isLoading = false
+        this.$router.push('/users')
       } catch (err) {
         this.isLoading = false
       }

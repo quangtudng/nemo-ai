@@ -1,4 +1,3 @@
-import qs from 'qs'
 import { debounce } from 'lodash'
 /// ////////////////////////////////////////////////////
 // This mixins require these in the index page using it:
@@ -28,64 +27,66 @@ import { debounce } from 'lodash'
 /// ////////////////////////////////////////////////////
 export default {
   async fetch() {
-    await this.pushRouterQuery()
-    this.fetchData()
+    const result = await this.fetchTableData(this.query)
+    this.tableData = result.data.data
+    this.tableDataTotal = result.data.total
   },
   data() {
     return {
       selectedItems: null,
+      tableData: [],
+      tableDataTotal: 0,
+      query: {
+        page: 1,
+        limit: 10,
+      },
     }
   },
   methods: {
     onSizeChange(total) {
       console.log('pagination changed to ' + total)
     },
+    setDataQuery(query) {
+      this.query = { ...this.query, ...query }
+    },
     async onPageChange(currentPage) {
-      await this.setDataQuery({
+      this.setDataQuery({
         page: currentPage,
       })
-      this.$fetch()
+      await this.$fetch()
     },
     async onPagePrev() {
-      await this.subDataQueryPage()
-      this.$fetch()
+      this.query.page--
+      await this.$fetch()
     },
     async onPageNext() {
-      await this.incDataQueryPage()
-      this.$fetch()
+      this.query.page++
+      await this.$fetch()
     },
     onSelectionChange(selected) {
       this.selectedItems = selected
     },
     async onSortChange(payload) {
-      await this.setDataQuery({
+      this.setDataQuery({
         sort: `${payload.prop},${
           payload.order === 'ascending' ? 'ASC' : 'DESC'
         }`,
       })
-      this.$fetch()
+      await this.$fetch()
     },
     async onLimitChange(limit) {
-      await this.setDataQuery({
+      this.setDataQuery({
         page: 1,
         limit,
       })
-      this.$fetch()
+      await this.$fetch()
     },
     onRefresh: debounce(async function () {
-      await this.clearDataQuery()
-      this.$fetch()
+      this.query = {
+        page: 1,
+        limit: 10,
+      }
+      await this.$fetch()
     }, 300),
-    pushRouterQuery() {
-      // this.$router.push does change the $route.query,
-      // but doesn't change the browser url from the 2nd time above (cache or something, i dunno)
-      history.pushState(
-        {},
-        '',
-        this.$route.path +
-          '?' +
-          qs.stringify(this.tableDataQuery, { arrayFormat: 'repeat' })
-      )
-    },
   },
 }

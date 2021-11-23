@@ -43,7 +43,6 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import { authActions, rootMutations } from '~/constants/vuex'
 export default {
   name: 'Navbar',
   props: {
@@ -88,8 +87,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      SET_LANG: rootMutations.SET.LANG,
-      TOGGLE_SIDEBAR_COLLAPSE: rootMutations.TOGGLE.SIDEBAR_COLLAPSE,
+      SET_LANG: 'SET_LANG',
+      TOGGLE_SIDEBAR_COLLAPSE: 'TOGGLE_SIDEBAR_COLLAPSE',
     }),
     changeLanguage(locale) {
       this.$changeLocale(locale)
@@ -99,7 +98,7 @@ export default {
     },
     logout() {
       this.$router.push('/login')
-      this.$store.dispatch(authActions.LOGOUT)
+      this.$store.dispatch('auth/logout')
     },
     me() {
       this.$router.push('/me')

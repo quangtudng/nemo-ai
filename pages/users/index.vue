@@ -16,7 +16,7 @@
           class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none float-right mt-3"
           round
           :loading="$fetchState.pending"
-          @click="$router.push('/users/roles')"
+          @click="$router.push('/roles')"
         >
           {{ $t('users.roles') }}
         </el-button>
@@ -31,10 +31,11 @@
             </label>
             <el-input
               id="default-input-search"
-              v-model="searchString"
+              v-model="searchQuery"
               class="el-default-input"
               prefix-icon="el-icon-search"
               :placeholder="$t('users.search')"
+              @keyup="onFilter"
             >
             </el-input>
           </div>
@@ -43,14 +44,14 @@
               {{ $t('users.role.title') }}
             </label>
             <el-select
-              v-model="roleFilter"
+              v-model="roleQuery"
               class="el-default-input"
               :placeholder="$t('users.role.title')"
             >
               <el-option
                 v-for="role in roles"
                 :key="'role-' + role.id"
-                :label="$t('users.role.' + role.name)"
+                :label="$t('users.role.' + role.label)"
                 :value="role.id"
               >
               </el-option>
@@ -82,8 +83,8 @@
           v-loading="$fetchState.pending"
           :data="tableData"
           :total="tableDataTotal"
-          :limit="tableDataQuery.limit"
-          :current-page="tableDataQuery.page"
+          :limit="query.limit"
+          :current-page="query.page"
           :multiple-choice="false"
           @my-table-edit="onEdit"
           @my-table-delete="onDelete"
@@ -100,25 +101,38 @@
           <el-table-column type="index" width="50" />
           <el-table-column
             :label="$t('users.index.fullname')"
-            prop="fullName"
-            sortable
+            prop="fullname"
           />
+          <el-table-column :label="$t('users.index.status')" prop="status">
+            <template slot-scope="scope">
+              <el-tooltip content="User is active" placement="top">
+                <fa
+                  v-if="scope.row.status"
+                  :icon="['fas', 'check-circle']"
+                  style="color: green;"
+                />
+              </el-tooltip>
+              <el-tooltip content="User is disabled" placement="top">
+                <fa
+                  v-if="!scope.row.status"
+                  :icon="['fas', 'times-circle']"
+                  style="color: red;"
+                />
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column
-            :label="$t('users.index.phone')"
-            prop="phone"
-            sortable
+            :label="$t('users.index.phonenumber')"
+            prop="phoneNumber"
           />
-          <el-table-column
-            :label="$t('users.index.email')"
-            prop="email"
-            sortable
-          >
+          <el-table-column :label="$t('users.index.email')" prop="email">
             <template slot-scope="scope">
               <p style="color: green;">
                 {{ scope.row.email }}
               </p>
             </template>
           </el-table-column>
+          <el-table-column :label="$t('users.index.role')" prop="role.label" />
         </DataTable>
       </el-card>
     </el-container>

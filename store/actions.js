@@ -1,4 +1,3 @@
-import { rootMutations, authMutations } from '~/constants/vuex'
 export default {
   // Called manually in middleware in SPA mode
   nuxtServerInit({ commit }) {
@@ -7,7 +6,7 @@ export default {
       ? sessionStorage.getItem('auth')
       : localStorage.getItem('auth')
     auth = JSON.parse(authString)
-    commit(authMutations.SET.AUTH, auth)
-    commit(rootMutations.SET.SERVER_STATE, true) // Server is ready
+    commit('auth/SET_AUTH', auth)
+    commit('SET_SERVER_STATE', true) // Server is ready
   },
 }
