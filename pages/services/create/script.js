@@ -6,19 +6,13 @@ import {
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import {
-  serviceActions,
-  serviceCategoryActions,
-  destinationActions,
-  destinationMutations,
-} from '~/constants/vuex'
 import { fileMixin, onExitWarningMixin } from '~/mixins'
 const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin, onExitWarningMixin],
   middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role)) {
+    if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
     }
@@ -84,15 +78,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchServiceCategoryChildren: serviceCategoryActions.FETCH.CHILDREN,
-      fetchSingleDestination: destinationActions.FETCH.SINGLE,
-      fetchServiceCategories: serviceCategoryActions.FETCH.DATA,
-      fetchDestinations: destinationActions.FETCH.DATA,
-      reFetchServices: serviceActions.FETCH.DATA,
-      submitSingleService: serviceActions.SUBMIT.SINGLE,
+      fetchServiceCategoryChildren: 'service/category/fetchChildren',
+      fetchSingleDestination: 'destination/fetchSingle',
+      fetchServiceCategories: 'service/category/fetchData',
+      fetchDestinations: 'destination/fetchData',
+      reFetchServices: 'service/fetchData',
+      submitSingleService: 'service/submitSingle',
     }),
     ...mapMutations({
-      ADD_REGION: destinationMutations.ADD.REGION,
+      ADD_REGION: 'destination/ADD_REGION',
     }),
     async handleFileUploadChange(fileList) {
       //

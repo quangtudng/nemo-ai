@@ -6,19 +6,13 @@ import {
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import {
-  serviceActions,
-  serviceCategoryActions,
-  destinationActions,
-  destinationMutations,
-} from '~/constants/vuex'
 import { fileMixin } from '~/mixins'
 const permission = 'SUPERADMIN'
 export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],
   middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role)) {
+    if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
     }
@@ -27,7 +21,7 @@ export default {
     try {
       this.isLoading = true
       const { data } = await this.$store.dispatch(
-        serviceActions.FETCH.SINGLE,
+        'service/fetchSingle',
         this.$route.params.id
       )
       this.form = { ...this.form, ...data.data }
@@ -96,15 +90,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchServiceCategories: serviceCategoryActions.FETCH.DATA,
-      fetchServiceCategoryChildren: serviceCategoryActions.FETCH.CHILDREN,
-      fetchDestinations: destinationActions.FETCH.DATA,
-      fetchSingleDestination: destinationActions.FETCH.SINGLE,
-      reFetchServices: serviceActions.FETCH.DATA,
-      updateSingleService: serviceActions.UPDATE.SINGLE,
+      fetchServiceCategories: 'service/category/fetchData',
+      fetchServiceCategoryChildren: 'service/category/fetchChildren',
+      fetchDestinations: 'destination/fetchData',
+      fetchSingleDestination: 'destination/fetchSingle',
+      reFetchServices: 'service/fetchData',
+      updateSingleService: 'service/updateSingle',
     }),
     ...mapMutations({
-      ADD_REGION: destinationMutations.ADD.REGION,
+      ADD_REGION: 'destination/ADD_REGION',
     }),
     async handleFileUploadChange(fileList) {
       const responseUrls = await this.uploadFilesToS3(

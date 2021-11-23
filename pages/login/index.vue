@@ -15,10 +15,9 @@
 </template>
 
 <script>
-import { authActions } from '~/constants/vuex'
 import { LoginForm } from '~/components/common'
 export default {
-  layout: 'unauth',
+  layout: 'client',
   // Back to home if you've already been authenticated
   components: {
     LoginForm,
@@ -32,7 +31,7 @@ export default {
     async postLogin({ form, rememberPassword }) {
       try {
         this.isLoading = true
-        await this.$store.dispatch(authActions.LOGIN, {
+        await this.$store.dispatch('auth/login', {
           form,
           rememberPassword,
         })

@@ -122,10 +122,9 @@
     "delete-filter": "Delete filter",
     "role": {
       "title": "Role",
-      "ADMIN": "Administrator",
-      "OPERATOR": "Operator",
-      "SALE": "Salesmen",
-      "INTERN": "Intern"
+      "SUPERADMIN": "Administrator",
+      "MODERATOR": "Moderator",
+      "AGENT": "Company Agent"
     },
     "index": {
       "fullname": "Full name",
