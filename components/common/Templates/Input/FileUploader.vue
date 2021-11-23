@@ -14,7 +14,7 @@
       :before-upload="handleBeforeUpload"
       :limit="limit"
     >
-      <i slot="default" class="el-icon-plus"></i>
+      <em slot="default" class="el-icon-plus"></em>
       <div slot="file" slot-scope="{ file }">
         <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         <span class="el-upload-list__item-actions">
@@ -22,14 +22,14 @@
             class="el-upload-list__item-preview"
             @click="handlePictureCardPreview(file)"
           >
-            <i class="el-icon-zoom-in"></i>
+            <em class="el-icon-zoom-in"></em>
           </span>
           <span
             v-if="!disabled"
             class="el-upload-list__item-delete"
             @click="handleRemove(file, fileList)"
           >
-            <i class="el-icon-delete"></i>
+            <em class="el-icon-delete"></em>
           </span>
         </span>
       </div>

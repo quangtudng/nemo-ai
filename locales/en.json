@@ -124,7 +124,7 @@
       "title": "Role",
       "SUPERADMIN": "Administrator",
       "MODERATOR": "Moderator",
-      "PARTNER": "Company partner"
+      "AGENT": "Company Agent"
     },
     "index": {
       "fullname": "Full name",

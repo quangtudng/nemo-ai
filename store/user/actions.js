@@ -1,13 +1,9 @@
 import qs from 'qs'
 export default {
-  async fetchData({ state, commit }) {
-    const response = await this.$authApi.get(
-      '/users?' + qs.stringify(state.query, { arrayFormat: 'repeat' })
+  fetchData({ rootState }, query) {
+    return this.$authApi.get(
+      '/users?' + qs.stringify(query, { arrayFormat: 'repeat' })
     )
-    commit('user/SET_DATA', response.data.data, { root: true })
-    // Fix total later
-    commit('user/SET_TOTAL', response.data.total, { root: true })
-    return response.data.data
   },
   fetchMoreData() {
     return this.$authApi.get('/users')

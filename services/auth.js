@@ -30,8 +30,11 @@ export default function ({ $axios, store, app }, inject) {
       console.log(error)
     }
     if (error.response.data.message) {
-      error.response.data.message.forEach((message) => {
-        Message.error(app.i18n.t('error.' + message.code))
+      const messages = Array.isArray(error.response.data.message)
+        ? error.response.data.message
+        : [error.response.data.message]
+      messages.forEach((message) => {
+        Message.error(app.i18n.t('error.' + message))
       })
     }
   })

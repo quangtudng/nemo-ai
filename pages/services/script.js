@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       moduleName, // For the mixins
-      searchString: null,
+      searchQuery: null,
       serviceCategoryFilter: null,
       authorFilter: null,
     }
@@ -70,7 +70,7 @@ export default {
       if (
         payload.rowData.user.fullName ===
           this.$store.state.auth.data.fullName ||
-        this.$store.state.auth.data.role === 'SUPERADMIN'
+        this.$store.state.auth.data.role.label === 'SUPERADMIN'
       ) {
         this.$router.push(
           `/${pluralize.plural(this.moduleName)}/${payload.rowData.id}/edit`
@@ -84,7 +84,7 @@ export default {
         if (
           payload.rowData.user.fullName ===
             this.$store.state.auth.data.fullName ||
-          this.$store.state.auth.data.role === 'SUPERADMIN'
+          this.$store.state.auth.data.role.label === 'SUPERADMIN'
         ) {
           await this.deleteSingle(payload.rowData.id)
           this.$fetch()
@@ -106,40 +106,40 @@ export default {
       await this.setDataQuery({
         page: 1,
         filter,
-        s: this.searchString
-          ? isNaN(this.searchString)
+        s: this.searchQuery
+          ? isNaN(this.searchQuery)
             ? JSON.stringify({
                 $or: [
                   {
-                    viTitle: { $contL: this.searchString },
+                    viTitle: { $contL: this.searchQuery },
                   },
                   {
-                    viDescription: { $contL: this.searchString },
+                    viDescription: { $contL: this.searchQuery },
                   },
                   {
-                    enTitle: { $contL: this.searchString },
+                    enTitle: { $contL: this.searchQuery },
                   },
                   {
-                    enDescription: { $contL: this.searchString },
+                    enDescription: { $contL: this.searchQuery },
                   },
                   {
-                    note: { $contL: this.searchString },
+                    note: { $contL: this.searchQuery },
                   },
                   {
-                    status: { $contL: this.searchString },
+                    status: { $contL: this.searchQuery },
                   },
                 ],
               })
             : JSON.stringify({
                 $or: [
                   {
-                    price: { $eq: +this.searchString },
+                    price: { $eq: +this.searchQuery },
                   },
                   {
-                    currentPrice: { $eq: +this.searchString },
+                    currentPrice: { $eq: +this.searchQuery },
                   },
                   {
-                    netPrice: { $eq: +this.searchString },
+                    netPrice: { $eq: +this.searchQuery },
                   },
                 ],
               })
@@ -150,7 +150,7 @@ export default {
     onClearFilter() {
       this.authorFilter = null
       this.serviceCategoryFilter = null
-      this.searchString = null
+      this.searchQuery = null
       this.onRefresh()
     },
   },

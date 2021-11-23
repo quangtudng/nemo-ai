@@ -1,7 +1,7 @@
 <template>
   <el-submenu :index="count">
     <template slot="title">
-      <i :class="item.icon" :style="{ color: item['icon-color'] }"></i>
+      <em :class="item.icon" :style="{ color: item['icon-color'] }"></em>
       <span>{{ $t(item.title) }}</span>
     </template>
     <component

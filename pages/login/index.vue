@@ -17,7 +17,7 @@
 <script>
 import { LoginForm } from '~/components/common'
 export default {
-  layout: 'unauth',
+  layout: 'client',
   // Back to home if you've already been authenticated
   components: {
     LoginForm,

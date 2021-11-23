@@ -31,10 +31,11 @@
             </label>
             <el-input
               id="default-input-search"
-              v-model="searchString"
+              v-model="searchQuery"
               class="el-default-input"
               prefix-icon="el-icon-search"
               :placeholder="$t('users.search')"
+              @keyup="onFilter"
             >
             </el-input>
           </div>
@@ -43,7 +44,7 @@
               {{ $t('users.role.title') }}
             </label>
             <el-select
-              v-model="roleFilter"
+              v-model="roleQuery"
               class="el-default-input"
               :placeholder="$t('users.role.title')"
             >
@@ -80,10 +81,10 @@
         <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
-          :data="tableDataState"
+          :data="tableData"
           :total="tableDataTotal"
-          :limit="tableDataQuery.limit"
-          :current-page="tableDataQuery.page"
+          :limit="query.limit"
+          :current-page="query.page"
           :multiple-choice="false"
           @my-table-edit="onEdit"
           @my-table-delete="onDelete"
@@ -101,24 +102,37 @@
           <el-table-column
             :label="$t('users.index.fullname')"
             prop="fullname"
-            sortable
           />
+          <el-table-column :label="$t('users.index.status')" prop="status">
+            <template slot-scope="scope">
+              <el-tooltip content="User is active" placement="top">
+                <fa
+                  v-if="scope.row.status"
+                  :icon="['fas', 'check-circle']"
+                  style="color: green;"
+                />
+              </el-tooltip>
+              <el-tooltip content="User is disabled" placement="top">
+                <fa
+                  v-if="!scope.row.status"
+                  :icon="['fas', 'times-circle']"
+                  style="color: red;"
+                />
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column
             :label="$t('users.index.phonenumber')"
             prop="phoneNumber"
-            sortable
           />
-          <el-table-column
-            :label="$t('users.index.email')"
-            prop="email"
-            sortable
-          >
+          <el-table-column :label="$t('users.index.email')" prop="email">
             <template slot-scope="scope">
               <p style="color: green;">
                 {{ scope.row.email }}
               </p>
             </template>
           </el-table-column>
+          <el-table-column :label="$t('users.index.role')" prop="role.label" />
         </DataTable>
       </el-card>
     </el-container>

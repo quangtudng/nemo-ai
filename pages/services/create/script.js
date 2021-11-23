@@ -12,7 +12,7 @@ export default {
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin, onExitWarningMixin],
   middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role)) {
+    if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
     }

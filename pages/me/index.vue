@@ -18,7 +18,7 @@
                     </label>
                     <InputWrapper rules="required">
                       <el-input
-                        v-model="form.fullName"
+                        v-model="form.fullname"
                         class="el-default-input"
                       ></el-input>
                     </InputWrapper>
@@ -39,7 +39,6 @@
                     <label class="text-theme-1">
                       {{ $t('users.edit.password') }}
                     </label>
-                    <!-- Password is not required in edit -->
                     <InputWrapper>
                       <el-input
                         v-model="form.password"
@@ -52,38 +51,11 @@
                     <label class="text-theme-1">
                       {{ $t('users.edit.phone') }}
                     </label>
-                    <InputWrapper rules="required|numeric">
+                    <InputWrapper rules="required">
                       <el-input
-                        v-model="form.phone"
+                        v-model="form.phoneNumber"
                         class="el-default-input"
                       ></el-input>
-                    </InputWrapper>
-                  </div>
-                  <div class="mt-10">
-                    <label class="text-theme-1">
-                      {{ $t('users.edit.gender') }}
-                    </label>
-                    <InputWrapper rules="required">
-                      <el-radio v-model="form.gender" label="MALE">
-                        {{ $t('users.edit.gender-male') }}
-                      </el-radio>
-                      <el-radio v-model="form.gender" label="FEMALE">
-                        {{ $t('users.edit.gender-female') }}
-                      </el-radio>
-                    </InputWrapper>
-                  </div>
-                  <div class="mt-5">
-                    <label class="text-theme-1">
-                      {{ $t('users.edit.birthday') }}
-                    </label>
-                    <InputWrapper>
-                      <el-date-picker
-                        v-model="form.birthday"
-                        class="el-default-input"
-                        type="date"
-                        :placeholder="$t('users.edit.birthday')"
-                      >
-                      </el-date-picker>
                     </InputWrapper>
                   </div>
                   <div class="mt-10">
@@ -99,7 +71,7 @@
                         <el-option
                           v-for="role in roles"
                           :key="'role-' + role.id"
-                          :label="$t('users.role.' + role.name)"
+                          :label="$t('users.role.' + role.label)"
                           :value="role.id"
                         >
                         </el-option>
@@ -122,28 +94,14 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.note') }}
-                    </label>
-                    <InputWrapper>
-                      <el-input
-                        v-model="form.note"
-                        class="el-default-input"
-                        type="textarea"
-                        :rows="4"
-                      >
-                      </el-input>
-                    </InputWrapper>
-                  </div>
-                  <div class="mt-10">
-                    <label class="text-theme-1">
                       {{ $t('users.edit.status') }}
                     </label>
                     <el-switch
                       v-model="form.status"
                       :disabled="true"
                       active-color="#13ce66"
-                      active-value="ACTIVE"
-                      inactive-value="INACTIVE"
+                      :active-value="1"
+                      :inactive-value="0"
                     >
                     </el-switch>
                   </div>
@@ -153,7 +111,7 @@
                     <label class="text-theme-1">
                       {{ $t('users.edit.avatar') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <FileUploader
                         v-model="imageList"
                         :limit="1"
@@ -194,7 +152,7 @@
   </el-main>
 </template>
 <script>
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import {
   FormWrapper,
   InputWrapper,
@@ -208,40 +166,36 @@ export default {
   async fetch() {
     try {
       this.isLoading = true
-      const { data } = await this.$store.dispatch('auth/fetchMe')
-      this.form = { ...this.form, ...data.data }
-      if (data.data.avatar) {
-        this.imageList.push({ url: data.data.avatar })
+      const currentUser = await this.$store.dispatch('auth/fetchMe')
+      this.form = { ...this.form, ...currentUser.data }
+      this.form.roleId = currentUser.data.role.id
+      if (currentUser.data.avatar) {
+        this.imageList.push({ url: currentUser.data.avatar })
       }
-      await this.fetchRoles()
+      const allRoles = await this.fetchRoles()
+      this.roles = allRoles?.data?.data || []
       this.isLoading = false
     } catch (error) {
+      console.log(error)
       this.isLoading = false
     }
   },
   data() {
     return {
       form: {
-        fullName: null,
+        fullname: null,
         email: null,
         password: null,
-        phone: null,
+        phoneNumber: null,
         avatar: null,
-        gender: 'MALE',
-        birthday: null,
         bio: null,
-        note: null,
-        status: 'ACTIVE',
-        roleId: 4,
+        status: 0,
+        roleId: null,
       },
       imageList: [],
       isLoading: false,
+      roles: [],
     }
-  },
-  computed: {
-    ...mapState({
-      roles: (state) => state.role.data,
-    }),
   },
   methods: {
     ...mapActions({
@@ -264,7 +218,7 @@ export default {
     },
     async submitUpdate() {
       try {
-        this.setAuthFullName(this.form.fullName)
+        this.setAuthFullName(this.form.fullname)
         this.setAuthAvatar(this.form.avatar)
         if (this.form.password === null || this.form.password === '') {
           delete this.form.password

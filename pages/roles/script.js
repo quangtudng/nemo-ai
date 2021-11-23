@@ -1,6 +1,6 @@
 // Modify this DataTable component to suit your api
 import qs from 'qs'
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
@@ -19,7 +19,7 @@ export default {
     }
   },
   middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role)) {
+    if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
     }
@@ -33,22 +33,9 @@ export default {
       store.commit('role/SET_QUERY', query)
     }
   },
-  computed: {
-    ...mapState({
-      tableData: (state) => state.role.data,
-      tableDataQuery: (state) => state.role.query,
-      tableDataTotal: (state) => state.role.total,
-    }),
-  },
   methods: {
     ...mapActions({
-      fetchData: 'role/fetchData',
-    }),
-    ...mapMutations({
-      setDataQuery: 'role/SET_QUERY',
-      clearDataQuery: 'role/CLEAR_QUERY',
-      incDataQueryPage: 'role/INC_QUERY_PAGE',
-      subDataQueryPage: 'role/SUB_QUERY_PAGE',
+      fetchTableData: 'role/fetchData',
     }),
     onEdit(payload) {
       Message.error('Role cannot be edit')

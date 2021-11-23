@@ -39,7 +39,7 @@
       <Navbar />
       <!-- el-main -->
       <div class="default-page-container h-full">
-        <nuxt class="relative" keep-alive />
+        <nuxt class="relative" />
       </div>
     </el-container>
   </el-container>
