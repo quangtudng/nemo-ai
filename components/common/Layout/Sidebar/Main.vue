@@ -12,7 +12,7 @@
     <el-menu-item
       class="header p-0"
       :style="{ height: headerHeight + 'px' }"
-      @click="$router.push('/')"
+      @click="$router.push('/internal')"
     >
       <slot name="header">
         Hello

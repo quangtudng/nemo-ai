@@ -179,7 +179,7 @@ export default {
         })
         this.reFetchServices()
         this.isLoading = false
-        this.$router.push('/services')
+        this.$router.push('/internal/services')
       } catch (err) {
         this.isLoading = false
       }

@@ -317,7 +317,7 @@
                       :loading="isLoading"
                       type="primary"
                       class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
-                      @click="$router.push('/services')"
+                      @click="$router.push('/internal/services')"
                     >
                       {{ $t('services.create.go-back') }}
                     </el-button>

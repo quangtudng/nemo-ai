@@ -2,9 +2,9 @@
     "data": [
         {
             "title": "sidebar.user.title",
-            "icon": "el-icon-document",
+            "icon": "el-icon-user-solid",
             "icon-color": "var(--color-theme-1)",
-            "to": "/users",
+            "to": "/internal/users",
             "role": "SUPERADMIN",
             "children": []
         },
@@ -12,7 +12,7 @@
             "title": "sidebar.service.title",
             "icon": "el-icon-bangzhu",
             "icon-color": "var(--color-theme-1)",
-            "to": "/services",
+            "to": "/internal/services",
             "role": "SUPERADMIN",
             "children": []
         },
@@ -20,7 +20,7 @@
             "title": "sidebar.settings.title",
             "icon": "el-icon-s-tools",
             "icon-color": "var(--color-theme-1)",
-            "to": "/settings",
+            "to": "/internal/settings",
             "role": "SUPERADMIN",
             "children": []
         }

@@ -13,37 +13,7 @@
     </div>
   </el-main>
 </template>
-
-<script>
-import { LoginForm } from '~/components/common'
-export default {
-  layout: 'client',
-  // Back to home if you've already been authenticated
-  components: {
-    LoginForm,
-  },
-  data() {
-    return {
-      isLoading: false,
-    }
-  },
-  methods: {
-    async postLogin({ form, rememberPassword }) {
-      try {
-        this.isLoading = true
-        await this.$store.dispatch('auth/login', {
-          form,
-          rememberPassword,
-        })
-        this.$router.push('/')
-        this.isLoading = false
-      } catch (error) {
-        this.isLoading = false
-      }
-    },
-  },
-}
-</script>
+<script src="./script.js"></script>
 <style lang="scss" scoped>
 @import '~assets/scss/base/layout/grid';
 @import '~assets/scss/base/utilities/mixins';

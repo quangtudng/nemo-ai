@@ -113,7 +113,7 @@
           :multiple-choice="false"
           @my-table-edit="onEdit"
           @my-table-delete="onDelete"
-          @my-table-add-new="$router.push('/services/create')"
+          @my-table-add-new="$router.push('/internal/services/create')"
           @my-table-size-change="onSizeChange"
           @my-table-page-change="onPageChange"
           @my-table-page-prev="onPagePrev"
