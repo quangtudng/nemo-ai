@@ -8,6 +8,7 @@ const moduleName = 'role'
 const permission = 'SUPERADMIN'
 
 export default {
+  layout: 'internal',
   mixins: [dataTableMixin],
   components: {
     DataTable,

@@ -16,7 +16,7 @@
           class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none float-right mt-3"
           round
           :loading="$fetchState.pending"
-          @click="$router.push('/roles')"
+          @click="$router.push('/internal/roles')"
         >
           {{ $t('users.roles') }}
         </el-button>
@@ -88,7 +88,7 @@
           :multiple-choice="false"
           @my-table-edit="onEdit"
           @my-table-delete="onDelete"
-          @my-table-add-new="$router.push('/users/create')"
+          @my-table-add-new="$router.push('/internal/users/create')"
           @my-table-size-change="onSizeChange"
           @my-table-page-change="onPageChange"
           @my-table-page-prev="onPagePrev"

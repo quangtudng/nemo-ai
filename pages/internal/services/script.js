@@ -73,7 +73,9 @@ export default {
         this.$store.state.auth.data.role.label === 'SUPERADMIN'
       ) {
         this.$router.push(
-          `/${pluralize.plural(this.moduleName)}/${payload.rowData.id}/edit`
+          `/internal/${pluralize.plural(this.moduleName)}/${
+            payload.rowData.id
+          }/edit`
         )
       } else {
         this.$message.error(this.$t('error.METHOD_NOT_ALLOWED'))

@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <Breadcrumb :title="$t('users.edit.title')" />
+    <Breadcrumb :title="$t('users.create.title')" />
     <el-container class="p-3 mb-10">
       <el-row class="w-full">
         <el-col :span="24" class="mx-auto float-none">
@@ -8,13 +8,13 @@
             <FormWrapper
               v-loading="isLoading"
               class="block"
-              @my-form-submit="submitUpdate"
+              @my-form-submit="submitUser"
             >
               <el-row :gutter="20" class="relative m-0">
                 <el-col :span="14">
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.fullName') }}
+                      {{ $t('users.create.fullName') }}
                     </label>
                     <InputWrapper rules="required">
                       <el-input
@@ -25,22 +25,20 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.email') }}
+                      {{ $t('users.create.email') }}
                     </label>
                     <InputWrapper rules="required|email">
                       <el-input
                         v-model="form.email"
                         class="el-default-input"
-                        :disabled="true"
                       ></el-input>
                     </InputWrapper>
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.password') }}
+                      {{ $t('users.create.password') }}
                     </label>
-                    <!-- Password is not required in edit -->
-                    <InputWrapper>
+                    <InputWrapper rules="required">
                       <el-input
                         v-model="form.password"
                         show-password
@@ -50,7 +48,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.phone') }}
+                      {{ $t('users.create.phone') }}
                     </label>
                     <InputWrapper rules="required">
                       <el-input
@@ -61,7 +59,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.role') }}
+                      {{ $t('users.create.role') }}
                     </label>
                     <InputWrapper>
                       <el-select v-model="form.roleId" class="el-default-input">
@@ -78,7 +76,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.bio') }}
+                      {{ $t('users.create.bio') }}
                     </label>
                     <InputWrapper>
                       <el-input
@@ -92,7 +90,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.status') }}
+                      {{ $t('users.create.status') }}
                     </label>
                     <el-switch
                       v-model="form.status"
@@ -106,7 +104,7 @@
                 <el-col :span="10">
                   <div class="mt-5 pl-5">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.avatar') }}
+                      {{ $t('users.create.avatar') }}
                     </label>
                     <InputWrapper>
                       <FileUploader
@@ -125,9 +123,9 @@
                       :loading="isLoading"
                       type="primary"
                       class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
-                      @click="$router.push('/users')"
+                      @click="$router.push('/internal/users')"
                     >
-                      {{ $t('users.edit.go-back') }}
+                      {{ $t('users.create.go-back') }}
                     </el-button>
                     <el-button
                       round
@@ -136,7 +134,7 @@
                       type="primary"
                       class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
                     >
-                      {{ $t('users.edit.submit') }}
+                      {{ $t('users.create.submit') }}
                     </el-button>
                   </div>
                 </el-col>
@@ -148,93 +146,4 @@
     </el-container>
   </el-main>
 </template>
-<script>
-import { mapActions } from 'vuex'
-import { Message } from 'element-ui'
-import {
-  FormWrapper,
-  InputWrapper,
-  Breadcrumb,
-  FileUploader,
-} from '~/components/common'
-import { fileMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
-export default {
-  components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
-  mixins: [fileMixin],
-  middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/')
-    }
-  },
-  async fetch() {
-    try {
-      this.isLoading = true
-      const id = this.$route.params.id
-      const userData = await this.$store.dispatch('user/fetchSingle', id)
-      this.form = { ...this.form, ...userData.data }
-      this.form.roleId = userData.data.role.id
-      if (userData.data.avatar) {
-        this.imageList.push({ url: userData.data.avatar })
-      }
-      const allRoles = await this.fetchRoles()
-      this.roles = allRoles?.data?.data || []
-      this.isLoading = false
-    } catch (error) {
-      this.isLoading = false
-    }
-  },
-  data() {
-    return {
-      form: {
-        fullname: null,
-        email: null,
-        password: null,
-        phoneNumber: null,
-        avatar: null,
-        bio: null,
-        status: 1,
-        roleId: null,
-      },
-      imageList: [],
-      isLoading: false,
-      roles: [],
-    }
-  },
-  methods: {
-    ...mapActions({
-      fetchRoles: 'role/fetchData',
-      updateSingleUser: 'user/updateSingle',
-    }),
-    async handleFileUploadChange(fileList) {
-      /// ////////////////////////////////////
-      // Process images
-      // resize() only return { raw: Image() } object, so you must spread it
-      if (this.imageList) {
-        const responseUrls = await this.uploadFilesToS3(
-          this.imageList,
-          'USER_IMAGES'
-        )
-        this.form.avatar = await responseUrls[0]
-      }
-    },
-    async submitUpdate() {
-      if (this.form.password === null || this.form.password === '') {
-        delete this.form.password
-      }
-      this.isLoading = true
-      try {
-        await this.updateSingleUser({
-          id: this.$route.params.id,
-          form: this.form,
-        })
-        this.isLoading = false
-        this.$router.push('/users')
-      } catch (error) {
-        this.isLoading = false
-      }
-    },
-  },
-}
-</script>
+<script src="./script.js"></script>

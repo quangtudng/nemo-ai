@@ -1,10 +1,12 @@
 <template>
-  <p>Nothing here yet</p>
+  <el-main>
+    <!--  -->
+  </el-main>
 </template>
 <script>
 export default {
+  layout: 'internal',
   name: 'Home',
-  layout: 'client',
   head() {
     return {
       title: this.$t('title.dashboard'),

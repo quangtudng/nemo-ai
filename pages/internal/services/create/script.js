@@ -163,7 +163,7 @@ export default {
         )
         await this.submitSingleService(this.form)
         this.reFetchServices()
-        this.$router.push('/services')
+        this.$router.push('/internal/services')
         // Reset form
         this.form = {
           enTitle: null,

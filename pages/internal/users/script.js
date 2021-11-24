@@ -8,6 +8,7 @@ const moduleName = 'user' // Module name
 const permission = 'SUPERADMIN'
 
 export default {
+  layout: 'internal',
   mixins: [dataTableMixin],
   components: {
     DataTable,
@@ -44,10 +45,12 @@ export default {
     }),
     onEdit(payload) {
       if (this.auth.id === payload.rowData.id) {
-        this.$router.push('/me')
+        this.$router.push('/internal/me')
       } else {
         this.$router.push(
-          `/${pluralize.plural(this.moduleName)}/${payload.rowData.id}/edit`
+          `/internal/${pluralize.plural(this.moduleName)}/${
+            payload.rowData.id
+          }/edit`
         )
       }
     },
