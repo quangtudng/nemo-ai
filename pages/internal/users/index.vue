@@ -14,7 +14,6 @@
         <el-button
           size="large"
           class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none float-right mt-3"
-          round
           :loading="$fetchState.pending"
           @click="$router.push('/internal/roles')"
         >
@@ -61,7 +60,6 @@
             <el-button
               size="large"
               class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
-              round
               :loading="$fetchState.pending"
               @click="onFilter"
             >
@@ -70,7 +68,6 @@
             <el-button
               size="large"
               class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
-              round
               :loading="$fetchState.pending"
               @click="onClearFilter"
             >

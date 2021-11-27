@@ -29,7 +29,6 @@
         v-if="addNewButton"
         class="float-right border-0 bg-theme-1 hover:bg-theme-1-600 text-light select-none"
         size="large"
-        round
         @click="$emit('my-table-add-new')"
       >
         {{ $t('components.table.data.add-new') }}

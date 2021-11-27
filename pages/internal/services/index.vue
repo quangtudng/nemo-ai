@@ -87,7 +87,6 @@
               size="large"
               class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
               :loading="$fetchState.pending"
-              round
               @click="onFilter"
             >
               {{ $t('services.filter') }}
@@ -96,7 +95,6 @@
               size="large"
               class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
               :loading="$fetchState.pending"
-              round
               @click="onClearFilter"
             >
               {{ $t('services.delete-filter') }}

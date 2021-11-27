@@ -9,6 +9,14 @@
             "children": []
         },
         {
+            "title": "sidebar.location.title",
+            "icon": "el-icon-picture",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/internal/locations",
+            "role": "SUPERADMIN",
+            "children": []
+        },
+        {
             "title": "sidebar.service.title",
             "icon": "el-icon-bangzhu",
             "icon-color": "var(--color-theme-1)",
