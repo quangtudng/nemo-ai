@@ -16,3 +16,5 @@ export { default as InputWrapper } from './Templates/Form/InputWrapper.vue'
 export { default as FileUploader } from './Templates/Input/FileUploader.vue'
 // Table
 export { default as DataTable } from './Templates/Table/DataTable.vue'
+// GMap
+export { default as GoogleMap } from './Templates/Map/GMap.vue'

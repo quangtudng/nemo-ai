@@ -3,8 +3,6 @@ import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const pluralize = require('pluralize')
-const moduleName = 'user' // Module name
 const permission = 'SUPERADMIN'
 
 export default {
@@ -22,7 +20,6 @@ export default {
   },
   data() {
     return {
-      moduleName, // For the mixins
       searchQuery: null,
       roleQuery: null,
       roles: [],
@@ -47,11 +44,7 @@ export default {
       if (this.auth.id === payload.rowData.id) {
         this.$router.push('/internal/me')
       } else {
-        this.$router.push(
-          `/internal/${pluralize.plural(this.moduleName)}/${
-            payload.rowData.id
-          }/edit`
-        )
+        this.$router.push(`/internal/users/${payload.rowData.id}/edit`)
       }
     },
     onDelete(payload) {

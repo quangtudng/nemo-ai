@@ -29,7 +29,8 @@
     "pluralize": "^8.0.0",
     "slug": "^3.3.0",
     "vee-validate": "^3.3.7",
-    "vue-i18n": "^8.17.5"
+    "vue-i18n": "^8.17.5",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",

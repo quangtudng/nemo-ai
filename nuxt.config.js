@@ -76,9 +76,11 @@ export default {
     '@/plugins/element-ui',
     '~/plugins/i18n.js',
     '~/plugins/vee-validate.js',
+    '~/plugins/vue2-google-maps.js',
     // Utilities
     '~/utils/bus.js', // Event bus
     '~/utils/filters.js', // Filters for custom text formating
+    '~/utils/accent.js', // Convert vietnamese character to ASCII character
     '~/mixins' // Global helper functions, use this.function_name() in your component
   ],
   /*
@@ -133,7 +135,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: [/^element-ui/, 'vee-validate'],
+    transpile: [/^element-ui/, 'vee-validate', /^vue2-google-maps($|\/)/],
     /*
      ** You can extend webpack config here
      */

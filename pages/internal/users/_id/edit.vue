@@ -121,7 +121,6 @@
                     style="bottom: 0; right: 0;"
                   >
                     <el-button
-                      round
                       :loading="isLoading"
                       type="primary"
                       class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
@@ -130,7 +129,6 @@
                       {{ $t('users.edit.go-back') }}
                     </el-button>
                     <el-button
-                      round
                       :loading="isLoading"
                       native-type="submit"
                       type="primary"

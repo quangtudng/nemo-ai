@@ -4,7 +4,6 @@ import { mapActions } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const moduleName = 'role'
 const permission = 'SUPERADMIN'
 
 export default {
@@ -13,11 +12,6 @@ export default {
   components: {
     DataTable,
     Breadcrumb,
-  },
-  data() {
-    return {
-      moduleName, // For the mixins
-    }
   },
   middleware({ store, query, redirect }) {
     if (!permission.includes(store.state.auth.data.role.label)) {

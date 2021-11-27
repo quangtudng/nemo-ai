@@ -12,5 +12,6 @@ export default {
       title: this.$t('title.dashboard'),
     }
   },
+  middleware: ['internalRedirect'],
 }
 </script>
