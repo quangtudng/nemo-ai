@@ -19,6 +19,8 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/dotenv": "^1.4.0",
+    "@riophae/vue-treeselect": "^0.4.0",
+    "el-tree-select": "^3.1.14",
     "element-ui": "^2.13.2",
     "fs": "^0.0.1-security",
     "jimp": "^0.16.0",

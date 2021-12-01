@@ -77,6 +77,7 @@ export default {
     '~/plugins/i18n.js',
     '~/plugins/vee-validate.js',
     '~/plugins/vue2-google-maps.js',
+    { src: '~/plugins/vue-tree-select.js', ssr: false },
     // Utilities
     '~/utils/bus.js', // Event bus
     '~/utils/filters.js', // Filters for custom text formating

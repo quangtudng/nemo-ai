@@ -22,20 +22,24 @@ export default function ({ $axios, app }, inject) {
     return response
   })
   clientApi.onError((error) => {
-    if (error.response.data.message) {
+    if (error?.response?.data?.message) {
       const messages = Array.isArray(error.response.data.message)
         ? error.response.data.message
         : [error.response.data.message]
       messages.forEach((message) => {
         Message.error(app.i18n.t('error.' + message))
       })
+    } else {
+      Message.error('Unknown server error')
     }
+
     if (process.env.NODE_ENV === 'development') {
       setTimeout(function () {
         Message.error('DevOnly | Client API failed to execute')
         console.log(error)
       }, 500)
     }
+    return error
   })
 
   // Inject to context as $clientApi

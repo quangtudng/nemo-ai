@@ -27,8 +27,7 @@
               prefix-icon="el-icon-search"
               :placeholder="$t('services.search')"
               style="width: 180px;"
-            >
-            </el-input>
+            />
           </div>
           <div class="text-theme-1 mr-5">
             <label for="default-input-service-categories" class="block">
@@ -41,46 +40,25 @@
               style="width: 180px;"
             >
               <el-option
-                v-for="parentServiceCategory in serviceCategories"
-                :key="'parentServiceCategory-' + parentServiceCategory.id"
-                :label="parentServiceCategory[locale + 'Name']"
-                :value="parentServiceCategory.id"
-              >
-              </el-option>
-              <el-option-group
-                v-for="serviceCategory in serviceCategories"
-                :key="'serviceCategory-' + serviceCategory.id"
-                :label="serviceCategory[locale + 'Name']"
-              >
-                <el-option
-                  v-for="child in serviceCategory.children"
-                  :key="'serviceCategory-' + child.id"
-                  :label="child[locale + 'Name']"
-                  :value="child.id"
-                >
-                </el-option>
-              </el-option-group>
+                v-for="category in serviceCategories"
+                :key="'category-' + category.id"
+                :label="category.title"
+                :value="category.id"
+              />
             </el-select>
           </div>
-          <div class="text-theme-1 mr-5">
-            <label for="default-input-author" class="block">
+          <div class="mr-5">
+            <label for="default-input-author" class="text-theme-1 block">
               {{ $t('services.author.title') }}
             </label>
-            <el-select
-              v-model="authorFilter"
-              class="el-default-input"
-              :placeholder="$t('services.author.title')"
-              filterable
-              style="width: 180px;"
-            >
-              <el-option
-                v-for="author in users"
-                :key="'author-' + author.id"
-                :label="author.fullName"
-                :value="author.id"
-              >
-              </el-option>
-            </el-select>
+            <treeselect
+              v-model="locationFilter"
+              :options="locations"
+              :normalizer="normalizer"
+              no-children-text="Empty"
+              :default-expand-level="1"
+              :match-keys="['name']"
+            />
           </div>
           <div style="padding-top: 24px;" class="mr-5">
             <el-button
@@ -106,8 +84,8 @@
           v-loading="$fetchState.pending"
           :data="tableData"
           :total="tableDataTotal"
-          :limit="tableDataQuery.limit"
-          :current-page="tableDataQuery.page"
+          :limit="query.limit"
+          :current-page="query.page"
           :multiple-choice="false"
           @my-table-edit="onEdit"
           @my-table-delete="onDelete"
@@ -122,15 +100,13 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
-          <el-table-column
-            :label="$t('services.index.title')"
-            :prop="locale + 'Title'"
-            width="320"
-            sortable
-          >
+          <el-table-column :label="$t('services.index.title')" width="320">
             <template slot-scope="scope">
-              <p class="m-0 text-gray-500">
-                {{ scope.row.user.fullName }}
+              <p
+                class="m-0 text-gray-500 cursor-pointer hover:text-theme-1"
+                @click="onDetailView(scope.row)"
+              >
+                {{ scope.row.title }}
               </p>
               <p class="m-0 text-gray-400">
                 {{ $t('services.index.created-at') }}
@@ -140,76 +116,144 @@
                 {{ $t('services.index.last-updated') }}
                 {{ scope.row.updatedAt | formatDateTime }}
               </p>
-              <p>
-                {{ scope.row[locale + 'Title'] }}
-              </p>
             </template>
           </el-table-column>
-          <el-table-column
-            :label="$t('services.index.netPrice')"
-            prop="netPrice"
-            sortable
-          >
-            <template slot-scope="scope">
-              <p>
-                {{ scope.row.netPrice | formatNumber }}
-              </p>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('services.index.price')"
-            prop="price"
-            sortable
-          >
+          <el-table-column :label="$t('services.index.price')">
             <template slot-scope="scope">
               <p>
                 {{ scope.row.price | formatNumber }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            :label="$t('services.index.currentPrice')"
-            prop="currentPrice"
-            sortable
-          >
+          <el-table-column :label="$t('services.index.serviceCategories')">
             <template slot-scope="scope">
-              <p>
-                {{ scope.row.currentPrice | formatNumber }}
+              <p style="color: var(--color-theme-1);">
+                {{ scope.row.category ? scope.row.category.title : '' }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            :label="$t('services.index.serviceCategories')"
-            prop="serviceCategories"
-            sortable
-            width="190"
-          >
+          <el-table-column :label="$t('services.index.destinations')">
             <template slot-scope="scope">
-              <p
-                v-for="serviceCategory in scope.row.serviceCategories"
-                :key="serviceCategory.enSlug + scope.$index"
-                style="color: var(--color-theme-1);"
-              >
-                {{ serviceCategory[locale + 'Name'] }}
+              <p style="color: var(--color-theme-1);">
+                {{ scope.row.location ? scope.row.location.name : '' }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column
-            :label="$t('services.index.destinations')"
-            prop="destinations"
-            sortable
-          >
+          <el-table-column :label="$t('services.index.createdAt')">
             <template slot-scope="scope">
-              <p
-                v-for="destination in scope.row.destinations"
-                :key="destination.enSlug + scope.$index"
-                style="color: var(--color-theme-1);"
-              >
-                {{ destination[locale + 'Name'] }}
+              <p style="color: var(--color-theme-1);">
+                {{ scope.row.createdAt | formatDateTime }}
               </p>
             </template>
           </el-table-column>
         </DataTable>
+        <el-dialog
+          destroy-on-close
+          title="Thông tin chi tiết"
+          :visible.sync="detailPageVisible"
+          width="60%"
+        >
+          <div>
+            <div>
+              <label class="text-theme-1">
+                Tiêu đề
+              </label>
+              <el-input
+                v-model="form.title"
+                disabled
+                class="el-default-input"
+              ></el-input>
+            </div>
+            <div class="mt-5">
+              <label class="text-theme-1">
+                Mô tả
+              </label>
+              <el-input
+                v-model="form.description"
+                class="el-default-input"
+                type="textarea"
+                disabled
+                :rows="4"
+              >
+              </el-input>
+            </div>
+            <div class="mt-5">
+              <label class="text-theme-1">
+                Trang chủ dịch vụ
+              </label>
+              <el-input
+                v-model="form.originUrl"
+                disabled
+                class="el-default-input"
+              ></el-input>
+            </div>
+            <div class="mt-5">
+              <label class="text-theme-1">
+                Địa chỉ dịch vụ
+              </label>
+              <el-input
+                v-model="form.fullAddress"
+                disabled
+                class="el-default-input"
+              ></el-input>
+            </div>
+            <div class="mt-5">
+              <label class="text-theme-1">
+                Số điện thoại
+              </label>
+              <el-input
+                v-model="form.phoneNumber"
+                disabled
+                class="el-default-input"
+              ></el-input>
+            </div>
+            <div class="mt-5">
+              <label class="text-theme-1">
+                Loại hình dịch vụ
+              </label>
+              <el-input
+                v-model="form.categoryName"
+                disabled
+                class="el-default-input"
+              ></el-input>
+            </div>
+            <div class="mt-5">
+              <label class="text-theme-1">
+                Địa điểm dịch vụ
+              </label>
+              <el-input
+                v-model="form.locationName"
+                disabled
+                class="el-default-input"
+              ></el-input>
+            </div>
+          </div>
+          <div v-if="form.serviceAmenities.length > 0" class="mt-5">
+            <label class="text-theme-1">
+              Tiện ích dịch vụ
+            </label>
+            <el-table
+              :data="form.serviceAmenities"
+              max-height="250"
+              border
+              style="width: 100%;"
+            >
+              <el-table-column prop="id" label="ID" width="100" />
+              <el-table-column prop="title" label="Title" />
+              <el-table-column prop="description" label="Description" />
+            </el-table>
+          </div>
+          <div class="mt-5">
+            <GoogleMap
+              v-if="detailPageVisible"
+              :location="`${form.title} ${form.locationName}`"
+              :zoom="10"
+            />
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="detailPageVisible = false">Close</el-button>
+          </span>
+        </el-dialog>
       </el-card>
     </el-container>
   </el-main>

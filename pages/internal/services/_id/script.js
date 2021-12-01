@@ -1,4 +1,4 @@
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import { Message } from 'element-ui'
 import {
   FormWrapper,
@@ -9,9 +9,10 @@ import {
 import { fileMixin } from '~/mixins'
 const permission = 'SUPERADMIN'
 export default {
+  layout: 'internal',
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],
-  middleware({ store, query, redirect }) {
+  middleware({ store, redirect }) {
     if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
@@ -20,34 +21,34 @@ export default {
   async fetch() {
     try {
       this.isLoading = true
-      const { data } = await this.$store.dispatch(
-        'service/fetchSingle',
-        this.$route.params.id
-      )
-      this.form = { ...this.form, ...data.data }
-      this.imageList.push({ url: data.data.thumbnail })
-      this.pickedServiceCategoryId = data.data.serviceCategories[0].id
-      this.form.destinationIds = data.data.destinations.map((destination) => {
-        return destination.id
+      const locations = await this.fetchManyLocations()
+      const serviceCategories = await this.fetchManyServiceCategories({
+        limit: 100,
       })
-      const viContent = JSON.parse(data.data.viContent)
-      JSON.parse(data.data.enContent).forEach((item, index) => {
-        this.contentTabs.push({
-          viTitle: viContent[index].viTitle,
-          viContent: viContent[index].viContent,
-          enTitle: item.enTitle,
-          enContent: item.enContent,
-        })
-      })
-      await this.fetchServiceCategories()
-      for (const i in 4) {
-        await this.fetchServiceCategoryChildren(i)
-      }
-      // ;[6, 7, 8].forEach(async (id) => {
-      //   const { data } = await this.fetchSingleDestination(id)
-      //   this.ADD_REGION(data.data)
-      // })
-      await this.fetchDestinations()
+      const service = await this.fetchSingleService(this.$route.params.id)
+      const amenities = await this.fetchManyAmenities({ limit: 1000 })
+
+      this.amenities = amenities?.data?.data || []
+      this.locations = locations?.data || []
+      this.serviceCategories = serviceCategories?.data?.data || []
+
+      // Form data
+      this.form.title = service.data?.title || null
+      this.form.description = service.data?.description || null
+      this.form.originUrl = service.data?.originUrl || null
+      this.form.fullAddress = service.data?.fullAddress || null
+      this.form.phoneNumber = service.data?.phoneNumber || null
+      this.form.thumbnail = service.data?.thumbnail || null
+      this.form.price = service?.data?.price || 0
+      this.form.locationId = service?.data?.location?.id || null
+      this.form.categoryId = service?.data?.category?.id || null
+      this.form.serviceImageUrls =
+        service?.data?.serviceImages?.map((image) => ({
+          url: image.url,
+          name: 'existing-file.jpeg',
+        })) || []
+      this.form.serviceAmenities =
+        service?.data?.amenities?.map((amenity) => amenity.id) || []
       this.isLoading = false
     } catch (error) {
       this.isLoading = false
@@ -55,50 +56,43 @@ export default {
   },
   data() {
     return {
+      // Submit form data (same parameter with the API)
       form: {
-        enTitle: null,
-        viTitle: null,
-        enSlug: null,
-        viSlug: null,
-        enDescription: null,
-        viDescription: null,
-        enContent: null,
-        viContent: null,
-        note: null,
+        title: null,
+        description: null,
+        originUrl: null,
+        fullAddress: null,
+        phoneNumber: null,
         thumbnail: null,
-        status: 'ACTIVE',
-        price: null,
-        currentPrice: null,
-        netPrice: null,
-        serviceCategoryIds: null,
-        destinationIds: null,
+        price: 0,
+        locationId: null,
+        categoryId: null,
+        serviceImageUrls: [],
+        serviceAmenities: [],
       },
-      contentTabs: [],
-      pickedServiceCategoryId: null,
-      activeContentTab: 'service-content-0',
+      // Data holders
+      serviceCategories: [],
+      locations: [],
+      amenities: [],
       imageList: [],
+      // Misc data
       isLoading: false,
+      normalizer(node) {
+        return {
+          id: node.id,
+          label: `${node.name} (${node.serviceCount})`,
+          children: node.children,
+        }
+      },
     }
-  },
-  computed: {
-    ...mapState({
-      serviceCategories: (state) => state.service.category.data,
-      destinations: (state) => state.destination.data,
-      regions: (state) => state.destination.regions,
-      locale: (state) => state.locale,
-    }),
   },
   methods: {
     ...mapActions({
-      fetchServiceCategories: 'service/category/fetchData',
-      fetchServiceCategoryChildren: 'service/category/fetchChildren',
-      fetchDestinations: 'destination/fetchData',
-      fetchSingleDestination: 'destination/fetchSingle',
-      reFetchServices: 'service/fetchData',
+      fetchManyLocations: 'location/fetchData',
+      fetchManyServiceCategories: 'category/fetchData',
+      fetchManyAmenities: 'amenity/fetchData',
       updateSingleService: 'service/updateSingle',
-    }),
-    ...mapMutations({
-      ADD_REGION: 'destination/ADD_REGION',
+      fetchSingleService: 'service/fetchSingle',
     }),
     async handleFileUploadChange(fileList) {
       const responseUrls = await this.uploadFilesToS3(
@@ -107,80 +101,25 @@ export default {
       )
       // Resolve each of the url
       // Optimize this with Promise.all() later
-      this.form.thumbnail = await JSON.stringify(
-        responseUrls.map(async (url) => {
-          return await url
+      this.form.thumbnail = JSON.stringify(
+        responseUrls.map((url) => {
+          return url
         })
       )
-    },
-    handleContentTabAdd() {
-      this.contentTabs.push({
-        viTitle: '',
-        viContent: '',
-        enTitle: '',
-        enContent: '',
-      })
-    },
-    handleContentTabRemove(targetName) {
-      this.$confirm(this.$t('services.delete-content-warning'), 'Warning', {
-        confirmButtonText: this.$t('services.delete-content-ok'),
-        cancelButtonText: this.$t('services.delete-content-cancel'),
-        type: 'warning',
-      })
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: this.$t('services.delete-content-success'),
-          })
-          if (this.contentTabs.length > 1) {
-            const tabIndex = targetName.split('-')[2] // service-content-x
-            this.contentTabs.splice(tabIndex, 1)
-            this.activeContentTab = 'service-content-0' // Jump to first tab
-          } else {
-            this.$message.error(this.$t('services.minimum-tabs'))
-          }
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: this.$t('services.delete-content-abort'),
-          })
-        })
     },
     async updateService() {
       try {
         this.isLoading = true
-        delete this.form.userId
-        this.form.price = +this.form.price
-        this.form.netPrice = +this.form.netPrice
-        this.form.currentPrice = this.form.currentPrice
-          ? +this.form.currentPrice
-          : 0
-        this.form.serviceCategoryIds = [this.pickedServiceCategoryId]
-        this.form.viContent = await JSON.stringify(
-          this.contentTabs.map((tab) => {
-            return {
-              viTitle: tab.viTitle,
-              viContent: tab.viContent,
-            }
-          })
-        )
-        this.form.enContent = await JSON.stringify(
-          this.contentTabs.map((tab) => {
-            return {
-              enTitle: tab.enTitle,
-              enContent: tab.enContent,
-            }
-          })
-        )
+        if (!this.form.price) this.form.price = 0
         await this.updateSingleService({
           id: this.$route.params.id,
           form: this.form,
         })
-        this.reFetchServices()
-        this.isLoading = false
+        // Redirect back to table list
         this.$router.push('/internal/services')
+        this.isLoading = false
       } catch (err) {
+        console.log(err)
         this.isLoading = false
       }
     },
