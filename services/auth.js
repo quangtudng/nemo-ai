@@ -29,14 +29,17 @@ export default function ({ $axios, store, app }, inject) {
       Message.error('DevOnly | Authenticated API failed to execute')
       console.log(error)
     }
-    if (error.response.data.message) {
+    if (error?.response?.data?.message) {
       const messages = Array.isArray(error.response.data.message)
         ? error.response.data.message
         : [error.response.data.message]
       messages.forEach((message) => {
         Message.error(app.i18n.t('error.' + message))
       })
+    } else {
+      Message.error('Unknown server error')
     }
+    return error
   })
   // Inject to context as $authApi
   inject('authApi', authApi)

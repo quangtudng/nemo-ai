@@ -2,8 +2,8 @@ import { debounce } from 'lodash'
 export default {
   async fetch() {
     const result = await this.fetchTableData(this.query)
-    this.tableData = result.data.data
-    this.tableDataTotal = result.data.total
+    this.tableData = result?.data?.data || []
+    this.tableDataTotal = result?.data?.total || 0
   },
   data() {
     return {

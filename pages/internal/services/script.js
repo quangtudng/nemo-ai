@@ -1,156 +1,138 @@
-// Modify this DataTable component to suit your api
-import qs from 'qs'
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const pluralize = require('pluralize')
-const moduleName = 'service' // Module name
-
+const permission = 'SUPERADMIN'
 export default {
+  layout: 'internal',
   mixins: [dataTableMixin],
   components: {
     DataTable,
     Breadcrumb,
+    GoogleMap: () => import('~/components/common/Templates/Map/GMap.vue'),
   },
-  middleware({ store, query }) {
-    if (qs.stringify(query) !== '') {
-      // Looking for numeric string and convert them to Number
-      Object.keys(query).forEach((key, index) => {
-        if (!isNaN(query[key])) {
-          query[key] = Number(query[key])
-        }
+  async fetch() {
+    try {
+      // Fetch table data
+      const services = await this.fetchTableData(this.query)
+      this.tableData = services?.data?.data || []
+      this.tableDataTotal = services?.data?.total || 0
+      // Fetch service categories
+      const serviceCategories = await this.fetchServiceCategories({
+        limit: 100,
       })
-      store.commit('service/SET_QUERY', query)
+      this.serviceCategories = serviceCategories?.data?.data || []
+      // Fetch service locations
+      const locations = await this.fetchLocations()
+      if (locations?.data) {
+        this.locations = locations.data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  middleware({ store, redirect }) {
+    if (!permission.includes(store.state.auth.data.role.label)) {
+      Message.error('Permission denied')
+      return redirect('/')
     }
   },
   data() {
     return {
-      moduleName, // For the mixins
       searchQuery: null,
       serviceCategoryFilter: null,
-      authorFilter: null,
+      serviceCategories: [],
+      locations: [],
+      locationFilter: null,
+      normalizer(node) {
+        return {
+          id: node.id,
+          label: `${node.name} (${node.serviceCount})`,
+          children: node.children,
+        }
+      },
+      detailPageVisible: false,
+      form: {
+        title: null,
+        description: null,
+        originUrl: null,
+        fullAddress: null,
+        phoneNumber: null,
+        thumbnail: null,
+        price: null,
+        locationName: null,
+        categoryName: null,
+        serviceAmenities: [],
+      },
     }
   },
   async created() {
     this.isLoading = true
     await this.fetchServiceCategories()
-    for (const i in 4) {
-      await this.fetchServiceCategoryChildren(i)
-    }
-    await this.fetchUsers()
     this.isLoading = false
   },
   computed: {
     ...mapState({
-      users: (state) => state.user.data,
-      // this.moduleName cause error
-      // "this" is undefined in VueX mapping process
-      tableData: (state) => state[moduleName].data,
-      tableDataQuery: (state) => state[moduleName].query,
-      tableDataTotal: (state) => state[moduleName].total,
-      serviceCategories: (state) => state.service.category.data,
       locale: (state) => state.locale,
     }),
   },
   methods: {
     ...mapActions({
-      fetchUsers: 'user/fetchData',
-      fetchData: 'service/fetchData',
-      deleteSingle: 'service/deleteSingle',
-      fetchServiceCategories: 'service/category/fetchData',
-      fetchServiceCategoryChildren: 'service/category/fetchChildren',
+      fetchTableData: 'service/fetchData',
+      deleteSingleService: 'service/deleteSingle',
+      fetchServiceCategories: 'category/fetchData',
+      fetchLocations: 'location/fetchData',
     }),
-    ...mapMutations({
-      setDataQuery: 'service/SET_QUERY',
-      clearDataQuery: 'service/CLEAR_QUERY',
-      incDataQueryPage: 'service/INC_QUERY_PAGE',
-      subDataQueryPage: 'service/SUB_QUERY_PAGE',
-    }),
+    onDetailView(row) {
+      this.detailPageVisible = true
+      this.form.title = row.title || null
+      this.form.description = row.description || null
+      this.form.originUrl = row.originUrl || null
+      this.form.fullAddress = row.fullAddress || null
+      this.form.phoneNumber = row.phoneNumber || null
+      this.form.categoryName = row.category?.title || null
+      this.form.locationName = row.location?.name || 'Việt Nam'
+      this.form.serviceAmenities = row.amenities || []
+      console.log(row)
+    },
     onEdit(payload) {
-      if (
-        payload.rowData.user.fullName ===
-          this.$store.state.auth.data.fullName ||
-        this.$store.state.auth.data.role.label === 'SUPERADMIN'
-      ) {
-        this.$router.push(
-          `/internal/${pluralize.plural(this.moduleName)}/${
-            payload.rowData.id
-          }/edit`
-        )
-      } else {
-        this.$message.error(this.$t('error.METHOD_NOT_ALLOWED'))
-      }
+      this.$router.push(`/internal/services/${payload.rowData.id}/edit`)
     },
-    async onDelete(payload) {
+    onDelete(payload) {
       try {
-        if (
-          payload.rowData.user.fullName ===
-            this.$store.state.auth.data.fullName ||
-          this.$store.state.auth.data.role.label === 'SUPERADMIN'
-        ) {
-          await this.deleteSingle(payload.rowData.id)
-          this.$fetch()
-        } else {
-          this.$message.error(this.$t('error.METHOD_NOT_ALLOWED'))
-        }
+        this.$confirm(
+          'Do you want to delete this service. This action cannot be reversed',
+          'Warning',
+          {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+        ).then(async () => {
+          await this.onConfirmDelete(payload.rowData.id)
+        })
       } catch (error) {
-        //
+        console.log(error)
       }
     },
-    async onFilter() {
-      const filter = []
-      if (this.serviceCategoryFilter) {
-        filter.push('serviceCategories.id||$eq||' + this.serviceCategoryFilter)
-      }
-      if (this.authorFilter) {
-        filter.push('userId||$eq||' + this.authorFilter)
-      }
-      await this.setDataQuery({
+    async onConfirmDelete(id) {
+      await this.deleteSingleService(id)
+      await this.$fetch()
+    },
+    onFilter() {
+      const locationId = this.locationFilter || 0
+      const categoryId = this.serviceCategoryFilter || 0
+      const filter = this.searchQuery
+        ? { title: this.searchQuery, locationId, categoryId }
+        : { title: '', locationId, categoryId }
+      this.setDataQuery({
         page: 1,
-        filter,
-        s: this.searchQuery
-          ? isNaN(this.searchQuery)
-            ? JSON.stringify({
-                $or: [
-                  {
-                    viTitle: { $contL: this.searchQuery },
-                  },
-                  {
-                    viDescription: { $contL: this.searchQuery },
-                  },
-                  {
-                    enTitle: { $contL: this.searchQuery },
-                  },
-                  {
-                    enDescription: { $contL: this.searchQuery },
-                  },
-                  {
-                    note: { $contL: this.searchQuery },
-                  },
-                  {
-                    status: { $contL: this.searchQuery },
-                  },
-                ],
-              })
-            : JSON.stringify({
-                $or: [
-                  {
-                    price: { $eq: +this.searchQuery },
-                  },
-                  {
-                    currentPrice: { $eq: +this.searchQuery },
-                  },
-                  {
-                    netPrice: { $eq: +this.searchQuery },
-                  },
-                ],
-              })
-          : null,
+        ...filter,
       })
       this.$fetch()
     },
     onClearFilter() {
-      this.authorFilter = null
+      this.locationFilter = null
       this.serviceCategoryFilter = null
       this.searchQuery = null
       this.onRefresh()

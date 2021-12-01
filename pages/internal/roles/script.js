@@ -1,5 +1,3 @@
-// Modify this DataTable component to suit your api
-import qs from 'qs'
 import { mapActions } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
@@ -17,15 +15,6 @@ export default {
     if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
       return redirect('/')
-    }
-    if (qs.stringify(query) !== '') {
-      // Looking for numeric string and convert them to Number
-      Object.keys(query).forEach((key, index) => {
-        if (!isNaN(query[key])) {
-          query[key] = Number(query[key])
-        }
-      })
-      store.commit('role/SET_QUERY', query)
     }
   },
   methods: {

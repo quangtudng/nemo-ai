@@ -12,27 +12,26 @@
             >
               <el-row :gutter="20" class="relative m-0">
                 <el-col :span="14">
-                  <!-- Multi-languages inputs -->
-                  <!-- Tiêu đề -->
+                  <!-- Title -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      Tiêu đề tiếng Việt
+                      Tiêu đề
                     </label>
                     <InputWrapper rules="required">
                       <el-input
-                        v-model="form.viTitle"
+                        v-model="form.title"
                         class="el-default-input"
                       ></el-input>
                     </InputWrapper>
                   </div>
-                  <!-- Mô tả -->
+                  <!-- Description -->
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      Mô tả tiếng Việt
+                      Mô tả
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <el-input
-                        v-model="form.viDescription"
+                        v-model="form.description"
                         class="el-default-input"
                         type="textarea"
                         :rows="4"
@@ -40,151 +39,46 @@
                       </el-input>
                     </InputWrapper>
                   </div>
-                  <!-- Multi-languages inputs -->
-                  <!-- Dynamic content tabs -->
-                  <el-tabs
-                    v-model="activeContentTab"
-                    editable
-                    @tab-add="handleContentTabAdd"
-                    @tab-remove="handleContentTabRemove"
-                  >
-                    <el-tab-pane
-                      v-for="(tab, index) in contentTabs"
-                      :key="'service-content-' + index"
-                      :name="'service-content-' + index"
-                      :label="$t('services.create.content-tab') + (index + 1)"
-                      class="p-10 bg-gray-100"
-                      style="border-radius: 30px;"
-                    >
-                      <!-- Tiêu đề tiếng Việt của nội dung lẻ -->
-                      <div class="mt-5">
-                        <label class="text-theme-1">
-                          Tiêu đề tiếng Việt nội dung {{ index + 1 }}
-                        </label>
-                        <InputWrapper rules="required">
-                          <el-input
-                            v-model="contentTabs[index].viTitle"
-                            class="el-default-input"
-                          ></el-input>
-                        </InputWrapper>
-                      </div>
-                      <!-- English title of dynamic content -->
-                      <div class="mt-5">
-                        <label class="text-theme-1">
-                          English title of content {{ index + 1 }}
-                        </label>
-                        <InputWrapper rules="required">
-                          <el-input
-                            v-model="contentTabs[index].enTitle"
-                            class="el-default-input"
-                          ></el-input>
-                        </InputWrapper>
-                      </div>
-                      <!-- Nội dung tiếng Việt lẻ -->
-                      <div class="mt-5">
-                        <label class="text-theme-1">
-                          Nội dung tiếng Việt {{ index + 1 }}
-                        </label>
-                        <InputWrapper rules="required">
-                          <el-input
-                            v-model="contentTabs[index].viContent"
-                            class="el-default-input"
-                            type="textarea"
-                            :rows="4"
-                          ></el-input>
-                        </InputWrapper>
-                      </div>
-                      <!-- English content of dynamic content -->
-                      <div class="mt-5">
-                        <label class="text-theme-1">
-                          English content {{ index + 1 }}
-                        </label>
-                        <InputWrapper rules="required">
-                          <el-input
-                            v-model="contentTabs[index].enContent"
-                            class="el-default-input"
-                            type="textarea"
-                            :rows="4"
-                          ></el-input>
-                        </InputWrapper>
-                      </div>
-                    </el-tab-pane>
-                  </el-tabs>
-                  <!-- Net price -->
-                  <div class="mt-5">
-                    <label class="text-theme-1">
-                      {{ $t('services.create.netPrice') }}
-                      <small>{{ form.netPrice | formatNumber }} VNĐ</small>
-                    </label>
-                    <InputWrapper rules="required|numeric">
-                      <el-input
-                        v-model="form.netPrice"
-                        class="el-default-input"
-                        type="number"
-                      ></el-input>
-                    </InputWrapper>
-                  </div>
-                  <!-- Price -->
-                  <div class="mt-5">
-                    <label class="text-theme-1">
-                      {{ $t('services.create.price') }}
-                      <small>{{ form.price | formatNumber }} VNĐ</small>
-                    </label>
-                    <InputWrapper rules="required|numeric">
-                      <el-input
-                        v-model="form.price"
-                        class="el-default-input"
-                        type="number"
-                      ></el-input>
-                    </InputWrapper>
-                  </div>
-                  <!-- currentPrice -->
-                  <div class="mt-5">
-                    <label class="text-theme-1">
-                      {{ $t('services.create.currentPrice') }}
-                      <small>{{ form.currentPrice | formatNumber }} VNĐ</small>
-                    </label>
-                    <InputWrapper rules="numeric">
-                      <el-input
-                        v-model="form.currentPrice"
-                        class="el-default-input"
-                        type="number"
-                      ></el-input>
-                    </InputWrapper>
-                  </div>
                   <!-- Service category -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('services.create.serviceCategory') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="required">
                       <el-select
-                        v-model="pickedServiceCategoryId"
+                        v-model="form.categoryId"
                         filterable
                         class="el-default-input"
+                        style="width: 400px;"
                       >
                         <el-option
-                          v-for="parentServiceCategory in serviceCategories"
-                          :key="
-                            'parentServiceCategory-' + parentServiceCategory.id
-                          "
-                          :label="parentServiceCategory[locale + 'Name']"
-                          :value="parentServiceCategory.id"
-                        >
-                        </el-option>
-                        <el-option-group
-                          v-for="serviceCategory in serviceCategories"
-                          :key="'serviceCategory-' + serviceCategory.id"
-                          :label="serviceCategory[locale + 'Name']"
-                        >
-                          <el-option
-                            v-for="child in serviceCategory.children"
-                            :key="'serviceCategory-' + child.id"
-                            :label="child[locale + 'Name']"
-                            :value="child.id"
-                          >
-                          </el-option>
-                        </el-option-group>
+                          v-for="category in serviceCategories"
+                          :key="'category-' + category.id"
+                          :label="category.title"
+                          :value="category.id"
+                        />
+                      </el-select>
+                    </InputWrapper>
+                  </div>
+                  <!-- Amenity -->
+                  <div class="mt-10">
+                    <label class="text-theme-1">
+                      {{ $t('services.create.amenities') }}
+                    </label>
+                    <InputWrapper>
+                      <el-select
+                        v-model="form.serviceAmenities"
+                        filterable
+                        multiple
+                        class="el-default-input"
+                        style="width: 400px;"
+                      >
+                        <el-option
+                          v-for="amenity in amenities"
+                          :key="'amenity-' + amenity.id"
+                          :label="amenity.title"
+                          :value="amenity.id"
+                        />
                       </el-select>
                     </InputWrapper>
                   </div>
@@ -193,113 +87,76 @@
                     <label class="text-theme-1">
                       {{ $t('services.create.destinations') }}
                     </label>
-                    <InputWrapper>
-                      <el-select
-                        v-model="form.destinationIds"
-                        multiple
-                        filterable
-                        class="el-default-input"
-                      >
-                        <el-option-group
-                          v-for="destination in destinations"
-                          :key="'destination-' + destination.id"
-                          :label="destination[locale + 'Name']"
-                        >
-                          <!-- Continents -->
-                          <el-option
-                            v-for="childDestination in destination.children"
-                            :key="'destination-' + childDestination.id"
-                            :label="childDestination[locale + 'Name']"
-                            :value="childDestination.id"
-                          />
-                        </el-option-group>
-                        <!-- Vietnam with the regions -->
-                        <el-option-group
-                          v-for="region in (destinations[3] ? destinations[3].children : [])"
-                          :key="'region-' + region.id"
-                          :label="region[locale + 'Name']"
-                        >
-                          <el-option-group
-                            v-for="city in region.children"
-                            :key="'city-' + city.id"
-                            :label="city[locale + 'Name']"
-                            :value="city.id"
-                          >
-                            <el-option
-                              v-for="cityChild in city.children"
-                              :key="'city-' + cityChild.id"
-                              :label="cityChild[locale + 'Name']"
-                              :value="cityChild.id"
-                            />
-                          </el-option-group>
-                        </el-option-group>
-                      </el-select>
+                    <InputWrapper rules="required">
+                      <treeselect
+                        v-model="form.locationId"
+                        :options="locations"
+                        :normalizer="normalizer"
+                        no-children-text="Empty"
+                        :default-expand-level="1"
+                        :match-keys="['name']"
+                      />
                     </InputWrapper>
                   </div>
-                  <!-- Note -->
-                  <div class="mt-10">
-                    <label class="text-theme-1">
-                      {{ $t('services.create.note') }}
-                    </label>
-                    <InputWrapper>
-                      <el-input
-                        v-model="form.note"
-                        class="el-default-input"
-                        type="textarea"
-                        :rows="4"
-                      >
-                      </el-input>
-                    </InputWrapper>
-                  </div>
-                  <!-- Status -->
-                  <div class="mt-10">
-                    <label class="text-theme-1">
-                      {{ $t('services.create.status') }}
-                    </label>
-                    <el-switch
-                      v-model="form.status"
-                      active-color="#13ce66"
-                      active-value="ACTIVE"
-                      inactive-value="DRAFT"
-                    >
-                    </el-switch>
-                  </div>
-                </el-col>
-                <!-- Right side -->
-                <el-col :span="10">
-                  <!-- English title -->
+                  <!-- Price -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      English title
+                      {{ $t('services.create.price') }}
+                      <small>VNĐ</small>
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper rules="numeric">
                       <el-input
-                        v-model="form.enTitle"
+                        v-model="form.price"
+                        class="el-default-input"
+                        type="number"
+                      ></el-input>
+                    </InputWrapper>
+                  </div>
+                  <!-- Main page -->
+                  <div class="mt-5">
+                    <label class="text-theme-1">
+                      Trang chủ dịch vụ
+                    </label>
+                    <InputWrapper>
+                      <el-input
+                        v-model="form.originUrl"
                         class="el-default-input"
                       ></el-input>
                     </InputWrapper>
                   </div>
-                  <!-- English description -->
-                  <div class="mt-10">
+                  <!-- Full address -->
+                  <div class="mt-5">
                     <label class="text-theme-1">
-                      English description
+                      Địa chỉ dịch vụ
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <el-input
-                        v-model="form.enDescription"
+                        v-model="form.fullAddress"
                         class="el-default-input"
-                        type="textarea"
-                        :rows="4"
-                      >
-                      </el-input>
+                      ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- Phonenumber -->
+                  <div class="mt-5">
+                    <label class="text-theme-1">
+                      Số điện thoại
+                    </label>
+                    <InputWrapper>
+                      <el-input
+                        v-model="form.phoneNumber"
+                        class="el-default-input"
+                      ></el-input>
+                    </InputWrapper>
+                  </div>
+                </el-col>
+                <!-- Right side -->
+                <el-col :span="10">
                   <!-- Thumbnail -->
                   <div class="mt-5">
                     <label class="text-theme-1">
                       {{ $t('services.create.thumbnail') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <FileUploader
                         v-model="imageList"
                         :limit="1"
@@ -339,3 +196,14 @@
   </el-main>
 </template>
 <script src="./script.js" />
+<style>
+.vue-treeselect__control {
+  width: 400px;
+  height: 40px;
+  background: #e6e9f0;
+}
+
+.vue-treeselect__single-value {
+  color: var(--color-theme-1);
+}
+</style>
