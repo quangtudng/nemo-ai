@@ -11,6 +11,14 @@
             <fa :icon="['fas', 'home']" />
           </nuxt-link>
         </div>
+        <el-button
+          size="large"
+          class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none float-right mt-3"
+          :loading="$fetchState.pending"
+          @click="$router.push('/internal/amenities')"
+        >
+          {{ $t('services.amenities') }}
+        </el-button>
       </el-row>
     </el-container>
     <el-container class="p-3">
