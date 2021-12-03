@@ -42,10 +42,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchTableData: 'amenity/fetchData',
-      deleteSingleAmenity: 'amenity/deleteSingle',
-      updateSingleAmenity: 'amenity/updateSingle',
-      createSingleAmenity: 'amenity/submitSingle',
+      fetchTableData: 'category/fetchData',
+      createSingleCategory: 'category/submitSingle',
+      updateSingleCategory: 'category/updateSingle',
+      deleteSingleCategory: 'category/deleteSingle',
     }),
     onEdit(payload) {
       this.updateForm.title = payload.rowData.title
@@ -58,25 +58,29 @@ export default {
     },
     onDelete(payload) {
       this.$confirm(
-        'Do you want to delete this amenity. This action cannot be reversed',
+        'Do you want to delete this category. This action cannot be reversed',
         'Warning',
         {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning',
         }
-      ).then(async () => {
-        await this.onConfirmDelete(payload.rowData.id)
-      })
+      )
+        .then(async () => {
+          await this.onConfirmDelete(payload.rowData.id)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     },
     async onConfirmDelete(id) {
-      await this.deleteSingleAmenity(id)
+      await this.deleteSingleCategory(id)
       this.onClearFilter()
     },
-    async submitAmenity() {
+    async submitCategory() {
       try {
         this.isLoading = true
-        await this.createSingleAmenity(this.createForm)
+        await this.createSingleCategory(this.createForm)
         await this.$fetch()
         this.createDialogVisible = false
         this.isLoading = false
@@ -86,11 +90,11 @@ export default {
         console.log(error)
       }
     },
-    async updateAmenity() {
+    async updateCategory() {
       try {
         this.isLoading = true
         if (this.updateForm.id) {
-          await this.updateSingleAmenity({
+          await this.updateSingleCategory({
             id: this.updateForm.id,
             form: this.updateForm,
           })
@@ -115,7 +119,7 @@ export default {
       this.$fetch()
     },
     onClearFilter() {
-      this.searchQuery = null
+      this.searchQuery = ''
       this.onRefresh()
     },
   },

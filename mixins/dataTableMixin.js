@@ -60,6 +60,7 @@ export default {
         page: 1,
         limit: 10,
       }
+      console.log(this.query)
       await this.$fetch()
     }, 300),
   },

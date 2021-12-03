@@ -17,6 +17,14 @@
             "children": []
         },
         {
+            "title": "sidebar.location.category",
+            "icon": "el-icon-s-flag",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/internal/categories",
+            "role": "SUPERADMIN",
+            "children": []
+        },
+        {
             "title": "sidebar.service.title",
             "icon": "el-icon-bangzhu",
             "icon-color": "var(--color-theme-1)",
