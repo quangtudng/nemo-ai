@@ -20,7 +20,10 @@ export default {
     // Automatically fetch the first location
     if (this.locationTableData.length > 0) {
       this.selectedLocationId = this.locationTableData[0]?.id || null
-      this.selectedLocationName = this.locationTableData[0]?.name || 'Việt Nam'
+      this.selectedLocationName =
+        this.locationTableData[0]?.name +
+          ' ' +
+          this.locationTableData[0]?.type || 'Việt Nam'
       this.isLoading = true
       await this.getSingleLocation(this.selectedLocationId)
     }
@@ -71,7 +74,7 @@ export default {
     handleNodeClick: debounce(async function (data, label) {
       if (this.selectedLocationId !== data.id) {
         this.selectedLocationId = data.id
-        this.selectedLocationName = data.name || 'Việt Nam'
+        this.selectedLocationName = data.name + ' ' + data.type || 'Việt Nam'
         this.isLoading = true
         await this.getSingleLocation(data.id)
       }

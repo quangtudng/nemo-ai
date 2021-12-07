@@ -159,7 +159,7 @@
                     <InputWrapper>
                       <FileUploader
                         v-model="imageList"
-                        :limit="1"
+                        :limit="10"
                         @my-file-uploader-change="handleFileUploadChange"
                       />
                     </InputWrapper>

@@ -27,13 +27,11 @@
                     <label class="text-theme-1">
                       {{ $t('users.edit.email') }}
                     </label>
-                    <InputWrapper rules="required|email">
-                      <el-input
-                        v-model="form.email"
-                        :disabled="true"
-                        class="el-default-input"
-                      ></el-input>
-                    </InputWrapper>
+                    <el-input
+                      v-model="form.email"
+                      :disabled="true"
+                      class="el-default-input"
+                    ></el-input>
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
@@ -51,7 +49,7 @@
                     <label class="text-theme-1">
                       {{ $t('users.edit.phone') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <el-input
                         v-model="form.phoneNumber"
                         class="el-default-input"
@@ -62,7 +60,7 @@
                     <label class="text-theme-1">
                       {{ $t('users.edit.role') }}
                     </label>
-                    <InputWrapper>
+                    <div>
                       <el-select
                         v-model="form.roleId"
                         class="el-default-input"
@@ -76,7 +74,7 @@
                         >
                         </el-option>
                       </el-select>
-                    </InputWrapper>
+                    </div>
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">

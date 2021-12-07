@@ -13,6 +13,8 @@
       :on-change="handleChange"
       :before-upload="handleBeforeUpload"
       :limit="limit"
+      :multiple="limit > 1"
+      :on-exceed="handleExceed"
     >
       <em slot="default" class="el-icon-plus"></em>
       <div slot="file" slot-scope="{ file }">
@@ -52,6 +54,12 @@ export default {
         return []
       },
     },
+    types: {
+      type: Array,
+      default() {
+        return ['image/jpeg', 'image/png']
+      },
+    },
     limit: {
       type: Number,
       default: 1,
@@ -76,12 +84,17 @@ export default {
   methods: {
     handleBeforeUpload(file) {
       const isSizeValid = file.size / 1048576 < this.maxSize
-
+      const isFileValid = this.types && this.types.includes(file.raw.type)
+      const supportedFile = this.types?.join() || ''
+      if (!isFileValid) {
+        this.$message.error(`File not supported (Supported: ${supportedFile})`)
+        this.handleRemove(file)
+      }
       if (!isSizeValid) {
         this.$message.error(this.$t('validate.file.size') + this.maxSize + 'Mb')
         this.handleRemove(file)
       }
-      return isSizeValid
+      return isSizeValid && isFileValid
     },
     handleChange(file, fileList) {
       if (this.handleBeforeUpload(file)) {
@@ -101,6 +114,9 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    handleExceed(files, fileList) {
+      this.$message.error(`Maxmium file limit (Limit: ${this.limit})`)
     },
   },
 }

@@ -1,13 +1,19 @@
 import { Message } from 'element-ui'
 export default function ({ $axios, app }, inject) {
-  const fileApi = (signedRequest, file) => {
+  const fileApi = (files, folderPrefix) => {
     try {
       if (process.env.NODE_ENV === 'development') {
         Message('DevOnly | File uploading API executed')
       }
-      return $axios.put(signedRequest, file, {
+      const formData = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        formData.append('files', file)
+      }
+      formData.append('folder', folderPrefix)
+      return $axios.post('cloudinary/upload', formData, {
         headers: {
-          'Content-Type': file.type,
+          'Content-Type': 'multipart/form-data',
         },
       })
     } catch (error) {

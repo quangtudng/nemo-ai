@@ -158,7 +158,7 @@
                     </label>
                     <InputWrapper>
                       <FileUploader
-                        v-model="form.serviceImageUrls"
+                        v-model="imageList"
                         :limit="10"
                         @my-file-uploader-change="handleFileUploadChange"
                       />
