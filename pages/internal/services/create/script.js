@@ -38,12 +38,12 @@ export default {
     return {
       // Submit form data (same parameter with the API)
       form: {
-        title: null,
-        description: null,
-        originUrl: null,
-        fullAddress: null,
-        phoneNumber: null,
-        thumbnail: null,
+        title: '',
+        description: '',
+        originUrl: '',
+        fullAddress: '',
+        phoneNumber: '',
+        thumbnail: '',
         price: 0,
         locationId: null,
         categoryId: null,
@@ -76,20 +76,56 @@ export default {
     async handleFileUploadChange(fileList) {
       //
     },
+    async processNewImages() {
+      try {
+        const readyFiles =
+          this.imageList?.filter((image) => image.status === 'ready') || []
+        const rawFiles = readyFiles?.map((image) => image.raw) || []
+        const response = await this.$fileApi(rawFiles, 'SERVICE_IMAGE')
+        const newImageArray = response?.data?.data || []
+        return newImageArray.map((image) => image.url) || []
+      } catch (e) {
+        console.log(e)
+        return []
+      }
+    },
+    async processImages() {
+      try {
+        if (this.imageList?.length > 0) {
+          const newUrls = await this.processNewImages()
+          const existUrls =
+            this.imageList
+              ?.filter((image) => image.status === 'success')
+              ?.map((image) => image.url) || []
+          const allUrls = existUrls?.concat(newUrls) || []
+          if (allUrls.length > 0) {
+            this.form.thumbnail = allUrls[0]
+            this.form.serviceImageUrls = allUrls
+          }
+        } else {
+          this.form.thumbnail = ''
+          this.form.serviceImageUrls = []
+        }
+      } catch (e) {
+        console.log(e)
+        this.form.thumbnail = ''
+        this.form.serviceImageUrls = []
+      }
+    },
     async submitService() {
       try {
         this.isLoading = true
-        console.log(this.form)
+        await this.processImages()
         await this.submitSingleService(this.form)
         // Reset form
         this.form = {
-          title: null,
-          description: null,
-          originUrl: null,
-          fullAddress: null,
-          phoneNumber: null,
-          thumbnail: null,
-          price: null,
+          title: '',
+          description: '',
+          originUrl: '',
+          fullAddress: '',
+          phoneNumber: '',
+          thumbnail: '',
+          price: 0,
           locationId: null,
           categoryId: null,
           serviceImageUrls: [],

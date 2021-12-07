@@ -2,10 +2,10 @@ export default {
   fetchMe() {
     return this.$authApi.get('/auth/me')
   },
-  updateMe({ rootState, dispatch }, form) {
+  updateMe({ rootState }, form) {
     return this.$authApi.post('/auth/me', form)
   },
-  async login({ commit, dispatch }, { form, rememberPassword }) {
+  async login({ commit }, { form, rememberPassword }) {
     const response = await this.$clientApi.post('/auth/signin', form)
     const auth = response.data
     if (rememberPassword) {

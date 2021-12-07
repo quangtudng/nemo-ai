@@ -31,13 +31,13 @@ export default {
   data() {
     return {
       form: {
-        fullname: null,
-        email: null,
-        password: null,
-        phoneNumber: null,
-        avatar: null,
-        bio: null,
-        status: 1,
+        fullname: '',
+        email: '',
+        password: '',
+        phoneNumber: '',
+        bio: '',
+        avatar: '',
+        status: 0,
         roleId: null,
       },
       imageList: [],
@@ -50,37 +50,43 @@ export default {
       fetchRoles: 'role/fetchData',
       submitSingleUser: 'user/submitSingle',
     }),
-    handleFileUploadChange(fileList) {
-      console.log(fileList)
+    async handleFileUploadChange(fileList) {
+      try {
+        this.isLoading = true
+        if (this.imageList?.length > 0) {
+          const rawFile = await this.imageList[0]?.raw
+          const response = await this.$fileApi([rawFile], 'AVATAR')
+          const imageArray = response?.data?.data || []
+          // Assign the uploaded image url to the user avatar
+          if (imageArray && imageArray.length > 0) {
+            this.form.avatar = imageArray[0]?.url || ''
+          }
+        } else {
+          this.form.avatar = ''
+        }
+        this.isLoading = false
+      } catch (e) {
+        this.isLoading = false
+        console.log(e)
+      }
     },
     async submitUser() {
       try {
         this.isLoading = true
-        /// ////////////////////////////////////
-        // Process images
-        // resize() only return { raw: Image() } object, so you must spread it
-        if (this.imageList) {
-          const responseUrls = await this.uploadFilesToS3(
-            this.imageList,
-            'USER_IMAGES'
-          )
-          this.form.avatar = await responseUrls[0]
-        }
         await this.submitSingleUser(this.form)
         // Reset form
         this.form = {
-          fullname: null,
-          email: null,
-          password: null,
-          phoneNumber: null,
-          avatar: null,
-          bio: null,
-          status: 1,
+          fullname: '',
+          email: '',
+          password: '',
+          phoneNumber: '',
+          bio: '',
+          avatar: '',
+          status: 0,
           roleId: null,
         }
         this.imageList = []
         this.isLoading = false
-        this.$router.push('/internal/users')
       } catch (err) {
         this.isLoading = false
       }

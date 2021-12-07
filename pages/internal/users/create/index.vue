@@ -50,7 +50,7 @@
                     <label class="text-theme-1">
                       {{ $t('users.create.phone') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper>
                       <el-input
                         v-model="form.phoneNumber"
                         class="el-default-input"

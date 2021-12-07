@@ -28,27 +28,26 @@ export default {
       const service = await this.fetchSingleService(this.$route.params.id)
       const amenities = await this.fetchManyAmenities({ limit: 1000 })
 
+      // Form data
+      this.form = {
+        ...this.form,
+        ...service.data,
+        locationId: service?.data?.location?.id || null,
+        categoryId: service?.data?.category?.id || null,
+        serviceImageUrls:
+          service?.data?.serviceImages?.map((image) => image.url) || [],
+        serviceAmenities:
+          service?.data?.amenities?.map((amenity) => amenity.id) || [],
+      }
+      // Component data
       this.amenities = amenities?.data?.data || []
       this.locations = locations?.data || []
       this.serviceCategories = serviceCategories?.data?.data || []
-
-      // Form data
-      this.form.title = service.data?.title || null
-      this.form.description = service.data?.description || null
-      this.form.originUrl = service.data?.originUrl || null
-      this.form.fullAddress = service.data?.fullAddress || null
-      this.form.phoneNumber = service.data?.phoneNumber || null
-      this.form.thumbnail = service.data?.thumbnail || null
-      this.form.price = service?.data?.price || 0
-      this.form.locationId = service?.data?.location?.id || null
-      this.form.categoryId = service?.data?.category?.id || null
-      this.form.serviceImageUrls =
+      this.imageList =
         service?.data?.serviceImages?.map((image) => ({
           url: image.url,
           name: 'existing-file.jpeg',
         })) || []
-      this.form.serviceAmenities =
-        service?.data?.amenities?.map((amenity) => amenity.id) || []
       this.isLoading = false
     } catch (error) {
       this.isLoading = false
@@ -58,12 +57,12 @@ export default {
     return {
       // Submit form data (same parameter with the API)
       form: {
-        title: null,
-        description: null,
-        originUrl: null,
-        fullAddress: null,
-        phoneNumber: null,
-        thumbnail: null,
+        title: '',
+        description: '',
+        originUrl: '',
+        fullAddress: '',
+        phoneNumber: '',
+        thumbnail: '',
         price: 0,
         locationId: null,
         categoryId: null,
@@ -94,27 +93,55 @@ export default {
       updateSingleService: 'service/updateSingle',
       fetchSingleService: 'service/fetchSingle',
     }),
-    async handleFileUploadChange(fileList) {
-      const responseUrls = await this.uploadFilesToS3(
-        this.imageList,
-        'SERVICE_IMAGES'
-      )
-      // Resolve each of the url
-      // Optimize this with Promise.all() later
-      this.form.thumbnail = JSON.stringify(
-        responseUrls.map((url) => {
-          return url
-        })
-      )
+    handleFileUploadChange(fileList) {
+      //
+    },
+    async processNewImages() {
+      try {
+        const readyFiles =
+          this.imageList?.filter((image) => image.status === 'ready') || []
+        const rawFiles = readyFiles?.map((image) => image.raw) || []
+        const response = await this.$fileApi(rawFiles, 'SERVICE_IMAGE')
+        const newImageArray = response?.data?.data || []
+        return newImageArray.map((image) => image.url) || []
+      } catch (e) {
+        console.log(e)
+        return []
+      }
+    },
+    async processImages() {
+      try {
+        if (this.imageList?.length > 0) {
+          const newUrls = await this.processNewImages()
+          const existUrls =
+            this.imageList
+              ?.filter((image) => image.status === 'success')
+              ?.map((image) => image.url) || []
+          const allUrls = existUrls?.concat(newUrls) || []
+          if (allUrls.length > 0) {
+            this.form.thumbnail = allUrls[0]
+            this.form.serviceImageUrls = allUrls
+          }
+        } else {
+          this.form.thumbnail = ''
+          this.form.serviceImageUrls = []
+        }
+      } catch (e) {
+        console.log(e)
+        this.form.thumbnail = ''
+        this.form.serviceImageUrls = []
+      }
     },
     async updateService() {
       try {
         this.isLoading = true
         if (!this.form.price) this.form.price = 0
+        await this.processImages()
         await this.updateSingleService({
           id: this.$route.params.id,
           form: this.form,
         })
+        console.log(this.form)
         // Redirect back to table list
         this.$router.push('/internal/services')
         this.isLoading = false

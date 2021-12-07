@@ -52,7 +52,6 @@ export default {
           results
         ) {
           this.markers = results.map((result) => result.geometry.location)
-          console.log(this.markers)
           map.setCenter(results[0].geometry.location)
         }
       })

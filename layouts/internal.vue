@@ -49,6 +49,7 @@
 import { mapMutations, mapState } from 'vuex'
 import { Navbar, Sidebar } from '~/components/common'
 export default {
+  name: 'Internal',
   middleware: ['internalAuthRequired'],
   components: {
     Navbar,
