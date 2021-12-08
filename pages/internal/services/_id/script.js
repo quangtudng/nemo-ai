@@ -101,7 +101,11 @@ export default {
         const readyFiles =
           this.imageList?.filter((image) => image.status === 'ready') || []
         const rawFiles = readyFiles?.map((image) => image.raw) || []
-        const response = await this.$fileApi(rawFiles, 'SERVICE_IMAGE')
+        const response = await this.$fileApi(
+          'cloudinary/upload',
+          rawFiles,
+          'SERVICE_IMAGE'
+        )
         const newImageArray = response?.data?.data || []
         return newImageArray.map((image) => image.url) || []
       } catch (e) {

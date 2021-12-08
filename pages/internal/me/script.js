@@ -60,7 +60,11 @@ export default {
         this.isLoading = true
         if (this.imageList?.length > 0) {
           const rawFile = await this.imageList[0]?.raw
-          const response = await this.$fileApi([rawFile], 'AVATAR')
+          const response = await this.$fileApi(
+            'cloudinary/upload',
+            [rawFile],
+            'AVATAR'
+          )
           const imageArray = response?.data?.data || []
           // Assign the uploaded image url to the user avatar
           if (imageArray && imageArray.length > 0) {

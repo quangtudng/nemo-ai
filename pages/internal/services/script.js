@@ -1,6 +1,6 @@
 import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
-import { DataTable, Breadcrumb } from '~/components/common'
+import { DataTable, Breadcrumb, ExcelUploader } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
 const permission = 'SUPERADMIN'
 export default {
@@ -9,6 +9,7 @@ export default {
   components: {
     DataTable,
     Breadcrumb,
+    ExcelUploader,
     GoogleMap: () => import('~/components/common/Templates/Map/GMap.vue'),
   },
   async fetch() {
@@ -82,6 +83,7 @@ export default {
       deleteSingleService: 'service/deleteSingle',
       fetchServiceCategories: 'category/fetchData',
       fetchLocations: 'location/fetchData',
+      uploadServiceExcel: 'service/submitExcel',
     }),
     onDetailView(row) {
       this.detailPageVisible = true
@@ -136,6 +138,22 @@ export default {
       this.serviceCategoryFilter = null
       this.searchQuery = null
       this.onRefresh()
+    },
+    handleExcelUpload(fileList) {
+      try {
+        this.$confirm('Do you want to upload this excel file', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }).then(async () => {
+          if (fileList && fileList.length) {
+            const file = fileList[0]?.raw
+            await this.uploadServiceExcel([file])
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }
