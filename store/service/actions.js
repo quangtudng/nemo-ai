@@ -11,6 +11,9 @@ export default {
   submitSingle({ rootState }, form) {
     return this.$authApi.post('/services', form)
   },
+  submitExcel({ rootState }, files) {
+    return this.$fileApi('/services/upload', files)
+  },
   updateSingle({ rootState }, data) {
     return this.$authApi.patch('/services/' + data.id, data.form)
   },
