@@ -1,5 +1,4 @@
 import { mapActions } from 'vuex'
-import { Message } from 'element-ui'
 import {
   FormWrapper,
   InputWrapper,
@@ -7,17 +6,10 @@ import {
   FileUploader,
 } from '~/components/common'
 import { fileMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
 export default {
   layout: 'internal',
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
   mixins: [fileMixin],
-  middleware({ store, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/')
-    }
-  },
   async fetch() {
     try {
       this.isLoading = true
@@ -63,7 +55,7 @@ export default {
         fullAddress: '',
         phoneNumber: '',
         thumbnail: '',
-        price: 0,
+        price: null,
         locationId: null,
         categoryId: null,
         serviceImageUrls: [],
@@ -93,9 +85,6 @@ export default {
       updateSingleService: 'service/updateSingle',
       fetchSingleService: 'service/fetchSingle',
     }),
-    handleFileUploadChange(fileList) {
-      //
-    },
     async processNewImages() {
       try {
         const readyFiles =
@@ -108,8 +97,8 @@ export default {
         )
         const newImageArray = response?.data?.data || []
         return newImageArray.map((image) => image.url) || []
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log(error)
         return []
       }
     },
@@ -121,19 +110,20 @@ export default {
             this.imageList
               ?.filter((image) => image.status === 'success')
               ?.map((image) => image.url) || []
+          // Merge new and old images
           const allUrls = existUrls?.concat(newUrls) || []
+          console.log(allUrls)
           if (allUrls.length > 0) {
             this.form.thumbnail = allUrls[0]
             this.form.serviceImageUrls = allUrls
           }
         } else {
+          // Delete all images if empty
           this.form.thumbnail = ''
           this.form.serviceImageUrls = []
         }
-      } catch (e) {
-        console.log(e)
-        this.form.thumbnail = ''
-        this.form.serviceImageUrls = []
+      } catch (error) {
+        console.log(error)
       }
     },
     async updateService() {
@@ -141,16 +131,19 @@ export default {
         this.isLoading = true
         if (!this.form.price) this.form.price = 0
         await this.processImages()
-        await this.updateSingleService({
+        const result = await this.updateSingleService({
           id: this.$route.params.id,
           form: this.form,
         })
-        console.log(this.form)
-        // Redirect back to table list
-        this.$router.push('/internal/services')
+        if (result.status === 200) {
+          this.$message.success(`${this.$t('info.RESOURCE_UPDATED_SUCCESS')}`)
+          setTimeout(() => {
+            this.$router.push('/internal/services')
+          }, 500)
+        }
         this.isLoading = false
-      } catch (err) {
-        console.log(err)
+      } catch (error) {
+        console.log(error)
         this.isLoading = false
       }
     },

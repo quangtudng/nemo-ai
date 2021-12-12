@@ -1,256 +1,136 @@
+
 {
-  "title": {
-    "dashboard": "Sanna Tour JSC | Trang chủ"
-  },
-  "warning": {
-    "exit": "Hãy chắc chắn rằng bạn đã lưu lại hết mọi thứ!"
-  },
-  "validate": {
-    "email": "Sai định dạng email!",
-    "required": "Trường này là bắt buộc!",
-    "numeric": "Trường này phải là một số!"
-  },
-  "error": {
-    "INVALID_PHONE_PASSWORD": "Số điện thoại hoặc mật khẩu bị sai",
-    "NOT_UPDATE_YOURSELF": "Không thể tự cập nhật thông tin của bạn, hãy vào trang cá nhân",
-    "NOT_DELETE_YOURSELF": "Bạn không thể tự xóa bản thân!",
-    "UNAUTHORIZED": "Bạn không được phép truy cập vào đây",
-    "INCORRECT_PHONE_PASSWORD": "Sai mật khẩu hoặc số điện thoại",
-    "INCORRECT_EMAIL_PASSWORD": "Sai mật khẩu hoặc email",
-    "IS_NOT_ACTIVE": "This is not active",
-    "IS_EXPIRED_TOKEN": "Phiên đăng nhập của bạn đã hết hạn",
-    "CONFLICT": "Có mâu thuẫn xảy ra",
-    "VIOLATE_FOREIGN_KEY_CONSTRAINT": "Violate foreign key constant",
-    "NOT_EXIST_FOREIGN_KEY": "Foreign key does not exist",
-    "ALREADY_EXIST": "Đã tồn tại",
-    "BAD_REQUEST": "Bad request",
-    "IS_NOT_EFFECTED": "Your request is not affected",
-    "IS_NOT_EMPTY": "IS_NOT_EMPTY",
-    "IS_EMPTY": "IS_EMPTY",
-    "IS_MOBILE_PHONE": "Sai định dạng số điện thoại",
-    "IS_EMAIL": "Sai định dạng email",
-    "IS_STRING": "Sai định dạng chuỗi",
-    "IS_NUMBER": "Sai định dạng số",
-    "IS_INT": "Sai định dạng số nguyên",
-    "IS_BOOLEAN": "Sai định dạng boolean",
-    "IS_ARRAY": "Sai định dạng mảng",
-    "IS_DATE_STRING": "Sai định dạng ngày tháng",
-    "IS_ENUM": "Sai định dạng enum",
-    "IS_IN": "IS_IN",
-    "IS_NOT_IN": "IS_IN",
-    "IS_LATITUDE": "IS_LATITUDE",
-    "IS_LONGITUDE": "IS_LONGITUDE",
-    "IS_LAT_LONG": "IS_LAT_LONG",
-    "INTERNAL_SERVER_ERROR": "Lỗi server",
-    "REQUEST_TIMEOUT": "Kết nối bị hết hạn",
-    "METHOD_NOT_ALLOWED": "Phương thức không được cho phép",
-    "NOT_FOUND": "Không tìm thấy",
-    "FORBIDDEN": "Không truy cập được"
-  },
-  "navbar": {
-    "login": "Đăng nhập",
-    "logout": "Đăng xuất",
-    "profile": "Trang cá nhân",
-    "dashboard": "Trang chủ"
-  },
-  "sidebar": {
-    "status": {
-      "online": "Đang hoạt động",
-      "offline": "Đã ngắt kết nối"
-    },
-    "user": {
-      "title": "Quản lý nhân viên"
-    },
-    "location": {
-      "title": "Quản lý địa danh"
-    },
-    "service": {
-      "title": "Quản lý dịch vụ"
-    },
-    "settings": {
-      "title": "Cài đặt"
-    }
-  },
-  "footer": "Mẫu website này được làm bởi Sanna Tour JSC.com",
+  "dashboard": "NemoAI | Travelling Assistant",
   "login": {
     "title": "Đăng nhập",
     "email": "Email *",
     "password": "Mật khẩu *",
     "button": "Đăng nhập",
-    "remember": "Nhớ mật khẩu",
-    "forgot-password": "Quên mật khẩu?",
-    "as-salesmen": "Với tư cách sale",
-    "role-warn": "Trang đăng nhập cho admins"
+    "remember": "Nhớ mật khẩu"
   },
-  "home": {
-    "title": "Chào mừng",
-    "lang": "Việt",
-    "introduction": "Đây là một đoạn giới thiệu bằng Tiếng Việt.",
-    "navbar": "Đây là thanh điều hướng",
-    "header": "Đây là một header",
-    "sidebar": "Đây là một sidebar"
+  "sidebar": {
+    "online": "Đang hoạt động",
+    "main": "Trang chủ",
+    "user": "Nhân viên hệ thống",
+    "role": "Vai trò người dùng",
+    "location": "Thông tin địa điểm",
+    "category": "Loại hình dịch vụ",
+    "service": "Danh sách dịch vụ",
+    "amenity": "Tiện ích dịch vụ",
+    "setting": "Cài đặt hệ thống"
   },
-  "roles": {
-    "title": "Quản lý vai trò",
-    "index": {
-      "name": "Tên vai trò",
-      "description": "Mô tả về vai trò"
-    },
-    "create": {
-      "title": "Tạo vai trò mới",
-      "name": "Tên vai trò",
-      "description": "Mô tả về vai trò",
-      "permissions": "Quyền hạn của vai trò",
-      "go-back": "Quay lại",
-      "submit": "Thêm mới"
-    },
-    "edit": {
-      "title": "Sửa vai trò",
-      "name": "Tên vai trò",
-      "description": "Mô tả về vai trò",
-      "permissions": "Quyền hạn của vai trò",
-      "go-back": "Quay lại",
-      "submit": "Cập nhật"
-    }
+  "navbar": {
+    "profile": "Tài khoản",
+    "logout": "Đăng xuất"
+  },
+  "common": {
+    "filter": "Lọc",
+    "delete-filter": "Bỏ lọc",
+    "add-new": "Thêm mới",
+    "go-back": "Quay về",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "cancel": "Hủy",
+    "select": "Chọn",
+    "created_at": "Ngày tạo",
+    "last_updated": "Ngày chỉnh sửa",
+    "upload": "Tải lên"
+  },
+  "validation": {
+    "required": "Trường không được bỏ trống",
+    "email": "Trường phải là email",
+    "numeric": "Trường phải là số tự nhiên",
+    "delete_confirmation": "Bạn sắp xóa vĩnh viễn tài nguyên này. Hành động này không thể được hoàn tác",
+    "upload_confirmation": "Bạn có muốn cập nhật dữ liệu du lịch mới sử dụng file excel không ?",
+    "exit_confirmation": "Bạn chuẩn bị rời khỏi trang này. Hãy đảm bảo bạn đã lưu toàn bộ nội dung",
+    "delete_self": "Bạn không thể tự xóa bản thân mình được",
+    "delete_admin": "Bạn không thể xóa quản trị viên",
+    "file_not_supported": "Định dạng file không hỗ trợ",
+    "file_size_too_large": "File có kích cỡ quá lớn",
+    "file_limit_reached": "Số lượng file đạt tối đa",
+    "value_too_short": "Giá trị trường quá ngắn",
+    "value_too_long": "Giá trị trường quá dài",
+    "value_too_small": "Giá trị trường quá nhỏ",
+    "value_too_large": "Giá trị trường quá lớn",
+    "invalid_phone_number": "Giá trị trường phải là một số điện thoại hợp lệ"
+  },
+  "info": {
+    "RESOURCE_CREATED_SUCCESS": "Tài nguyên đã được tạo thành công",
+    "RESOURCE_DELETED_SUCCESS": "Tài nguyên đã được xóa thành công",
+    "RESOURCE_UPDATED_SUCCESS": "Tài nguyên đã được chỉnh sửa thành công",
+    "ACCOUNT_DISABLED": "Tài khoản bị khóa",
+    "ACCOUNT_NOT_DISABLED": "Tài khoản không bị khóa"
+  },
+  "error": {
+    "INCORRECT_CREDENTIAL": "Thông tin tài khoản không được chính xác",
+    "UNKNOWN_SERVER_ERROR": "Hệ thống đã gặp phải lỗi",
+    "UNAUTHORIZED": "Lỗi quyền hạn. Một số tính năng sẽ không được hoạt động chính xác. Vui lòng đăng nhập lại",
+    "QUERY_ERROR": "Lỗi truy vấn hệ thống. Vui lòng thử lại sau",
+    "PERMISSION_DENIED": "Lỗi quyền hạn. Bạn không thể truy cập vào nội dung này",
+    "FILE_UPLOADED_FAILED": "Xảy ra lỗi khi đăng tải hình ảnh của bạn. Vui lòng thử lại sau",
+    "RESOURCE_CREATED_FAILED": "Xảy ra lỗi khi tạo tài nguyên mới trong hệ thống. Vui lòng thử lại sau",
+    "DUPLICATED": "Thông tin tài nguyên đã tồn tại. Vui lòng kiểm tra sau"
   },
   "users": {
     "title": "Quản lý nhân viên",
-    "roles": "Quản lý chức vụ",
-    "add-new": "Thêm mới",
-    "list": "Danh sách nhân viên",
-    "delete": "Xóa",
+    "edit": "Chỉnh sửa thông tin",
     "search": "Tìm kiếm nhân viên",
-    "deleted": "Danh sách đã xóa",
-    "filter": "Lọc",
-    "delete-filter": "Bỏ lọc",
-    "role": {
-      "title": "Chức vụ",
-      "SUPERADMIN": "Quản trị viên",
-      "MODERATOR": "Người kiểm duyệt",
-      "AGENT": "Doanh nghiệp"
-    },
-    "index": {
-      "fullname": "Họ và tên",
-      "phone": "Số điện thoại",
-      "email": "Email",
-      "createdAt": "Ngày tạo"
-    },
-    "create": {
-      "title": "Thêm nhân viên mới",
-      "avatar": "Ảnh đại diện",
-      "fullName": "Họ và Tên",
-      "email": "Email",
-      "password": "Mật khẩu",
-      "phone": "Số điện thoại",
-      "gender": "Giới tính",
-      "gender-male": "Nam",
-      "gender-female": "Nữ",
-      "birthday": "Sinh nhật",
-      "address": "Địa chỉ",
-      "bio": "Bio",
-      "status": "Trạng thái",
-      "role": "Vai trò",
-      "note": "Ghi chú",
-      "go-back": "Quay lại",
-      "submit": "Thêm mới"
-    },
-    "edit": {
-      "title": "Sửa thông tin nhân viên",
-      "avatar": "Ảnh đại diện",
-      "fullName": "Họ và Tên",
-      "email": "Email",
-      "password": "Mật khẩu mới (Để trống nếu không đổi)",
-      "phone": "Số điện thoại",
-      "gender": "Giới tính",
-      "gender-male": "Nam",
-      "gender-female": "Nữ",
-      "birthday": "Sinh nhật",
-      "address": "Địa chỉ",
-      "bio": "Bio",
-      "status": "Trạng thái",
-      "role": "Vai trò",
-      "note": "Ghi chú",
-      "go-back": "Quay lại",
-      "submit": "Cập nhật"
-    }
+    "roles": "Chức vụ",
+    "role": "Chức vụ",
+    "fullname": "Họ và tên",
+    "status": "Trạng thái",
+    "phonenumber": "Số điện thoại",
+    "password": "Mật khẩu",
+    "bio": "Thông tin cá nhân (Không bắt buộc)",
+    "avatar": "Ảnh cá nhân (Không bắt buộc)"
+  },
+  "role": {
+    "SUPERADMIN": "Quản trị viên",
+    "MODERATOR": "Người kiểm duyệt",
+    "AGENT": "Đại lý du lịch"
+  },
+  "locations": {
+    "title": "Quản lý địa điểm",
+    "search": "Tìm địa điểm",
+    "label": "Tên địa điểm",
+    "type": "Loại địa điểm",
+    "description": "Thông tin địa điểm",
+    "country": "Quốc gia",
+    "province": "Tỉnh",
+    "city": "Thành phố",
+    "category": "Loại hình dịch vụ",
+    "service_count": "Số lượng dịch vụ"
+  },
+  "categories": {
+    "title": "Quản lý loại hình",
+    "search": "Tìm kiếm loại hình",
+    "name": "Tên loại hình",
+    "description": "Thông tin loại hình",
+    "create-new": "Tạo mới loại hình",
+    "edit": "Sửa loại hình"
+  },
+  "amenities": {
+    "title": "Quản lý tiện ích",
+    "search": "Tìm kiếm tiện ích",
+    "name": "Tên tiện ích",
+    "description": "Thông tin tiện ích",
+    "create-new": "Tạo mới tiện ích",
+    "edit": "Sửa tiện ích"
   },
   "services": {
     "title": "Quản lý dịch vụ",
-    "add-new": "Thêm mới",
-    "list": "Danh sách dịch vụ",
-    "delete": "Xóa",
     "search": "Tìm kiếm dịch vụ",
-    "deleted": "Danh sách đã xóa",
-    "filter": "Lọc",
-    "delete-filter": "Bỏ lọc",
-    "minimum-tabs": "Lượng nội dung tối thiểu là 1",
-    "delete-content-warning": "Bạn có muốn xóa nội dung này?",
-    "delete-content-ok": "Đồng ý",
-    "delete-content-cancel": "Hủy bỏ",
-    "delete-content-success": "Xóa nội dung thành công",
-    "delete-content-abort": "Hủy bỏ việc xóa nội dung",
-    "author": {
-      "title": "Tác giả"
-    },
-    "service-categories": {
-      "title": "Chuyên mục dịch vụ"
-    },
-    "index": {
-      "title": "Tiêu đề",
-      "created-at": "Tạo lúc: ",
-      "last-updated": "Cập nhật lúc: ",
-      "netPrice": "Giá net",
-      "price": "Giá",
-      "currentPrice": "Giá hiện tại",
-      "serviceCategories": "Chuyên mục dịch vụ",
-      "destinations": "Địa điểm"
-    },
-    "create": {
-      "title": "Thêm dịch vụ mới",
-      "thumbnail": "Hình ảnh (Ảnh đầu là ảnh đại diện)",
-      "content-tab": "Nội dung ",
-      "netPrice": "Giá net",
-      "price": "Giá",
-      "currentPrice": "Giá hiện tại",
-      "serviceCategory": "Chuyên mục dịch vụ",
-      "destinations": "Địa điểm",
-      "note": "Ghi chú",
-      "status": "Trạng thái",
-      "go-back": "Trở về",
-      "submit": "Thêm dịch vụ"
-    },
-    "edit": {
-      "title": "Chỉnh sửa dịch vụ",
-      "thumbnail": "Hình ảnh (Ảnh đầu là ảnh đại diện)",
-      "content-tab": "Nội dung ",
-      "netPrice": "Giá net",
-      "price": "Giá",
-      "currentPrice": "Giá hiện tại",
-      "serviceCategory": "Chuyên mục dịch vụ",
-      "destinations": "Địa điểm",
-      "note": "Ghi chú",
-      "status": "Trạng thái",
-      "go-back": "Trở về",
-      "submit": "Cập nhật"
-    }
-  },
-  "components": {
-    "card": {
-      "status": {
-        "since-last-month": "Từ tháng trước"
-      }
-    },
-    "table": {
-      "data": {
-        "title": "Bảng dữ liệu",
-        "list": "Danh sách",
-        "edit": "Chỉnh sửa",
-        "add-new": "Thêm mới",
-        "delete": "Xóa",
-        "search": "Tìm kiếm",
-        "restore": "Hồi phục",
-        "delete-pernamently": "Xóa vĩnh viễn"
-      }
-    }
+    "category": "Loại hình dịch vụ",
+    "location": "Địa điểm dịch vụ",
+    "name": "Tên dịch vụ",
+    "description": "Mô tả dịch vụ",
+    "price": "Giá dịch vụ",
+    "amenities": "Tiện ích dịch vụ",
+    "address": "Địa chỉ dịch vụ",
+    "images": "Hình ảnh",
+    "thumbnail": "Ảnh đầu tiên là thumbnail",
+    "phone": "Số điện thoại dịch vụ",
+    "origin": "Trang chủ",
+    "edit": "Chỉnh sửa dịch vụ"
   }
 }

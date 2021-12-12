@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <Breadcrumb :title="$t('users.create.title')" />
+    <Breadcrumb :title="$t('users.title')" />
     <el-container class="p-3 mb-10">
       <el-row class="w-full">
         <el-col :span="24" class="mx-auto float-none">
@@ -14,9 +14,9 @@
                 <el-col :span="14">
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      {{ $t('users.create.fullName') }}
+                      {{ $t('users.fullname') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper rules="required|min:5|max:30">
                       <el-input
                         v-model="form.fullname"
                         class="el-default-input"
@@ -25,9 +25,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.email') }}
+                      Email
                     </label>
-                    <InputWrapper rules="required|email">
+                    <InputWrapper rules="required|email|min:5|max:100">
                       <el-input
                         v-model="form.email"
                         class="el-default-input"
@@ -36,9 +36,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.password') }}
+                      {{ $t('users.password') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper rules="required|min:5|max:100">
                       <el-input
                         v-model="form.password"
                         show-password
@@ -48,9 +48,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.phone') }}
+                      {{ $t('users.phonenumber') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="phone">
                       <el-input
                         v-model="form.phoneNumber"
                         class="el-default-input"
@@ -59,14 +59,18 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.role') }}
+                      {{ $t('users.role') }}
                     </label>
-                    <InputWrapper>
-                      <el-select v-model="form.roleId" class="el-default-input">
+                    <InputWrapper rules="required">
+                      <el-select
+                        v-model="form.roleId"
+                        class="el-default-input"
+                        :placeholder="$t('common.select')"
+                      >
                         <el-option
                           v-for="role in roles"
                           :key="'role-' + role.id"
-                          :label="$t('users.role.' + role.label)"
+                          :label="$t('role.' + role.label)"
                           :value="role.id"
                           :disabled="role.id == 1"
                         >
@@ -76,9 +80,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.bio') }}
+                      {{ $t('users.bio') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="min:5|max:1000">
                       <el-input
                         v-model="form.bio"
                         class="el-default-input"
@@ -90,7 +94,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.create.status') }}
+                      {{ $t('users.status') }}
                     </label>
                     <el-switch
                       v-model="form.status"
@@ -104,7 +108,7 @@
                 <el-col :span="10">
                   <div class="mt-5 pl-5">
                     <label class="text-theme-1">
-                      {{ $t('users.create.avatar') }}
+                      {{ $t('users.avatar') }}
                     </label>
                     <InputWrapper>
                       <FileUploader
@@ -124,7 +128,7 @@
                       class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                       @click="$router.push('/internal/users')"
                     >
-                      {{ $t('users.create.go-back') }}
+                      {{ $t('common.go-back') }}
                     </el-button>
                     <el-button
                       :loading="isLoading"
@@ -132,7 +136,7 @@
                       type="primary"
                       class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
                     >
-                      {{ $t('users.create.submit') }}
+                      {{ $t('common.add-new') }}
                     </el-button>
                   </div>
                 </el-col>

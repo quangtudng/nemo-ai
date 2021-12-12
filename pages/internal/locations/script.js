@@ -1,9 +1,7 @@
 // Modify this DataTable component to suit your api
 import { mapActions, mapState } from 'vuex'
 import { debounce } from 'lodash'
-import { Message } from 'element-ui'
 import { Breadcrumb } from '~/components/common'
-const permission = 'SUPERADMIN'
 
 export default {
   layout: 'internal',
@@ -28,21 +26,14 @@ export default {
       await this.getSingleLocation(this.selectedLocationId)
     }
   },
-  middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/')
-    }
-  },
   data() {
     return {
       categoryTableData: [],
       locationTableData: [],
       form: {
-        name: null,
-        type: null,
-        slug: null,
-        description: null,
+        name: '',
+        type: '',
+        description: '',
       },
       isLoading: false,
       searchQuery: '',
@@ -84,7 +75,7 @@ export default {
       setTimeout(() => {
         if (locationResult && locationResult.data) {
           this.form = { ...this.form, ...locationResult.data }
-          this.form.type = this.$t(`locations.edit.${this.form.type}`)
+          this.form.type = this.$t(`locations.${this.form.type}`)
           this.categoryTableData = locationResult.data.categoryCount
         }
         this.isLoading = false
@@ -100,12 +91,15 @@ export default {
     onSubmitUpdate: debounce(async function () {
       if (this.selectedLocationId) {
         this.isLoading = true
-        await this.updateSingleLocation({
+        const result = await this.updateSingleLocation({
           id: this.selectedLocationId,
           form: {
             description: this.form.description,
           },
         })
+        if (result.status === 200) {
+          this.$message.success(`${this.$t('info.RESOURCE_UPDATED_SUCCESS')}`)
+        }
         setTimeout(() => {
           this.isLoading = false
         }, 500)

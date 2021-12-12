@@ -37,7 +37,7 @@
               :loading="$fetchState.pending"
               @click="onFilter"
             >
-              {{ $t('categories.filter') }}
+              {{ $t('common.filter') }}
             </el-button>
             <el-button
               size="large"
@@ -45,7 +45,7 @@
               :loading="$fetchState.pending"
               @click="onClearFilter"
             >
-              {{ $t('categories.delete-filter') }}
+              {{ $t('common.delete-filter') }}
             </el-button>
           </div>
         </el-row>
@@ -70,9 +70,19 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
-          <el-table-column :label="$t('categories.index.title')" prop="title" />
+          <el-table-column :label="$t('categories.name')" width="320">
+            <template slot-scope="scope">
+              <p class="m-0 text-gray-500">
+                {{ scope.row.title }}
+              </p>
+              <p class="m-0 text-gray-400">
+                {{ $t('common.created_at') }}:
+                {{ scope.row.createdAt | formatDateTime }}
+              </p>
+            </template>
+          </el-table-column>
           <el-table-column
-            :label="$t('categories.index.description')"
+            :label="$t('categories.description')"
             prop="description"
           />
         </DataTable>
@@ -83,7 +93,7 @@
           @my-form-submit="submitCategory"
         >
           <el-dialog
-            title="Create new category"
+            :title="$t('categories.create-new')"
             :visible.sync="createDialogVisible"
             width="60%"
           >
@@ -92,9 +102,9 @@
                 <!-- Title -->
                 <div>
                   <label class="text-theme-1">
-                    Tiêu đề
+                    {{ $t('categories.name') }}
                   </label>
-                  <InputWrapper rules="required">
+                  <InputWrapper rules="required|min:5|max:100">
                     <el-input
                       v-model="createForm.title"
                       class="el-default-input"
@@ -104,9 +114,9 @@
                 <!-- Description -->
                 <div class="mt-5">
                   <label class="text-theme-1">
-                    Mô tả
+                    {{ $t('categories.description') }}
                   </label>
-                  <InputWrapper>
+                  <InputWrapper rules="min:5|max:1000">
                     <el-input
                       v-model="createForm.description"
                       class="el-default-input"
@@ -124,7 +134,7 @@
                 class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                 @click="createDialogVisible = false"
               >
-                {{ $t('services.create.go-back') }}
+                {{ $t('common.go-back') }}
               </el-button>
               <el-button
                 :loading="isLoading"
@@ -132,7 +142,7 @@
                 type="primary"
                 class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
               >
-                {{ $t('services.create.submit') }}
+                {{ $t('common.add-new') }}
               </el-button>
             </span>
           </el-dialog>
@@ -144,7 +154,7 @@
           @my-form-submit="updateCategory"
         >
           <el-dialog
-            title="Edit category"
+            :title="$t('categories.edit')"
             :visible.sync="editDialogVisible"
             width="60%"
           >
@@ -153,9 +163,9 @@
                 <!-- Title -->
                 <div>
                   <label class="text-theme-1">
-                    Tiêu đề
+                    {{ $t('categories.name') }}
                   </label>
-                  <InputWrapper rules="required">
+                  <InputWrapper rules="required|min:5|max:100">
                     <el-input
                       v-model="updateForm.title"
                       class="el-default-input"
@@ -165,9 +175,9 @@
                 <!-- Description -->
                 <div class="mt-5">
                   <label class="text-theme-1">
-                    Mô tả
+                    {{ $t('categories.description') }}
                   </label>
-                  <InputWrapper>
+                  <InputWrapper rules="min:5|max:1000">
                     <el-input
                       v-model="updateForm.description"
                       class="el-default-input"
@@ -185,7 +195,7 @@
                 class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                 @click="editDialogVisible = false"
               >
-                {{ $t('services.create.go-back') }}
+                {{ $t('common.go-back') }}
               </el-button>
               <el-button
                 :loading="isLoading"
@@ -193,7 +203,7 @@
                 type="primary"
                 class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
               >
-                {{ $t('services.create.submit') }}
+                {{ $t('common.edit') }}
               </el-button>
             </span>
           </el-dialog>
@@ -203,5 +213,3 @@
   </el-main>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" scoped src="./style-scoped.scss"></style>
-<style lang="scss" src="./style.scss"></style>

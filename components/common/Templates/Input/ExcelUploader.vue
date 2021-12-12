@@ -15,7 +15,7 @@
       size="small"
     >
       <em class="el-icon-folder-opened text-base" />
-      <span>Upload</span>
+      <span>{{ $t('common.upload') }}</span>
     </el-button>
   </el-upload>
 </template>
@@ -42,11 +42,19 @@ export default {
       const isFileValid = this.types && this.types.includes(file.raw.type)
       const supportedFile = this.types?.join() || ''
       if (!isFileValid) {
-        this.$message.error(`File not supported (Supported: ${supportedFile})`)
+        setTimeout(() => {
+          this.$message.error(
+            `${this.$t('validation.file_not_supported')} (${supportedFile})`
+          )
+        }, 100)
         this.fileList = []
       }
       if (!isSizeValid) {
-        this.$message.error(this.$t('validate.file.size') + this.maxSize + 'Mb')
+        setTimeout(() => {
+          this.$message.error(
+            `${this.$t('validation.file_size_too_large')} (${this.maxSize}Mb)`
+          )
+        }, 100)
         this.fileList = []
       }
       return isSizeValid && isFileValid

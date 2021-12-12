@@ -37,7 +37,7 @@
               :loading="$fetchState.pending"
               @click="onFilter"
             >
-              {{ $t('amenities.filter') }}
+              {{ $t('common.filter') }}
             </el-button>
             <el-button
               size="large"
@@ -45,7 +45,7 @@
               :loading="$fetchState.pending"
               @click="onClearFilter"
             >
-              {{ $t('amenities.delete-filter') }}
+              {{ $t('common.delete-filter') }}
             </el-button>
           </div>
         </el-row>
@@ -70,12 +70,9 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
+          <el-table-column :label="$t('amenities.name')" prop="title" />
           <el-table-column
-            :label="$t('amenities.index.fullname')"
-            prop="title"
-          />
-          <el-table-column
-            :label="$t('amenities.index.description')"
+            :label="$t('amenities.description')"
             prop="description"
           />
         </DataTable>
@@ -86,7 +83,7 @@
           @my-form-submit="submitAmenity"
         >
           <el-dialog
-            title="Create new amenity"
+            :title="$t('amenities.create-new')"
             :visible.sync="createDialogVisible"
             width="60%"
           >
@@ -95,9 +92,9 @@
                 <!-- Title -->
                 <div>
                   <label class="text-theme-1">
-                    Tiêu đề
+                    {{ $t('amenities.name') }}
                   </label>
-                  <InputWrapper rules="required">
+                  <InputWrapper rules="required|min:5|max:100">
                     <el-input
                       v-model="createForm.title"
                       class="el-default-input"
@@ -107,9 +104,9 @@
                 <!-- Description -->
                 <div class="mt-5">
                   <label class="text-theme-1">
-                    Mô tả
+                    {{ $t('amenities.description') }}
                   </label>
-                  <InputWrapper>
+                  <InputWrapper rules="min:5|max:1000">
                     <el-input
                       v-model="createForm.description"
                       class="el-default-input"
@@ -127,7 +124,7 @@
                 class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                 @click="createDialogVisible = false"
               >
-                {{ $t('services.create.go-back') }}
+                {{ $t('common.go-back') }}
               </el-button>
               <el-button
                 :loading="isLoading"
@@ -135,7 +132,7 @@
                 type="primary"
                 class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
               >
-                {{ $t('services.create.submit') }}
+                {{ $t('common.add-new') }}
               </el-button>
             </span>
           </el-dialog>
@@ -156,9 +153,9 @@
                 <!-- Title -->
                 <div>
                   <label class="text-theme-1">
-                    Tiêu đề
+                    {{ $t('amenities.name') }}
                   </label>
-                  <InputWrapper rules="required">
+                  <InputWrapper rules="required|min:5|max:100">
                     <el-input
                       v-model="updateForm.title"
                       class="el-default-input"
@@ -168,9 +165,9 @@
                 <!-- Description -->
                 <div class="mt-5">
                   <label class="text-theme-1">
-                    Mô tả
+                    {{ $t('amenities.description') }}
                   </label>
-                  <InputWrapper>
+                  <InputWrapper rules="min:5|max:1000">
                     <el-input
                       v-model="updateForm.description"
                       class="el-default-input"
@@ -188,7 +185,7 @@
                 class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                 @click="editDialogVisible = false"
               >
-                {{ $t('services.create.go-back') }}
+                {{ $t('common.go-back') }}
               </el-button>
               <el-button
                 :loading="isLoading"
@@ -196,7 +193,7 @@
                 type="primary"
                 class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
               >
-                {{ $t('services.create.submit') }}
+                {{ $t('common.edit') }}
               </el-button>
             </span>
           </el-dialog>
@@ -206,5 +203,3 @@
   </el-main>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" scoped src="./style-scoped.scss"></style>
-<style lang="scss" src="./style.scss"></style>

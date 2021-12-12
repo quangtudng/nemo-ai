@@ -13,6 +13,6 @@ export default function ({ app }, inject) {
     return str
   }
 
-  // Inject to context as $clientApi
+  // Inject to context as $accent
   inject('accent', accent)
 }

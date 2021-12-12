@@ -3,7 +3,7 @@ import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
+const permissions = ['SUPERADMIN', 'MODERATOR']
 
 export default {
   layout: 'internal',
@@ -12,10 +12,11 @@ export default {
     DataTable,
     Breadcrumb,
   },
-  middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/')
+  middleware({ store, redirect, app }) {
+    const roleLabel = store.state.auth.data?.role?.label || ''
+    if (!permissions.includes(roleLabel)) {
+      Message.error(this.$t('error.PERMISSION_DENIED'))
+      return redirect('/internal')
     }
   },
   data() {
@@ -57,32 +58,37 @@ export default {
       this.createDialogVisible = true
     },
     onDelete(payload) {
-      this.$confirm(
-        'Do you want to delete this category. This action cannot be reversed',
-        'Warning',
-        {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning',
-        }
-      )
+      this.$confirm(this.$t('validation.delete_confirmation'), 'Warning', {
+        confirmButtonText: this.$t('common.delete'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning',
+      })
         .then(async () => {
-          await this.onConfirmDelete(payload.rowData.id)
+          const result = await this.deleteSingleCategory(payload.rowData.id)
+          if (result.status === 200) {
+            this.$message.success(this.$t('info.RESOURCE_DELETED_SUCCESS'))
+          }
+          await this.onClearFilter()
         })
-        .catch((e) => {
-          console.log(e)
+        .catch((error) => {
+          console.log(error)
         })
-    },
-    async onConfirmDelete(id) {
-      await this.deleteSingleCategory(id)
-      this.onClearFilter()
     },
     async submitCategory() {
       try {
         this.isLoading = true
-        await this.createSingleCategory(this.createForm)
-        await this.$fetch()
-        this.createDialogVisible = false
+        const result = await this.createSingleCategory(this.createForm)
+        if (result.status === 201) {
+          this.createForm = {
+            title: '',
+            description: '',
+          }
+          this.createDialogVisible = false
+          await this.onClearFilter()
+          setTimeout(() => {
+            this.$message.success(`${this.$t('info.RESOURCE_CREATED_SUCCESS')}`)
+          }, 500)
+        }
         this.isLoading = false
       } catch (error) {
         this.createDialogVisible = false
@@ -93,14 +99,17 @@ export default {
     async updateCategory() {
       try {
         this.isLoading = true
-        if (this.updateForm.id) {
-          await this.updateSingleCategory({
-            id: this.updateForm.id,
-            form: this.updateForm,
-          })
+        const result = await this.updateSingleCategory({
+          id: this.updateForm.id,
+          form: this.updateForm,
+        })
+        if (result.status === 200) {
+          await this.onClearFilter()
+          this.editDialogVisible = false
+          setTimeout(() => {
+            this.$message.success(`${this.$t('info.RESOURCE_UPDATED_SUCCESS')}`)
+          }, 500)
         }
-        await this.$fetch()
-        this.editDialogVisible = false
         this.isLoading = false
       } catch (error) {
         this.editDialogVisible = false
@@ -108,7 +117,7 @@ export default {
         console.log(error)
       }
     },
-    onFilter() {
+    async onFilter() {
       const filter = this.searchQuery
         ? { title: this.searchQuery }
         : { title: '' }
@@ -116,11 +125,11 @@ export default {
         page: 1,
         ...filter,
       })
-      this.$fetch()
+      await this.onClearFilter()
     },
-    onClearFilter() {
+    async onClearFilter() {
       this.searchQuery = ''
-      this.onRefresh()
+      await this.onRefresh()
     },
   },
 }

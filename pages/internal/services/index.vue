@@ -34,7 +34,7 @@
           </div>
           <div class="text-theme-1 mr-5">
             <label for="default-input-service-categories" class="block">
-              {{ $t('services.service-categories.title') }}
+              {{ $t('services.category') }}
             </label>
             <el-select
               v-model="serviceCategoryFilter"
@@ -52,7 +52,7 @@
           </div>
           <div class="mr-5">
             <label for="default-input-author" class="text-theme-1 block">
-              {{ $t('services.author.title') }}
+              {{ $t('services.location') }}
             </label>
             <treeselect
               v-model="locationFilter"
@@ -70,7 +70,7 @@
               :loading="$fetchState.pending"
               @click="onFilter"
             >
-              {{ $t('services.filter') }}
+              {{ $t('common.filter') }}
             </el-button>
             <el-button
               size="large"
@@ -78,7 +78,7 @@
               :loading="$fetchState.pending"
               @click="onClearFilter"
             >
-              {{ $t('services.delete-filter') }}
+              {{ $t('common.delete-filter') }}
             </el-button>
           </div>
         </el-row>
@@ -103,7 +103,7 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
-          <el-table-column :label="$t('services.index.title')" width="320">
+          <el-table-column :label="$t('services.name')" width="320">
             <template slot-scope="scope">
               <p
                 class="m-0 text-gray-500 cursor-pointer hover:text-theme-1"
@@ -112,40 +112,37 @@
                 {{ scope.row.title }}
               </p>
               <p class="m-0 text-gray-400">
-                {{ $t('services.index.created-at') }}
+                {{ $t('common.created_at') }}
                 {{ scope.row.createdAt | formatDateTime }}
               </p>
               <p class="m-0 text-gray-400">
-                {{ $t('services.index.last-updated') }}
+                {{ $t('common.last_updated') }}
                 {{ scope.row.updatedAt | formatDateTime }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('services.index.price')">
+          <el-table-column :label="$t('services.price')">
             <template slot-scope="scope">
               <p>
                 {{ scope.row.price | formatNumber }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('services.index.serviceCategories')">
+          <el-table-column :label="$t('services.category')">
             <template slot-scope="scope">
-              <p style="color: var(--color-theme-1);">
+              <el-button
+                size="mini"
+                class="text-light shadow border-none"
+                :type="fetchCategoryButtonStyle(scope.row.price)"
+              >
                 {{ scope.row.category ? scope.row.category.title : '' }}
-              </p>
+              </el-button>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('services.index.destinations')">
+          <el-table-column :label="$t('services.location')">
             <template slot-scope="scope">
-              <p style="color: var(--color-theme-1);">
+              <p style="color: green;">
                 {{ scope.row.location ? scope.row.location.name : '' }}
-              </p>
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('services.index.createdAt')">
-            <template slot-scope="scope">
-              <p style="color: var(--color-theme-1);">
-                {{ scope.row.createdAt | formatDateTime }}
               </p>
             </template>
           </el-table-column>
@@ -262,5 +259,14 @@
   </el-main>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" scoped src="./style-scoped.scss"></style>
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss">
+.vue-treeselect__control {
+  width: 200px;
+  height: 40px;
+  background: #e6e9f0;
+}
+
+.vue-treeselect__single-value {
+  color: var(--color-theme-1);
+}
+</style>

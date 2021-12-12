@@ -7,7 +7,7 @@ export default {
   layout: 'client',
   head() {
     return {
-      title: this.$t('title.dashboard'),
+      title: this.$t('dashboard'),
     }
   },
 }

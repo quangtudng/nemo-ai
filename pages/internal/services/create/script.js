@@ -1,23 +1,15 @@
 import { mapActions } from 'vuex'
-import { Message } from 'element-ui'
 import {
   FormWrapper,
   InputWrapper,
   Breadcrumb,
   FileUploader,
 } from '~/components/common'
-import { fileMixin, onExitWarningMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
+import { fileMixin } from '~/mixins'
 export default {
   layout: 'internal',
   components: { FormWrapper, InputWrapper, Breadcrumb, FileUploader },
-  mixins: [fileMixin, onExitWarningMixin],
-  middleware({ store, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/')
-    }
-  },
+  mixins: [fileMixin],
   async fetch() {
     try {
       this.isLoading = true
@@ -26,6 +18,7 @@ export default {
         limit: 100,
       })
       const amenities = await this.fetchManyAmenities({ limit: 1000 })
+
       this.amenities = amenities?.data?.data || []
       this.locations = locations?.data || []
       this.serviceCategories = serviceCategories?.data?.data || []
@@ -44,7 +37,7 @@ export default {
         fullAddress: '',
         phoneNumber: '',
         thumbnail: '',
-        price: 0,
+        price: null,
         locationId: null,
         categoryId: null,
         serviceImageUrls: [],
@@ -73,10 +66,7 @@ export default {
       fetchManyAmenities: 'amenity/fetchData',
       submitSingleService: 'service/submitSingle',
     }),
-    async handleFileUploadChange(fileList) {
-      //
-    },
-    async processNewImages() {
+    async uploadNewUrls() {
       try {
         const readyFiles =
           this.imageList?.filter((image) => image.status === 'ready') || []
@@ -88,55 +78,53 @@ export default {
         )
         const newImageArray = response?.data?.data || []
         return newImageArray.map((image) => image.url) || []
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log(error)
         return []
       }
     },
     async processImages() {
       try {
         if (this.imageList?.length > 0) {
-          const newUrls = await this.processNewImages()
-          const existUrls =
-            this.imageList
-              ?.filter((image) => image.status === 'success')
-              ?.map((image) => image.url) || []
-          const allUrls = existUrls?.concat(newUrls) || []
-          if (allUrls.length > 0) {
-            this.form.thumbnail = allUrls[0]
-            this.form.serviceImageUrls = allUrls
+          const newUrls = await this.uploadNewUrls()
+          if (newUrls.length > 0) {
+            this.form.thumbnail = newUrls[0]
+            this.form.serviceImageUrls = newUrls
           }
         } else {
+          // Delete all images if empty
           this.form.thumbnail = ''
           this.form.serviceImageUrls = []
         }
-      } catch (e) {
-        console.log(e)
-        this.form.thumbnail = ''
-        this.form.serviceImageUrls = []
+      } catch (error) {
+        console.log(error)
       }
     },
     async submitService() {
       try {
         this.isLoading = true
         await this.processImages()
-        await this.submitSingleService(this.form)
-        // Reset form
-        this.form = {
-          title: '',
-          description: '',
-          originUrl: '',
-          fullAddress: '',
-          phoneNumber: '',
-          thumbnail: '',
-          price: 0,
-          locationId: null,
-          categoryId: null,
-          serviceImageUrls: [],
-          serviceAmenities: [],
+        const result = await this.submitSingleService(this.form)
+        if (result.status === 201) {
+          // Reset form
+          this.form = {
+            title: '',
+            description: '',
+            originUrl: '',
+            fullAddress: '',
+            phoneNumber: '',
+            thumbnail: '',
+            price: null,
+            locationId: null,
+            categoryId: null,
+            serviceImageUrls: [],
+            serviceAmenities: [],
+          }
+          this.$message.success(`${this.$t('info.RESOURCE_CREATED_SUCCESS')}`)
+          setTimeout(() => {
+            this.$router.push('/internal/services')
+          }, 500)
         }
-        // Redirect back to table list
-        this.$router.push('/internal/services')
         this.isLoading = false
       } catch (err) {
         this.isLoading = false

@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <Breadcrumb :title="$t('services.create.title')" />
+    <Breadcrumb :title="$t('services.edit')" />
     <el-container class="p-3 mb-10">
       <el-row class="w-full">
         <el-col :span="24" class="mx-auto float-none">
@@ -15,9 +15,9 @@
                   <!-- Title -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      Tiêu đề
+                      {{ $t('services.name') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper rules="required|min:5|max:100">
                       <el-input
                         v-model="form.title"
                         class="el-default-input"
@@ -27,9 +27,9 @@
                   <!-- Description -->
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      Mô tả
+                      {{ $t('services.description') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="min:5|max:1000">
                       <el-input
                         v-model="form.description"
                         class="el-default-input"
@@ -42,12 +42,13 @@
                   <!-- Service category -->
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('services.create.serviceCategory') }}
+                      {{ $t('services.category') }}
                     </label>
                     <InputWrapper rules="required">
                       <el-select
                         v-model="form.categoryId"
                         filterable
+                        :placeholder="$t('common.select')"
                         class="el-default-input"
                         style="width: 400px;"
                       >
@@ -63,7 +64,7 @@
                   <!-- Amenity -->
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('services.create.amenities') }}
+                      {{ $t('services.amenities') }}
                     </label>
                     <InputWrapper>
                       <el-select
@@ -85,7 +86,7 @@
                   <!-- Destination -->
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('services.create.destinations') }}
+                      {{ $t('services.location') }}
                     </label>
                     <InputWrapper rules="required">
                       <treeselect
@@ -101,10 +102,12 @@
                   <!-- Price -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      {{ $t('services.create.price') }}
+                      {{ $t('services.price') }}
                       <small>VNĐ</small>
                     </label>
-                    <InputWrapper rules="numeric">
+                    <InputWrapper
+                      rules="numeric|min_value:0|max_value:1000000000"
+                    >
                       <el-input
                         v-model="form.price"
                         class="el-default-input"
@@ -115,9 +118,9 @@
                   <!-- Main page -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      Trang chủ dịch vụ
+                      {{ $t('services.origin') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="min:5|max:200">
                       <el-input
                         v-model="form.originUrl"
                         class="el-default-input"
@@ -127,9 +130,9 @@
                   <!-- Full address -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      Địa chỉ dịch vụ
+                      {{ $t('services.address') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="min:5|max:200">
                       <el-input
                         v-model="form.fullAddress"
                         class="el-default-input"
@@ -139,9 +142,9 @@
                   <!-- Phonenumber -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      Số điện thoại
+                      {{ $t('services.phone') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="phone">
                       <el-input
                         v-model="form.phoneNumber"
                         class="el-default-input"
@@ -154,14 +157,11 @@
                   <!-- Thumbnail -->
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      {{ $t('services.create.thumbnail') }}
+                      {{ $t('services.images') }}
+                      ({{ $t('services.thumbnail') }})
                     </label>
                     <InputWrapper>
-                      <FileUploader
-                        v-model="imageList"
-                        :limit="10"
-                        @my-file-uploader-change="handleFileUploadChange"
-                      />
+                      <FileUploader v-model="imageList" :limit="10" />
                     </InputWrapper>
                   </div>
                   <!-- Submit section area -->
@@ -175,7 +175,7 @@
                       class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                       @click="$router.push('/internal/services')"
                     >
-                      {{ $t('services.create.go-back') }}
+                      {{ $t('common.go-back') }}
                     </el-button>
                     <el-button
                       :loading="isLoading"
@@ -183,7 +183,7 @@
                       type="primary"
                       class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
                     >
-                      {{ $t('services.create.submit') }}
+                      {{ $t('common.edit') }}
                     </el-button>
                   </div>
                 </el-col>

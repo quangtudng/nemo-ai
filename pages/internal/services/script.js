@@ -18,16 +18,6 @@ export default {
       const services = await this.fetchTableData(this.query)
       this.tableData = services?.data?.data || []
       this.tableDataTotal = services?.data?.total || 0
-      // Fetch service categories
-      const serviceCategories = await this.fetchServiceCategories({
-        limit: 100,
-      })
-      this.serviceCategories = serviceCategories?.data?.data || []
-      // Fetch service locations
-      const locations = await this.fetchLocations()
-      if (locations?.data) {
-        this.locations = locations.data
-      }
     } catch (error) {
       console.log(error)
     }
@@ -40,7 +30,7 @@ export default {
   },
   data() {
     return {
-      searchQuery: null,
+      searchQuery: '',
       serviceCategoryFilter: null,
       serviceCategories: [],
       locations: [],
@@ -54,22 +44,31 @@ export default {
       },
       detailPageVisible: false,
       form: {
-        title: null,
-        description: null,
-        originUrl: null,
-        fullAddress: null,
-        phoneNumber: null,
-        thumbnail: null,
-        price: null,
-        locationName: null,
-        categoryName: null,
+        title: '',
+        description: '',
+        originUrl: '',
+        fullAddress: '',
+        phoneNumber: '',
+        thumbnail: '',
+        price: 0,
+        locationName: '',
+        categoryName: '',
         serviceAmenities: [],
       },
     }
   },
   async created() {
     this.isLoading = true
-    await this.fetchServiceCategories()
+    // Fetch service categories
+    const serviceCategories = await this.fetchServiceCategories({
+      limit: 100,
+    })
+    this.serviceCategories = serviceCategories?.data?.data || []
+    // Fetch service locations
+    const locations = await this.fetchLocations()
+    if (locations?.data) {
+      this.locations = locations.data
+    }
     this.isLoading = false
   },
   computed: {
@@ -87,41 +86,36 @@ export default {
     }),
     onDetailView(row) {
       this.detailPageVisible = true
-      this.form.title = row.title || null
-      this.form.description = row.description || null
-      this.form.originUrl = row.originUrl || null
-      this.form.fullAddress = row.fullAddress || null
-      this.form.phoneNumber = row.phoneNumber || null
-      this.form.categoryName = row.category?.title || null
+      this.form.title = row.title || ''
+      this.form.description = row.description || ''
+      this.form.originUrl = row.originUrl || ''
+      this.form.fullAddress = row.fullAddress || ''
+      this.form.phoneNumber = row.phoneNumber || ''
+      this.form.categoryName = row.category?.title || ''
       this.form.locationName = row.location?.name || 'Việt Nam'
       this.form.serviceAmenities = row.amenities || []
-      console.log(row)
     },
     onEdit(payload) {
       this.$router.push(`/internal/services/${payload.rowData.id}/edit`)
     },
     onDelete(payload) {
       try {
-        this.$confirm(
-          'Do you want to delete this service. This action cannot be reversed',
-          'Warning',
-          {
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
+        this.$confirm(this.$t('validation.delete_confirmation'), 'Warning', {
+          confirmButtonText: this.$t('common.delete'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }).then(async () => {
+          const result = await this.deleteSingleService(payload.rowData.id)
+          if (result.status === 200) {
+            this.$message.success(this.$t('info.RESOURCE_DELETED_SUCCESS'))
           }
-        ).then(async () => {
-          await this.onConfirmDelete(payload.rowData.id)
+          await this.onClearFilter()
         })
       } catch (error) {
         console.log(error)
       }
     },
-    async onConfirmDelete(id) {
-      await this.deleteSingleService(id)
-      await this.$fetch()
-    },
-    onFilter() {
+    async onFilter() {
       const locationId = this.locationFilter || 0
       const categoryId = this.serviceCategoryFilter || 0
       const filter = this.searchQuery
@@ -131,24 +125,48 @@ export default {
         page: 1,
         ...filter,
       })
-      this.$fetch()
+      await this.$fetch()
     },
-    onClearFilter() {
+    async onClearFilter() {
       this.locationFilter = null
       this.serviceCategoryFilter = null
-      this.searchQuery = null
-      this.onRefresh()
+      this.searchQuery = ''
+      await this.onRefresh()
+    },
+    fetchCategoryButtonStyle(price) {
+      let colorClass
+      if (!price) {
+        colorClass = 'danger'
+      } else if (price > 100000 && price < 1000000) {
+        colorClass = 'warning'
+      } else {
+        colorClass = 'success'
+      }
+      return colorClass
     },
     handleExcelUpload(fileList) {
       try {
         this.$confirm('Do you want to upload this excel file', 'Warning', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
+          confirmButtonText: this.$t('common.delete'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         }).then(async () => {
           if (fileList && fileList.length) {
             const file = fileList[0]?.raw
-            await this.uploadServiceExcel([file])
+            const result = await this.uploadServiceExcel([file])
+            if (result.status === 201) {
+              setTimeout(() => {
+                this.$message.success(
+                  `${this.$t('info.RESOURCE_CREATED_SUCCESS')}`
+                )
+              }, 500)
+            } else {
+              setTimeout(() => {
+                this.$message.success(
+                  `${this.$t('info.RESOURCE_CREATED_FAILED')}`
+                )
+              }, 500)
+            }
           }
         })
       } catch (error) {

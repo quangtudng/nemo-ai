@@ -87,11 +87,19 @@ export default {
       const isFileValid = this.types && this.types.includes(file.raw.type)
       const supportedFile = this.types?.join() || ''
       if (!isFileValid) {
-        this.$message.error(`File not supported (Supported: ${supportedFile})`)
+        setTimeout(() => {
+          this.$message.error(
+            `${this.$t('validation.file_not_supported')} (${supportedFile})`
+          )
+        }, 100)
         this.handleRemove(file)
       }
       if (!isSizeValid) {
-        this.$message.error(this.$t('validate.file.size') + this.maxSize + 'Mb')
+        setTimeout(() => {
+          this.$message.error(
+            `${this.$t('validation.file_size_too_large')} (${this.maxSize}Mb)`
+          )
+        }, 100)
         this.handleRemove(file)
       }
       return isSizeValid && isFileValid
@@ -116,7 +124,11 @@ export default {
       this.dialogVisible = true
     },
     handleExceed(files, fileList) {
-      this.$message.error(`Maxmium file limit (Limit: ${this.limit})`)
+      setTimeout(() => {
+        this.$message.error(
+          `${this.$t('validation.file_limit_reached')}: ${this.limit} file`
+        )
+      }, 100)
     },
   },
 }
