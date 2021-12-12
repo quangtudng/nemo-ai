@@ -1,26 +1,58 @@
 {
     "data": [
         {
-            "title": "sidebar.user.title",
-            "icon": "el-icon-document",
+            "title": "sidebar.main",
+            "icon": "el-icon-s-data",
             "icon-color": "var(--color-theme-1)",
-            "to": "/users",
-            "role": "SUPERADMIN",
+            "to": "/internal",
+            "role": "SUPERADMIN|MODERATOR|AGENT",
             "children": []
         },
         {
-            "title": "sidebar.service.title",
+            "title": "sidebar.user",
+            "icon": "el-icon-user-solid",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/internal/users",
+            "role": "SUPERADMIN|MODERATOR",
+            "children": []
+        },
+        {
+            "title": "sidebar.location",
+            "icon": "el-icon-picture",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/internal/locations",
+            "role": "SUPERADMIN|MODERATOR|AGENT",
+            "children": []
+        },
+        {
+            "title": "sidebar.category",
+            "icon": "el-icon-s-flag",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/internal/categories",
+            "role": "SUPERADMIN|MODERATOR",
+            "children": []
+        },
+        {
+          "title": "sidebar.amenity",
+          "icon": "el-icon-goods",
+          "icon-color": "var(--color-theme-1)",
+          "to": "/internal/amenities",
+          "role": "SUPERADMIN|MODERATOR",
+          "children": []
+        },
+        {
+            "title": "sidebar.service",
             "icon": "el-icon-bangzhu",
             "icon-color": "var(--color-theme-1)",
-            "to": "/services",
-            "role": "SUPERADMIN",
+            "to": "/internal/services",
+            "role": "SUPERADMIN|MODERATOR|AGENT",
             "children": []
         },
         {
-            "title": "sidebar.settings.title",
+            "title": "sidebar.setting",
             "icon": "el-icon-s-tools",
             "icon-color": "var(--color-theme-1)",
-            "to": "/settings",
+            "to": "/internal/settings",
             "role": "SUPERADMIN",
             "children": []
         }

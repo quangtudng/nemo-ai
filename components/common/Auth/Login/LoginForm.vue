@@ -11,7 +11,7 @@
           id="login-input-email"
           v-model="form.email"
           type="tel"
-          :placeholder="$t('login.email') + '...'"
+          :placeholder="$t('login.email')"
         ></el-input>
       </InputWrapper>
       <InputWrapper
@@ -24,7 +24,7 @@
           id="login-input-password"
           v-model="form.password"
           type="password"
-          :placeholder="$t('login.password') + '...'"
+          :placeholder="$t('login.password')"
         ></el-input>
       </InputWrapper>
       <div style="margin-top: 10px;">
@@ -34,9 +34,6 @@
         >
           {{ $t('login.remember') }}
         </el-checkbox>
-        <nuxt-link to="" class="float-right login-input-forgot-password">
-          {{ $t('login.forgot-password') }}
-        </nuxt-link>
       </div>
       <div class="text-center flex justify-center" style="margin-top: 89px;">
         <el-button

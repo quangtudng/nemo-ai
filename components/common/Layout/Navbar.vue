@@ -97,11 +97,11 @@ export default {
       this[command]()
     },
     logout() {
-      this.$router.push('/login')
+      this.$router.push('/internal/login')
       this.$store.dispatch('auth/logout')
     },
     me() {
-      this.$router.push('/me')
+      this.$router.push('/internal/me')
     },
   },
 }

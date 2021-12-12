@@ -19,14 +19,14 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: 'Sanna Tour JSC',
+    title: 'NemoAI',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: 'Sanna Tour JSC',
+        content: 'NemoAI',
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
@@ -76,9 +76,12 @@ export default {
     '@/plugins/element-ui',
     '~/plugins/i18n.js',
     '~/plugins/vee-validate.js',
+    '~/plugins/vue2-google-maps.js',
+    { src: '~/plugins/vue-tree-select.js', ssr: false },
     // Utilities
     '~/utils/bus.js', // Event bus
     '~/utils/filters.js', // Filters for custom text formating
+    '~/utils/accent.js', // Convert vietnamese character to ASCII character
     '~/mixins' // Global helper functions, use this.function_name() in your component
   ],
   /*
@@ -133,7 +136,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    transpile: [/^element-ui/, 'vee-validate'],
+    transpile: [/^element-ui/, 'vee-validate', /^vue2-google-maps($|\/)/],
     /*
      ** You can extend webpack config here
      */

@@ -1,14 +1,13 @@
 <template>
-  <el-main>
-    <!--  -->
-  </el-main>
+  <p>Nothing here yet</p>
 </template>
 <script>
 export default {
   name: 'Home',
+  layout: 'client',
   head() {
     return {
-      title: this.$t('title.dashboard'),
+      title: this.$t('dashboard'),
     }
   },
 }

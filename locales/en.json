@@ -1,251 +1,135 @@
 {
-  "title": {
-    "dashboard": "Sanna Tour JSC | Dashboard"
-  },
-  "warning": {
-    "exit": "Make sure you've save all your work before exiting"
-  },
-  "validate": {
-    "email": "Wrong email format!",
-    "required": "This field is required!",
-    "numeric": "This field must be a number!"
-  },
-  "error": {
-    "INVALID_PHONE_PASSWORD": "Your credentials are invalid",
-    "NOT_UPDATE_YOURSELF": "You cannot update yourself in here, go to profile page",
-    "NOT_DELETE_YOURSELF": "You cannot delete yourself!",
-    "UNAUTHORIZED": "You are not authorized",
-    "INCORRECT_PHONE_PASSWORD": "Wrong phone number or password",
-    "INCORRECT_EMAIL_PASSWORD": "Wrong email or password",
-    "IS_NOT_ACTIVE": "This is not active",
-    "IS_EXPIRED_TOKEN": "Your session has been expired",
-    "CONFLICT": "There're some conflicts happening",
-    "VIOLATE_FOREIGN_KEY_CONSTRAINT": "Violate foreign key constant",
-    "NOT_EXIST_FOREIGN_KEY": "Foreign key does not exist",
-    "ALREADY_EXIST": "Already exist",
-    "BAD_REQUEST": "Bad request",
-    "IS_NOT_EFFECTED": "Your request is not affected",
-    "IS_NOT_EMPTY": "IS_NOT_EMPTY",
-    "IS_EMPTY": "IS_EMPTY",
-    "IS_MOBILE_PHONE": "Wrong phone number format",
-    "IS_EMAIL": "Wrong email format",
-    "IS_STRING": "Must be a string",
-    "IS_NUMBER": "Must be a number",
-    "IS_INT": "Must be a integer",
-    "IS_BOOLEAN": "Must be a boolean",
-    "IS_ARRAY": "Must be an array",
-    "IS_DATE_STRING": "Must be a date string",
-    "IS_ENUM": "Must be an enum",
-    "IS_IN": "IS_IN",
-    "IS_NOT_IN": "IS_IN",
-    "IS_LATITUDE": "IS_LATITUDE",
-    "IS_LONGITUDE": "IS_LONGITUDE",
-    "IS_LAT_LONG": "IS_LAT_LONG",
-    "INTERNAL_SERVER_ERROR": "Internal server error",
-    "REQUEST_TIMEOUT": "Request time out",
-    "METHOD_NOT_ALLOWED": "Method not allowed",
-    "NOT_FOUND": "Not found",
-    "FORBIDDEN": "Forbidden"
-  },
-  "navbar": {
-    "login": "Login",
-    "logout": "Logout",
-    "profile": "Profile",
-    "dashboard": "Dashboard"
-  },
-  "sidebar": {
-    "status": {
-      "online": "Online",
-      "offline": "Offline"
-    },
-    "user": {
-      "title": "User management"
-    },
-    "service": {
-      "title": "Service management"
-    },
-    "settings": {
-      "title": "Settings"
-    }
-  },
-  "footer": "Copyright 2020 by Sanna Tour JSC.com",
+  "dashboard": "NemoAI | Travelling Assistant",
   "login": {
     "title": "Log in",
     "email": "Email *",
     "password": "Your password *",
     "button": "Log in",
-    "remember": "Remember me",
-    "forgot-password": "Forgot password?",
-    "as-salesmen": "As salesmen",
-    "role-warn": "Login page for admins"
+    "remember": "Remember me"
   },
-  "home": {
-    "title": "Welcome",
-    "lang": "Eng",
-    "introduction": "This is an introduction in English.",
-    "navbar": "This is a navbar",
-    "header": "This is a header",
-    "sidebar": "This is a sidebar"
+  "sidebar": {
+    "online": "Online",
+    "main": "Main page",
+    "user": "System users",
+    "role": "System roles",
+    "location": "Service locations",
+    "category": "Categories",
+    "service": "Service catalog",
+    "amenity": "Amenity builder",
+    "setting": "System setting"
   },
-  "roles": {
-    "title": "Role management",
-    "index": {
-      "name": "Role name",
-      "description": "Role description"
-    },
-    "create": {
-      "title": "Create new role",
-      "name": "Role name",
-      "description": "Role description",
-      "permissions": "Role's permissions",
-      "go-back": "Go back",
-      "submit": "Add new"
-    },
-    "edit": {
-      "title": "Update role",
-      "name": "Role name",
-      "description": "Role description",
-      "permissions": "Role's permissions",
-      "go-back": "Go back",
-      "submit": "Update"
-    }
+  "navbar": {
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "common": {
+    "filter": "Filter",
+    "delete-filter": "Delete filter",
+    "add-new": "Add new",
+    "go-back": "Go back",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "select": "Select",
+    "created_at": "Created at",
+    "last_updated": "Last updated",
+    "upload": "Upload"
+  },
+  "validation": {
+    "required": "Field value required",
+    "email": "Field value must be an email",
+    "numeric": "Field value must be a positive number",
+    "delete_confirmation": "You are about to permanently delete this resource. This action cannot be reversed",
+    "upload_confirmation": "Do you want to import new services through this excel file ?",
+    "exit_confirmation": "You are about to leave this page. Please make sure you have saved everything",
+    "delete_self": "You cannot delete yourself from the system",
+    "delete_admin": "You cannot delete administrators",
+    "file_not_supported": "File not supported",
+    "file_size_too_large": "File size is too large",
+    "file_limit_reached": "File limit reached",
+    "value_too_short": "Field value is too short",
+    "value_too_long": "Field value is too long",
+    "value_too_small": "Field value is too small",
+    "value_too_large": "Field value is too large",
+    "invalid_phone_number": "Field value must be an valid phonenumber"
+  },
+  "info": {
+    "RESOURCE_CREATED_SUCCESS": "System resource created successfully",
+    "RESOURCE_DELETED_SUCCESS": "System resource deleted successfully",
+    "RESOURCE_UPDATED_SUCCESS": "System resource updated successfully",
+    "ACCOUNT_DISABLED": "Account disabled",
+    "ACCOUNT_NOT_DISABLED": "Account not disabled"
+  },
+  "error": {
+    "INCORRECT_CREDENTIAL": "The provided credential is incorrect",
+    "UNKNOWN_SERVER_ERROR": "Unknown server error",
+    "UNAUTHORIZED": "Unauthorized access. Some features may not be working correctly. Please login again",
+    "QUERY_ERROR": "System query error. Please try again at a later time",
+    "PERMISSION_DENIED": "Unauthorized access. You cannot access to this content at this moment",
+    "FILE_UPLOADED_FAILED": "An error has occurred while trying to upload your image. Please try again",
+    "RESOURCE_CREATED_FAILED": "An error has occurred while trying to submit. Please try again",
+    "DUPLICATED": "Resource information is duplicated with another. Please check again"
   },
   "users": {
-    "title": "Users management",
-    "add-new": "Add new",
-    "roles": "Roles management",
-    "list": "Users list",
-    "delete": "Delete user",
-    "search": "Search user",
-    "deleted": "Deleted users",
-    "filter": "Filter",
-    "delete-filter": "Delete filter",
-    "role": {
-      "title": "Role",
-      "SUPERADMIN": "Administrator",
-      "MODERATOR": "Moderator",
-      "AGENT": "Company Agent"
-    },
-    "index": {
-      "fullname": "Full name",
-      "phone": "Phone number",
-      "email": "Email",
-      "createdAt": "Created at"
-    },
-    "create": {
-      "title": "Add new user",
-      "avatar": "Avatar",
-      "fullName": "Full name",
-      "email": "Email",
-      "password": "Password",
-      "phone": "Phone",
-      "gender": "Gender",
-      "gender-male": "Male",
-      "gender-female": "Female",
-      "birthday": "Birthday",
-      "address": "Address",
-      "bio": "Bio",
-      "status": "Status",
-      "role": "Role",
-      "note": "Note",
-      "go-back": "Go back",
-      "submit": "Add user"
-    },
-    "edit": {
-      "title": "Edit user information",
-      "avatar": "Avatar",
-      "fullName": "Full name",
-      "email": "Email",
-      "password": "New password (leave for no change)",
-      "phone": "Phone",
-      "gender": "Gender",
-      "gender-male": "Male",
-      "gender-female": "Female",
-      "birthday": "Birthday",
-      "address": "Address",
-      "bio": "Bio",
-      "status": "Status",
-      "role": "Role",
-      "note": "Note",
-      "go-back": "Go back",
-      "submit": "Update user"
-    }
+    "title": "User management",
+    "edit": "Edit profile",
+    "search": "Finding users",
+    "roles": "User roles",
+    "role": "User role",
+    "fullname": "Fullname",
+    "status": "Status",
+    "phonenumber": "Phonenumber",
+    "password": "Password",
+    "bio": "Bio (Optional)",
+    "avatar": "Avatar (Optional)"
+  },
+  "role": {
+    "SUPERADMIN": "Superadmin",
+    "MODERATOR": "Moderator",
+    "AGENT": "Travel Agent"
+  },
+  "locations": {
+    "title": "Location management",
+    "search": "Finding locations",
+    "label": "Label",
+    "type": "Location type",
+    "description": "Location description",
+    "country": "Country",
+    "province": "Province",
+    "city": "City",
+    "category": "Categories",
+    "service_count": "Service count"
+  },
+  "categories": {
+    "title": "Category management",
+    "search": "Finding categories",
+    "name": "Name",
+    "description": "Description",
+    "create-new": "Create new amenity",
+    "edit": "Edit category"
+  },
+  "amenities": {
+    "title": "Amenity management",
+    "search": "Finding amenities",
+    "name": "Name",
+    "description": "Description",
+    "create-new": "Create new amenity",
+    "edit": "Edit amenity"
   },
   "services": {
-    "title": "Services management",
-    "add-new": "Add new",
-    "list": "Services list",
-    "delete": "Delete service",
-    "search": "Search service",
-    "deleted": "Deleted services",
-    "filter": "Filter",
-    "delete-filter": "Delete filter",
-    "minimum-tabs": "Minimum number of contents is 1",
-    "delete-content-warning": "Are you sure you want to delete this?",
-    "delete-content-ok": "Accept",
-    "delete-content-cancel": "Cancel",
-    "delete-content-success": "Content deleted successfully",
-    "delete-content-abort": "Content deletion aborted",
-    "author": {
-      "title": "Authors"
-    },
-    "service-categories": {
-      "title": "Service categories"
-    },
-    "index": {
-      "title": "Title",
-      "created-at": "Created at: ",
-      "last-updated": "Last updated at: ",
-      "netPrice": "Net price",
-      "price": "Price",
-      "currentPrice": "Current price",
-      "serviceCategories": "Service category",
-      "destinations": "Destinations"
-    },
-    "create": {
-      "title": "Add new service",
-      "thumbnail": "Images (First one is thumbnail)",
-      "content-tab": "Content ",
-      "netPrice": "Net price",
-      "price": "Price",
-      "currentPrice": "Current price",
-      "serviceCategory": "Service category",
-      "destinations": "Destinations",
-      "note": "Note",
-      "status": "Status",
-      "go-back": "Go back",
-      "submit": "Add user"
-    },
-    "edit": {
-      "title": "Edit service detail",
-      "thumbnail": "Images (First one is thumbnail)",
-      "content-tab": "Content ",
-      "netPrice": "Net price",
-      "price": "Price",
-      "currentPrice": "Current price",
-      "serviceCategory": "Service category",
-      "destinations": "Destinations",
-      "note": "Note",
-      "status": "Status",
-      "go-back": "Go back",
-      "submit": "Update user"
-    }
-  },
-  "components": {
-    "card": {
-      "status": {
-        "since-last-month": "Since last month"
-      }
-    },
-    "table": {
-      "data": {
-        "title": "Data table",
-        "add-new": "Add new",
-        "edit": "Edit",
-        "delete": "Delete",
-        "restore": "Restore",
-        "delete-pernamently": "Delete pernamently"
-      }
-    }
+    "title": "Service management",
+    "search": "Finding services",
+    "category": "Service category",
+    "location": "Location service",
+    "name": "Name",
+    "description": "Description",
+    "price": "Service price",
+    "amenities": "Service amenities",
+    "address": "Service address",
+    "images": "Service images",
+    "thumbnail": "First image will be thumbnail",
+    "phone": "Phonenumber",
+    "origin": "Main page",
+    "edit": "Edit service"
   }
 }

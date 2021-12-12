@@ -1,19 +1,35 @@
 import { Message } from 'element-ui'
+import Cookies from 'js-cookie'
+
 export default function ({ $axios, app }, inject) {
-  const fileApi = (signedRequest, file) => {
+  const fileApi = (endpoint, files, folderPrefix = '') => {
     try {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.DEBUG === 'true') {
         Message('DevOnly | File uploading API executed')
       }
-      return $axios.put(signedRequest, file, {
+      let token = ''
+      try {
+        const authString = Cookies.get('auth')
+        token = authString && JSON.parse(authString)?.accessToken
+      } catch (error) {
+        console.log(error)
+      }
+      const formData = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        formData.append('file', file)
+      }
+      if (folderPrefix) {
+        formData.append('folder', folderPrefix)
+      }
+      return $axios.post(endpoint, formData, {
         headers: {
-          'Content-Type': file.type,
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + token,
         },
       })
     } catch (error) {
-      error.response.data.message.forEach((message) => {
-        Message.error(app.i18n.t('error.' + message.code))
-      })
+      console.log(error)
     }
   }
   // Inject to context as $fileUploadApi

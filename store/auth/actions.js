@@ -1,23 +1,26 @@
+import Cookies from 'js-cookie'
+
 export default {
   fetchMe() {
     return this.$authApi.get('/auth/me')
   },
-  updateMe({ rootState, dispatch }, form) {
+  updateMe({ rootState }, form) {
     return this.$authApi.post('/auth/me', form)
   },
-  async login({ commit, dispatch }, { form, rememberPassword }) {
+  async login({ commit }, { form, rememberPassword }) {
     const response = await this.$clientApi.post('/auth/signin', form)
-    const auth = response.data
-    if (rememberPassword) {
-      localStorage.setItem('auth', JSON.stringify(auth))
-    } else {
-      sessionStorage.setItem('auth', JSON.stringify(auth))
+    const authData = response.data
+    if (authData) {
+      if (rememberPassword) {
+        Cookies.set('auth', JSON.stringify(authData), { expires: 30 })
+      } else {
+        Cookies.set('auth', JSON.stringify(authData), { expires: 1 })
+      }
+      commit('auth/SET_AUTH', authData, { root: true })
     }
-    commit('auth/SET_AUTH', auth, { root: true }) // Mutating to store for client rendering
   },
   logout({ commit }) {
-    localStorage.removeItem('auth')
-    sessionStorage.removeItem('auth')
+    Cookies.remove('auth')
     commit('auth/SET_AUTH', null, { root: true })
   },
 }
