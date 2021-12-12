@@ -57,7 +57,6 @@ export default {
     },
     async processImage() {
       try {
-        this.isLoading = true
         if (this.imageList?.length > 0) {
           const rawFile = await this.imageList[0]?.raw
           const response = await this.$fileApi(
@@ -73,10 +72,8 @@ export default {
         } else {
           this.form.avatar = ''
         }
-        this.isLoading = false
-      } catch (e) {
-        this.isLoading = false
-        console.log(e)
+      } catch (error) {
+        console.log(error)
       }
     },
     async submitUpdate() {
@@ -86,10 +83,16 @@ export default {
         }
         this.isLoading = true
         await this.processImage()
-        await this.updateMe(this.form)
+        const result = await this.updateMe(this.form)
+        if (result.status === 201) {
+          this.$message.success(`${this.$t('info.RESOURCE_UPDATED_SUCCESS')}`)
+          setTimeout(() => {
+            this.$router.push('/internal')
+          }, 500)
+        }
         this.isLoading = false
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log(error)
         this.isLoading = false
       }
     },

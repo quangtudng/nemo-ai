@@ -17,7 +17,7 @@
             </h2>
             <p class="default-header-avatar-status">
               <fa class="text-success" :icon="['fas', 'dot-circle']" />
-              <span>{{ $t('sidebar.status.online') }}</span>
+              <span>{{ $t('sidebar.online') }}</span>
             </p>
           </div>
           <div v-else>

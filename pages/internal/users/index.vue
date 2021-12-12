@@ -11,14 +11,6 @@
             <fa :icon="['fas', 'home']" />
           </nuxt-link>
         </div>
-        <el-button
-          size="large"
-          class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none float-right mt-3"
-          :loading="$fetchState.pending"
-          @click="$router.push('/internal/roles')"
-        >
-          {{ $t('users.roles') }}
-        </el-button>
       </el-row>
     </el-container>
     <el-container class="p-3">
@@ -40,17 +32,17 @@
           </div>
           <div class="text-theme-1 mr-5">
             <label for="default-input-role" class="block">
-              {{ $t('users.role.title') }}
+              {{ $t('users.roles') }}
             </label>
             <el-select
               v-model="roleQuery"
               class="el-default-input"
-              :placeholder="$t('users.role.title')"
+              :placeholder="$t('common.select')"
             >
               <el-option
                 v-for="role in roles"
                 :key="'role-' + role.id"
-                :label="$t('users.role.' + role.label)"
+                :label="$t('role.' + role.label)"
                 :value="role.id"
               >
               </el-option>
@@ -63,7 +55,7 @@
               :loading="$fetchState.pending"
               @click="onFilter"
             >
-              {{ $t('users.filter') }}
+              {{ $t('common.filter') }}
             </el-button>
             <el-button
               size="large"
@@ -71,7 +63,7 @@
               :loading="$fetchState.pending"
               @click="onClearFilter"
             >
-              {{ $t('users.delete-filter') }}
+              {{ $t('common.delete-filter') }}
             </el-button>
           </div>
         </el-row>
@@ -96,20 +88,27 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
+          <el-table-column :label="$t('users.fullname')" prop="fullname" />
           <el-table-column
-            :label="$t('users.index.fullname')"
-            prop="fullname"
-          />
-          <el-table-column :label="$t('users.index.status')" prop="status">
+            :label="$t('users.status')"
+            prop="status"
+            width="100"
+          >
             <template slot-scope="scope">
-              <el-tooltip content="User is active" placement="top">
+              <el-tooltip
+                :content="$t('info.ACCOUNT_DISABLED')"
+                placement="top"
+              >
                 <fa
                   v-if="scope.row.status"
                   :icon="['fas', 'check-circle']"
                   style="color: green;"
                 />
               </el-tooltip>
-              <el-tooltip content="User is disabled" placement="top">
+              <el-tooltip
+                :content="$t('info.ACCOUNT_NOT_DISABLED')"
+                placement="top"
+              >
                 <fa
                   v-if="!scope.row.status"
                   :icon="['fas', 'times-circle']"
@@ -119,22 +118,30 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('users.index.phonenumber')"
+            :label="$t('users.phonenumber')"
             prop="phoneNumber"
           />
-          <el-table-column :label="$t('users.index.email')" prop="email">
+          <el-table-column label="Email">
             <template slot-scope="scope">
               <p style="color: green;">
                 {{ scope.row.email }}
               </p>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('users.index.role')" prop="role.label" />
+          <el-table-column :label="$t('users.role')">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                class="text-light shadow border-none"
+                :type="fetchRoleButtonStyle(scope.row.role.label)"
+              >
+                {{ $t('role.' + scope.row.role.label) }}
+              </el-button>
+            </template>
+          </el-table-column>
         </DataTable>
       </el-card>
     </el-container>
   </el-main>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" scoped src="./style-scoped.scss"></style>
-<style lang="scss" src="./style.scss"></style>

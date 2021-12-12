@@ -15,4 +15,8 @@ export default {
       return { raw: newImage }
     },
   },
+  // This is a method to process the image and distinct the existing urls and new urls into one array
+  processUploadingImage(fileList) {
+    //
+  },
 }

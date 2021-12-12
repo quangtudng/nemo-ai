@@ -9,9 +9,8 @@ export default {
   name: 'Home',
   head() {
     return {
-      title: this.$t('title.dashboard'),
+      title: this.$t('dashboard'),
     }
   },
-  middleware: ['internalRedirect'],
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <Breadcrumb :title="$t('users.edit.title')" />
+    <Breadcrumb :title="$t('users.edit')" />
     <el-container class="p-3 mb-10">
       <el-row class="w-full">
         <el-col :span="24" class="mx-auto float-none">
@@ -14,9 +14,9 @@
                 <el-col :span="14">
                   <div class="mt-5">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.fullName') }}
+                      {{ $t('users.fullname') }}
                     </label>
-                    <InputWrapper rules="required">
+                    <InputWrapper rules="required|min:5|max:30">
                       <el-input
                         v-model="form.fullname"
                         class="el-default-input"
@@ -25,7 +25,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.email') }}
+                      Email
                     </label>
                     <el-input
                       v-model="form.email"
@@ -35,9 +35,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.password') }}
+                      {{ $t('users.password') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="min:5|max:100">
                       <el-input
                         v-model="form.password"
                         show-password
@@ -47,9 +47,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.phone') }}
+                      {{ $t('users.phonenumber') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="phone">
                       <el-input
                         v-model="form.phoneNumber"
                         class="el-default-input"
@@ -58,18 +58,19 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.role') }}
+                      {{ $t('users.role') }}
                     </label>
                     <div>
                       <el-select
                         v-model="form.roleId"
                         class="el-default-input"
                         :disabled="true"
+                        :placeholder="$t('common.select')"
                       >
                         <el-option
                           v-for="role in roles"
                           :key="'role-' + role.id"
-                          :label="$t('users.role.' + role.label)"
+                          :label="$t('role.' + role.label)"
                           :value="role.id"
                         >
                         </el-option>
@@ -78,9 +79,9 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.bio') }}
+                      {{ $t('users.bio') }}
                     </label>
-                    <InputWrapper>
+                    <InputWrapper rules="min:5|max:1000">
                       <el-input
                         v-model="form.bio"
                         class="el-default-input"
@@ -92,7 +93,7 @@
                   </div>
                   <div class="mt-10">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.status') }}
+                      {{ $t('users.status') }}
                     </label>
                     <el-switch
                       v-model="form.status"
@@ -107,7 +108,7 @@
                 <el-col :span="10">
                   <div class="mt-5 pl-5">
                     <label class="text-theme-1">
-                      {{ $t('users.edit.avatar') }}
+                      {{ $t('users.avatar') }}
                     </label>
                     <InputWrapper>
                       <FileUploader
@@ -127,7 +128,7 @@
                       class="bg-gray-200 text-theme-1 hover:bg-gray-300 shadow border-none"
                       @click="$router.push('/internal')"
                     >
-                      {{ $t('users.edit.go-back') }}
+                      {{ $t('common.go-back') }}
                     </el-button>
                     <el-button
                       :loading="isLoading"
@@ -135,7 +136,7 @@
                       type="primary"
                       class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
                     >
-                      {{ $t('users.edit.submit') }}
+                      {{ $t('common.edit') }}
                     </el-button>
                   </div>
                 </el-col>

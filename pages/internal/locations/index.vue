@@ -51,11 +51,11 @@
                   <div>
                     <em
                       v-if="data.type === 'country' || data.type === 'province'"
-                      class="el-icon-s-cooperation text-gray-400"
+                      class="el-icon-s-cooperation text-brown"
                     ></em>
                     <em
                       v-if="data.type === 'city'"
-                      class="el-icon-location text-gray-500"
+                      class="el-icon-location text-danger"
                     ></em>
                     <span
                       :class="
@@ -85,9 +85,9 @@
                   <el-col :span="24">
                     <div class="mt-10">
                       <label class="text-theme-1">
-                        {{ $t('locations.edit.label') }}
+                        {{ $t('locations.label') }}
                       </label>
-                      <InputWrapper rules="required">
+                      <InputWrapper>
                         <el-input
                           v-model="form.name"
                           :disabled="true"
@@ -97,9 +97,9 @@
                     </div>
                     <div class="mt-10">
                       <label class="text-theme-1">
-                        {{ $t('locations.edit.type') }}
+                        {{ $t('locations.type') }}
                       </label>
-                      <InputWrapper rules="required">
+                      <InputWrapper>
                         <el-input
                           v-model="form.type"
                           :disabled="true"
@@ -109,9 +109,9 @@
                     </div>
                     <div class="mt-10">
                       <label class="text-theme-1">
-                        {{ $t('locations.edit.description') }}
+                        {{ $t('locations.description') }}
                       </label>
-                      <InputWrapper>
+                      <InputWrapper rules="min:5|max:1000">
                         <el-input
                           v-model="form.description"
                           class="el-default-input"
@@ -162,11 +162,14 @@
                         </el-table-column>
                         <el-table-column
                           prop="category_title"
-                          label="Loại hình dịch vụ"
+                          :label="$t('locations.category')"
                           width="180"
                         >
                         </el-table-column>
-                        <el-table-column prop="count" label="Số lượng dịch vụ">
+                        <el-table-column
+                          prop="count"
+                          :label="$t('locations.service_count')"
+                        >
                         </el-table-column>
                       </el-table>
                     </div>
@@ -178,7 +181,7 @@
                         type="primary"
                         class="login-input-submit bg-theme-1 hover:bg-theme-1-700"
                       >
-                        Save
+                        {{ $t('common.edit') }}
                       </el-button>
                     </div>
                   </el-col>
@@ -192,5 +195,22 @@
   </el-main>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" scoped src="./style-scoped.scss"></style>
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss">
+.el-override-input {
+  .el-input__inner {
+    border-radius: 0px !important;
+    background: #fff;
+  }
+}
+.is-current {
+  background: #fff !important;
+}
+.location-dialog {
+  .el-dialog__header {
+    text-align: left;
+  }
+  .el-dialog__body {
+    padding: 0;
+  }
+}
+</style>

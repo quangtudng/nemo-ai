@@ -1,4 +1,6 @@
 import { Message } from 'element-ui'
+import Cookies from 'js-cookie'
+
 export default function ({ $axios, store, app }, inject) {
   // Create a custom axios instance
   const authApi = $axios.create({
@@ -10,23 +12,34 @@ export default function ({ $axios, store, app }, inject) {
     },
   })
   authApi.onRequest((config) => {
-    config.headers.Authorization = 'Bearer ' + store.state.auth.data.accessToken
-    if (process.env.NODE_ENV === 'development') {
-      Message('DevOnly | Authenticated API executed')
+    let token = ''
+    try {
+      const authString = Cookies.get('auth')
+      token = authString && JSON.parse(authString)?.accessToken
+    } catch (error) {
+      console.log(error)
+    }
+    config.headers.Authorization = 'Bearer ' + token
+    if (process.env.DEBUG === 'true') {
+      setTimeout(() => {
+        Message('DevOnly | Authenticated API executed')
+      }, 100)
     }
     // Must return config
     return config
   })
   authApi.onResponse((response) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.DEBUG === 'true') {
       console.log(response)
     }
     // Must return config
     return response
   })
   authApi.onError((error) => {
-    if (process.env.NODE_ENV === 'development') {
-      Message.error('DevOnly | Authenticated API failed to execute')
+    if (process.env.DEBUG === 'true') {
+      setTimeout(() => {
+        Message.error('DevOnly | Authenticated API failed to execute')
+      }, 100)
       console.log(error)
     }
     if (error?.response?.data?.message) {
@@ -34,10 +47,14 @@ export default function ({ $axios, store, app }, inject) {
         ? error.response.data.message
         : [error.response.data.message]
       messages.forEach((message) => {
-        Message.error(app.i18n.t('error.' + message))
+        setTimeout(() => {
+          Message.error(app.i18n.t('error.' + message))
+        }, 100)
       })
     } else {
-      Message.error('Unknown server error')
+      setTimeout(() => {
+        Message.error(app.i18n.t('error.UNKNOWN_SERVER_ERROR'))
+      }, 100)
     }
     return error
   })

@@ -3,6 +3,7 @@
     <div class="mb-5">
       <el-select
         :value="limit"
+        :placeholder="$t('common.select')"
         size="mini"
         class="select-none datatable-limit-select"
         style="width: 80px;"
@@ -31,7 +32,7 @@
         size="large"
         @click="$emit('my-table-add-new')"
       >
-        {{ $t('components.table.data.add-new') }}
+        {{ $t('common.add-new') }}
       </el-button>
     </div>
     <hr />
@@ -57,7 +58,7 @@
         class="select-none"
       />
       <slot></slot>
-      <el-table-column width="40" align="right">
+      <el-table-column v-if="!disableDropDown" width="40" align="right">
         <template slot-scope="scope">
           <el-dropdown trigger="click" @command="handleActionCommand">
             <span class="el-dropdown-link text-xl text-theme-1">
@@ -124,11 +125,11 @@ export default {
         return [
           {
             name: 'edit',
-            label: 'components.table.data.edit',
+            label: 'common.edit',
           },
           {
             name: 'delete',
-            label: 'components.table.data.delete',
+            label: 'common.delete',
           },
         ]
       },
@@ -136,6 +137,10 @@ export default {
     limit: {
       type: Number,
       required: true,
+    },
+    disableDropDown: {
+      type: Boolean,
+      default: false,
     },
     total: {
       type: Number,

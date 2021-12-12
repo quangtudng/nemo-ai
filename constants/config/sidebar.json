@@ -1,39 +1,55 @@
 {
     "data": [
         {
-            "title": "sidebar.user.title",
+            "title": "sidebar.main",
+            "icon": "el-icon-s-data",
+            "icon-color": "var(--color-theme-1)",
+            "to": "/internal",
+            "role": "SUPERADMIN|MODERATOR|AGENT",
+            "children": []
+        },
+        {
+            "title": "sidebar.user",
             "icon": "el-icon-user-solid",
             "icon-color": "var(--color-theme-1)",
             "to": "/internal/users",
-            "role": "SUPERADMIN",
+            "role": "SUPERADMIN|MODERATOR",
             "children": []
         },
         {
-            "title": "sidebar.location.title",
+            "title": "sidebar.location",
             "icon": "el-icon-picture",
             "icon-color": "var(--color-theme-1)",
             "to": "/internal/locations",
-            "role": "SUPERADMIN",
+            "role": "SUPERADMIN|MODERATOR|AGENT",
             "children": []
         },
         {
-            "title": "sidebar.location.category",
+            "title": "sidebar.category",
             "icon": "el-icon-s-flag",
             "icon-color": "var(--color-theme-1)",
             "to": "/internal/categories",
-            "role": "SUPERADMIN",
+            "role": "SUPERADMIN|MODERATOR",
             "children": []
         },
         {
-            "title": "sidebar.service.title",
+          "title": "sidebar.amenity",
+          "icon": "el-icon-goods",
+          "icon-color": "var(--color-theme-1)",
+          "to": "/internal/amenities",
+          "role": "SUPERADMIN|MODERATOR",
+          "children": []
+        },
+        {
+            "title": "sidebar.service",
             "icon": "el-icon-bangzhu",
             "icon-color": "var(--color-theme-1)",
             "to": "/internal/services",
-            "role": "SUPERADMIN",
+            "role": "SUPERADMIN|MODERATOR|AGENT",
             "children": []
         },
         {
-            "title": "sidebar.settings.title",
+            "title": "sidebar.setting",
             "icon": "el-icon-s-tools",
             "icon-color": "var(--color-theme-1)",
             "to": "/internal/settings",

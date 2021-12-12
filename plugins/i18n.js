@@ -9,6 +9,7 @@ export default ({ app, store, query }, inject) => {
 
   app.i18n = new VueI18n({
     locale: store.state.locale,
+    silentFallbackWarn: true,
     fallbackLocale: 'vi',
     messages: {
       en: require('~/locales/en.json'),

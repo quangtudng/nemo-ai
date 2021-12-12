@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     onSizeChange(total) {
-      console.log('pagination changed to ' + total)
+      //
     },
     setDataQuery(query) {
       this.query = { ...this.query, ...query }
@@ -60,7 +60,6 @@ export default {
         page: 1,
         limit: 10,
       }
-      console.log(this.query)
       await this.$fetch()
     }, 300),
   },

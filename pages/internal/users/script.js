@@ -3,7 +3,7 @@ import { mapActions, mapState } from 'vuex'
 import { Message } from 'element-ui'
 import { DataTable, Breadcrumb } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
+const permissions = ['SUPERADMIN', 'MODERATOR']
 
 export default {
   layout: 'internal',
@@ -12,22 +12,23 @@ export default {
     DataTable,
     Breadcrumb,
   },
-  middleware({ store, query, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/')
+  middleware({ store, redirect, app }) {
+    const roleLabel = store.state.auth.data?.role?.label || ''
+    if (!permissions.includes(roleLabel)) {
+      Message.error(this.$t('error.PERMISSION_DENIED'))
+      return redirect('/internal')
     }
   },
   data() {
     return {
-      searchQuery: null,
+      searchQuery: '',
       roleQuery: null,
       roles: [],
     }
   },
   async created() {
     const data = await this.fetchRoles()
-    this.roles = data?.data?.data || []
+    this.roles = data.data?.data || []
   },
   computed: {
     ...mapState({
@@ -40,6 +41,19 @@ export default {
       deleteSingle: 'user/deleteSingle',
       fetchRoles: 'role/fetchData',
     }),
+    fetchRoleButtonStyle(role) {
+      let colorClass = 'primary'
+      if (role === 'SUPERADMIN') {
+        colorClass = 'danger'
+      }
+      if (role === 'MODERATOR') {
+        colorClass = 'warning'
+      }
+      if (role === 'AGENT') {
+        colorClass = 'success'
+      }
+      return colorClass
+    },
     onEdit(payload) {
       if (this.auth.id === payload.rowData.id) {
         this.$router.push('/internal/me')
@@ -49,44 +63,38 @@ export default {
     },
     onDelete(payload) {
       if (this.auth.id === payload.rowData.id) {
-        Message.error('You cannot delete yourself')
+        this.$message.error(this.$t('validation.delete_self'))
+      } else if (payload.rowData.role.label === 'SUPERADMIN') {
+        this.$message.error(this.$t('validation.delete_admin'))
       } else {
-        this.$confirm(
-          'Do you want to delete this user. This action cannot be reversed',
-          'Warning',
-          {
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
+        this.$confirm(this.$t('validation.delete_confirmation'), 'Warning', {
+          confirmButtonText: this.$t('common.delete'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }).then(async () => {
+          const result = await this.deleteSingle(payload.rowData.id)
+          if (result.status === 200) {
+            this.$message.success(this.$t('info.RESOURCE_DELETED_SUCCESS'))
           }
-        ).then(async () => {
-          await this.onConfirmDelete(payload.rowData.id)
+          await this.onClearFilter()
         })
       }
     },
-    async onConfirmDelete(id) {
-      await this.deleteSingle(id)
-      await this.$fetch()
-    },
-    onFilter() {
+    async onFilter() {
       const roleId = this.roleQuery || 0
       const filter = this.searchQuery
-        ? {
-            fullname: this.searchQuery,
-            email: this.searchQuery,
-            roleId,
-          }
-        : { fullname: '', email: '', roleId }
+        ? { fullname: this.searchQuery, roleId }
+        : { fullname: '', roleId }
       this.setDataQuery({
         page: 1,
         ...filter,
       })
-      this.$fetch()
+      await this.$fetch()
     },
-    onClearFilter() {
+    async onClearFilter() {
       this.roleQuery = null
-      this.searchQuery = null
-      this.onRefresh()
+      this.searchQuery = ''
+      await this.onRefresh()
     },
   },
 }
