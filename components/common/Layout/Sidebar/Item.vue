@@ -2,18 +2,10 @@
   <el-menu-item
     v-if="isAllowed"
     :index="count"
-    :class="{
-      'default-sidebar-item': !$store.state.options.sidebarCollapsed,
-      'default-sidebar-item-collapsed': $store.state.options.sidebarCollapsed,
-    }"
+    class="default-sidebar-item"
     @click="$router.push(item.to)"
   >
-    <em
-      :class="{
-        [item.icon]: $store.state.options.sidebarCollapsed,
-      }"
-      :style="{ color: item['icon-color'] }"
-    ></em>
+    <em :class="[item.icon]" :style="{ color: item['icon-color'] }"></em>
     <span>{{ $t(item.title) }}</span>
   </el-menu-item>
 </template>
@@ -53,10 +45,6 @@ export default {
 }
 .default-sidebar-item.is-active {
   border-right: 10px solid var(--color-theme-1);
-  background-color: #ccd2e0 !important;
-}
-.default-sidebar-item-collapsed.is-active {
-  border-left: 3px solid var(--color-theme-1);
   background-color: #ccd2e0 !important;
 }
 </style>

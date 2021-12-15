@@ -1,36 +1,41 @@
 <template>
-  <el-menu
-    class="sidebar-menu border-none"
-    :default-active="activeIndex"
-    :background-color="backgroundColor"
-    :text-color="textColor"
-    :active-text-color="activeTextColor"
-    :collapse="isCollapsed"
-    @open="handleOpen"
-    @close="handleClose"
+  <el-drawer
+    :visible="!isCollapsed"
+    :with-header="false"
+    direction="ltr"
+    size="370"
+    :before-close="handleClose"
   >
-    <el-menu-item
-      class="header p-0"
-      :style="{ height: headerHeight + 'px' }"
-      @click="$router.push('/internal')"
+    <el-menu
+      class="sidebar-menu border-none"
+      :default-active="activeIndex"
+      :background-color="backgroundColor"
+      :text-color="textColor"
+      :active-text-color="activeTextColor"
     >
-      <slot name="header">
-        Hello
-      </slot>
-    </el-menu-item>
-    <div class="sy-2"></div>
-    <component
-      :is="child.children.length > 0 ? SubMenu : Item"
-      v-for="(child, index) in sidebar"
-      :key="child.title"
-      :item="child"
-      :count="index + 1 + ''"
-    ></component>
-  </el-menu>
+      <el-menu-item
+        class="header p-0"
+        :style="{ height: headerHeight + 'px' }"
+        @click="$router.push('/internal')"
+      >
+        <slot name="header">
+          Hello
+        </slot>
+      </el-menu-item>
+      <div class="sy-2"></div>
+      <component
+        :is="child.children.length > 0 ? SubMenu : Item"
+        v-for="(child, index) in sidebar"
+        :key="child.title"
+        :item="child"
+        :count="index + 1 + ''"
+      ></component>
+    </el-menu>
+  </el-drawer>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 const sidebarTree = require('~/constants/config/sidebar.json')
 export default {
   name: 'Sidebar',
@@ -78,11 +83,12 @@ export default {
     },
   },
   methods: {
-    handleOpen(key, keyPath) {
-      // console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      // console.log(key, keyPath)
+    ...mapMutations({
+      COLLAPSE_SIDEBAR: 'COLLAPSE_SIDEBAR',
+      OPEN_SIDEBAR: 'OPEN_SIDEBAR',
+    }),
+    handleClose() {
+      this.COLLAPSE_SIDEBAR()
     },
   },
 }

@@ -9,8 +9,10 @@ export default {
   SET_SERVER_STATE(state, serverReady) {
     state.serverReady = serverReady
   },
-  // Options
-  TOGGLE_SIDEBAR_COLLAPSE(state) {
-    state.options.sidebarCollapsed = !state.options.sidebarCollapsed
+  COLLAPSE_SIDEBAR(state) {
+    state.options.sidebarCollapsed = true
+  },
+  OPEN_SIDEBAR(state) {
+    state.options.sidebarCollapsed = false
   },
 }

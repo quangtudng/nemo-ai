@@ -1,39 +1,20 @@
 <template>
   <el-container class="default-layout-container h-full-vh">
-    <el-aside
-      class="default-layout-aside"
-      :width="sidebarCollapsed ? '65px' : '240px'"
-    >
-      <Sidebar :header-height="220">
-        <template v-slot:header>
-          <div v-if="!sidebarCollapsed" class="default-header-avatar-inner">
-            <el-avatar
-              class="mx-auto block"
-              :size="90"
-              :src="avatar"
-            ></el-avatar>
-            <h2 class="default-header-avatar-name">
-              {{ fullname }}
-            </h2>
-            <p class="default-header-avatar-status">
-              <fa class="text-success" :icon="['fas', 'dot-circle']" />
-              <span>{{ $t('sidebar.online') }}</span>
-            </p>
-          </div>
-          <div v-else>
-            <el-avatar
-              class="mx-auto mt-10 block visible"
-              :size="40"
-              :src="avatar"
-            ></el-avatar>
-            <fa
-              class="text-success mx-auto mt-3 block visible"
-              :icon="['fas', 'dot-circle']"
-            />
-          </div>
-        </template>
-      </Sidebar>
-    </el-aside>
+    <div class="default-sidebar-wrapper" @mouseenter="handlerHoverSidebar" />
+    <Sidebar :header-height="220">
+      <template v-slot:header>
+        <div class="default-header-avatar-inner">
+          <el-avatar class="mx-auto block" :size="90" :src="avatar"></el-avatar>
+          <h2 class="default-header-avatar-name">
+            {{ fullname }}
+          </h2>
+          <p class="default-header-avatar-status">
+            <fa class="text-success" :icon="['fas', 'dot-circle']" />
+            <span>{{ $t('sidebar.online') }}</span>
+          </p>
+        </div>
+      </template>
+    </Sidebar>
     <el-container class="flex-col default-page-background">
       <!-- el-header -->
       <Navbar />
@@ -50,7 +31,7 @@ import { mapMutations, mapState } from 'vuex'
 import { Navbar, Sidebar } from '~/components/common'
 export default {
   name: 'Internal',
-  middleware: ['internalAuthRequired'],
+  middleware: ['internalAuthRequired', 'internalRedirect'],
   components: {
     Navbar,
     Sidebar,
@@ -58,7 +39,6 @@ export default {
   computed: {
     ...mapState({
       auth: (state) => state.auth.data,
-      sidebarCollapsed: (state) => state.options.sidebarCollapsed,
     }),
     avatar() {
       if (this.auth?.avatar) {
@@ -94,7 +74,11 @@ export default {
   methods: {
     ...mapMutations({
       SET_LANG: 'SET_LANG',
+      OPEN_SIDEBAR: 'OPEN_SIDEBAR',
     }),
+    handlerHoverSidebar() {
+      this.OPEN_SIDEBAR()
+    },
   },
 }
 </script>
@@ -124,5 +108,13 @@ export default {
     margin-top: 10px;
     text-align: center;
   }
+}
+.default-sidebar-wrapper {
+  width: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 9999;
 }
 </style>
