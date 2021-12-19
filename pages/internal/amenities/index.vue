@@ -7,7 +7,7 @@
           {{ $t('amenities.title') }}
         </h1>
         <div class="inline-block text-light select-none">
-          <nuxt-link to="/">
+          <nuxt-link to="/internal">
             <fa :icon="['fas', 'home']" />
           </nuxt-link>
         </div>
