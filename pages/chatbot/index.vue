@@ -129,4 +129,15 @@
   </div>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss" scoped></style>
+<style lang="scss">
+.el-default-input {
+  textarea {
+    overflow-y: hidden;
+    resize: none;
+    border-radius: 24px;
+    max-height: 48px !important;
+    padding: 14px 21px 8px 28px !important;
+  }
+}
+</style>
