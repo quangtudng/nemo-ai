@@ -25,7 +25,7 @@ export default {
   middleware({ store, redirect }) {
     if (!permission.includes(store.state.auth.data.role.label)) {
       Message.error('Permission denied')
-      return redirect('/')
+      return redirect('/internal')
     }
   },
   data() {

@@ -34,7 +34,7 @@ export default {
   layout: 'client',
   data() {
     return {
-      maintenanceMode: true,
+      maintenanceMode: false,
     }
   },
 }
