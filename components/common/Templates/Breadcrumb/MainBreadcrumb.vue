@@ -1,12 +1,11 @@
 <template>
   <el-container class="pl-3 pr-3 pt-0">
     <el-row class="w-full">
-      <!-- Title -->
       <h1 class="text-3xl font-bold text-light inline-block mr-3">
         {{ title }}
       </h1>
       <div class="inline-block text-light select-none">
-        <nuxt-link to="/">
+        <nuxt-link to="/internal">
           <fa :icon="['fas', 'home']" />
         </nuxt-link>
       </div>

@@ -4,6 +4,6 @@ export default () => ({
   locales: ['en', 'vi'],
   locale: 'vi',
   options: {
-    sidebarCollapsed: false,
+    sidebarCollapsed: true,
   },
 })

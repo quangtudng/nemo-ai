@@ -4,7 +4,7 @@
             "title": "sidebar.main",
             "icon": "el-icon-s-data",
             "icon-color": "var(--color-theme-1)",
-            "to": "/internal",
+            "to": "/internal/customers",
             "role": "SUPERADMIN|MODERATOR|AGENT",
             "children": []
         },

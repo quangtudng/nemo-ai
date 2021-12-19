@@ -1,13 +1,5 @@
 <template>
   <el-header class="p-0 bg-none relative default-navbar">
-    <!--  -->
-    <el-button
-      circle
-      class="block absolute border-none shadow default-sidebar-toggle"
-      @click="TOGGLE_SIDEBAR_COLLAPSE()"
-    >
-      <fa :icon="['fas', 'bars']" />
-    </el-button>
     <div class="float-right flex flex-row" style="height: 60px;">
       <el-dropdown @command="changeLanguage">
         <span class="text-light mr-5 text-xl" style="line-height: 60px;">
@@ -88,7 +80,6 @@ export default {
   methods: {
     ...mapMutations({
       SET_LANG: 'SET_LANG',
-      TOGGLE_SIDEBAR_COLLAPSE: 'TOGGLE_SIDEBAR_COLLAPSE',
     }),
     changeLanguage(locale) {
       this.$changeLocale(locale)
@@ -106,13 +97,6 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.default-sidebar-toggle {
-  top: 50%;
-  left: 0;
-  transform: translate(-50%, -50%);
-}
-</style>
 <style lang="scss">
 .default-navbar {
   .el-badge__content.is-fixed.is-dot {

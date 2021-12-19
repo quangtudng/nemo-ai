@@ -1,14 +1,12 @@
 <template>
-  <p>Nothing here yet</p>
+  <div></div>
 </template>
 <script>
 export default {
   name: 'Home',
   layout: 'client',
-  head() {
-    return {
-      title: this.$t('dashboard'),
-    }
+  middleware({ redirect }) {
+    return redirect('/chatbot')
   },
 }
 </script>
