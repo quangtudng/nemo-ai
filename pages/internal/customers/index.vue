@@ -21,7 +21,7 @@
         style="max-width: 350px;"
       >
         <div class="flex flex-row">
-          <div style="border-right: 1px solid #ededed;">
+          <div style="border-right: 1px solid #ededed;" class="w-full">
             <div
               class="text-theme-1 p-1"
               style="
@@ -61,7 +61,7 @@
                     <div class="messenger-inner-box">
                       <div class="customer-info-box">
                         <p class="customer-name">
-                          {{ customer.name }}
+                          Khách hàng
                         </p>
                         <p class="customer-last-timestamp">
                           {{
@@ -86,7 +86,7 @@
                                 ? 'Nemo: '
                                 : 'Customer: '
                             }}
-                            {{ customer.last_message.message }}
+                            {{ customer.last_message.body }}
                           </p>
                           <fa
                             v-if="!customer.viewed"
@@ -255,11 +255,11 @@
                     >
                       <el-card
                         shadow="always"
-                        class="main-chatbox border-0 text-white w-full h-full mr-3"
+                        class="main-chatbox border-0 w-max text-white h-full mr-3"
                         :body-style="{ padding: '0px' }"
                       >
-                        <p>
-                          {{ message.message }}
+                        <p class="break-words">
+                          {{ message.body }}
                         </p>
                       </el-card>
                       <p
@@ -273,7 +273,7 @@
                         class="flex justify-end items-end"
                       >
                         <el-avatar
-                          :src="require('~/assets/img/ai.png')"
+                          :src="require('~/assets/img/ai-36x36.png')"
                           alt="nemo"
                           fit="contain"
                           size="large"
@@ -285,7 +285,7 @@
                 <div class="messenger-reply-box">
                   <div class="mr-3">
                     <el-avatar
-                      :src="require('~/assets/img/ai.png')"
+                      :src="require('~/assets/img/ai-36x36.png')"
                       alt="nemo"
                       fit="contain"
                       size="large"
