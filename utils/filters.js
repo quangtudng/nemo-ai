@@ -36,7 +36,7 @@ Vue.filter('formatRelativeTime', (val) => {
   const msPerYear = msPerDay * 365
   const elapsed = new Date() - new Date(val)
   if (elapsed < msPerMinute) {
-    return Math.round(elapsed / 1000) + ' s'
+    return 'Live'
   } else if (elapsed < msPerHour) {
     return Math.round(elapsed / msPerMinute) + ' m'
   } else if (elapsed < msPerDay) {
