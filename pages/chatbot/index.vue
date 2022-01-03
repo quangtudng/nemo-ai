@@ -116,8 +116,11 @@
                     class="main-chatbox border-0 w-max text-white h-full ml-3 mr-1"
                     :body-style="{ padding: '0px' }"
                   >
-                    <p v-if="message.body" class="break-words">
-                      {{ message.body }}
+                    <p
+                      v-if="message.body"
+                      class="break-words whitespace-pre-line"
+                    >
+                      <span>{{ message.body }}</span>
                     </p>
                     <div v-else class="ticontainer">
                       <div class="tiblock">

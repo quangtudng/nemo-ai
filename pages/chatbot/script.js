@@ -138,7 +138,6 @@ export default {
           this.messages = isClear
             ? formattedMessages
             : this.messages.concat(formattedMessages)
-
           // Scroll to bottom and unlock textarea
           this.$nextTick(() => {
             this.scrollToBottom()
