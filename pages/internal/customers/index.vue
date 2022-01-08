@@ -244,8 +244,8 @@
                         class="main-chatbox border-0 w-max text-white h-full mr-3"
                         :body-style="{ padding: '0px' }"
                       >
-                        <p class="break-words">
-                          {{ message.body }}
+                        <p class="break-words whitespace-pre-line">
+                          <span>{{ message.body }}</span>
                         </p>
                       </el-card>
                       <p
