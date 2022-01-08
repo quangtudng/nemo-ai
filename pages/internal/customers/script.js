@@ -91,6 +91,7 @@ export default {
     async syncNewMessages() {
       // Attempt to get the customer's messages
       if (this.selectedCustomer?.long_id) {
+        this.selectedCustomer.viewed = 1
         const messageResponse = await this.getCustomerMessage(
           this.selectedCustomer.long_id
         )
