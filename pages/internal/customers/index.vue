@@ -14,7 +14,16 @@
       </el-row>
     </el-container>
     <el-container class="p-3">
+      <div v-if="customers.length === 0" class="empty-view">
+        <el-card
+          shadow="always"
+          class="relative border-0 rounded-lg w-full h-full"
+          :body-style="{ padding: '0px' }"
+        >
+        </el-card>
+      </div>
       <el-card
+        v-if="customers.length != 0"
         shadow="always"
         class="border-0 rounded-lg w-full h-full mr-3"
         :body-style="{ padding: '0px' }"
@@ -43,7 +52,7 @@
                 onto a content wrapper (contained within the overflow area). This allows the
                 absolutely positioned elements to anchor to the bounding box of the content,
                 not the viewport.
-		           -->
+              -->
               <div class="relative">
                 <div
                   v-for="customer in customers"
@@ -104,6 +113,7 @@
         </div>
       </el-card>
       <el-card
+        v-if="customers.length != 0"
         shadow="always"
         class="relative border-0 rounded-lg w-full h-full"
         :body-style="{ padding: '0px' }"
