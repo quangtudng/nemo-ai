@@ -1,7 +1,7 @@
 import { Message } from 'element-ui'
 import Cookies from 'js-cookie'
 
-export default function ({ $axios, store, app }, inject) {
+export default function ({ $axios, store, app, redirect }, inject) {
   // Create a custom axios instance
   const authApi = $axios.create({
     headers: {
@@ -55,6 +55,11 @@ export default function ({ $axios, store, app }, inject) {
       setTimeout(() => {
         Message.error(app.i18n.t('error.UNKNOWN_SERVER_ERROR'))
       }, 100)
+    }
+    if (error?.response?.status === 401) {
+      Cookies.remove('auth')
+      store.commit('auth/SET_AUTH', null, { root: true })
+      redirect('/internal/login')
     }
     return error
   })

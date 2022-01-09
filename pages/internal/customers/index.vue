@@ -14,14 +14,23 @@
       </el-row>
     </el-container>
     <el-container class="p-3">
+      <div v-if="customers.length === 0" class="empty-view">
+        <el-card
+          shadow="always"
+          class="relative border-0 rounded-lg w-full h-full"
+          :body-style="{ padding: '0px' }"
+        >
+        </el-card>
+      </div>
       <el-card
+        v-if="customers.length != 0"
         shadow="always"
         class="border-0 rounded-lg w-full h-full mr-3"
         :body-style="{ padding: '0px' }"
         style="max-width: 350px;"
       >
         <div class="flex flex-row">
-          <div style="border-right: 1px solid #ededed;">
+          <div style="border-right: 1px solid #ededed;" class="w-full">
             <div
               class="text-theme-1 p-1"
               style="
@@ -43,7 +52,7 @@
                 onto a content wrapper (contained within the overflow area). This allows the
                 absolutely positioned elements to anchor to the bounding box of the content,
                 not the viewport.
-		           -->
+              -->
               <div class="relative">
                 <div
                   v-for="customer in customers"
@@ -52,16 +61,16 @@
                   <div
                     class="messenger-box"
                     :style="
-                      customer.id === selectedCustomer
+                      customer.long_id === selectedCustomer.long_id
                         ? 'border-left: 5px solid var(--color-theme-1);'
                         : ''
                     "
-                    @click="selectedCustomer = customer.id"
+                    @click="onChangeCustomer(customer)"
                   >
                     <div class="messenger-inner-box">
                       <div class="customer-info-box">
                         <p class="customer-name">
-                          {{ customer.name }}
+                          Khách hàng
                         </p>
                         <p class="customer-last-timestamp">
                           {{
@@ -86,7 +95,7 @@
                                 ? 'Nemo: '
                                 : 'Customer: '
                             }}
-                            {{ customer.last_message.message }}
+                            {{ customer.last_message.body }}
                           </p>
                           <fa
                             v-if="!customer.viewed"
@@ -98,33 +107,20 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  v-if="isLoadingCustomer"
-                  class="el-loading-mask"
-                  style="min-height: 100%; height: 100%; border-radius: 0;"
-                >
-                  <div class="el-loading-spinner">
-                    <svg viewBox="25 25 50 50" class="circular">
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="20"
-                        fill="none"
-                        class="path"
-                      ></circle>
-                    </svg>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </el-card>
       <el-card
+        v-if="customers.length != 0"
         shadow="always"
-        class="border-0 rounded-lg w-full h-full"
+        class="relative border-0 rounded-lg w-full h-full"
         :body-style="{ padding: '0px' }"
       >
+        <div v-if="isLoading" class="card-loading-spinner">
+          <em class="el-icon-loading loading-spinner" />
+        </div>
         <el-row class="w-full">
           <el-col :span="24">
             <div class="messenger-general-info">
@@ -255,11 +251,11 @@
                     >
                       <el-card
                         shadow="always"
-                        class="main-chatbox border-0 text-white w-full h-full mr-3"
+                        class="main-chatbox border-0 w-max text-white h-full mr-3"
                         :body-style="{ padding: '0px' }"
                       >
-                        <p>
-                          {{ message.message }}
+                        <p class="break-words whitespace-pre-line">
+                          <span>{{ message.body }}</span>
                         </p>
                       </el-card>
                       <p
@@ -273,39 +269,13 @@
                         class="flex justify-end items-end"
                       >
                         <el-avatar
-                          :src="require('~/assets/img/ai.png')"
+                          :src="require('~/assets/img/ai-36x36.png')"
                           alt="nemo"
                           fit="contain"
                           size="large"
                         />
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="messenger-reply-box">
-                  <div class="mr-3">
-                    <el-avatar
-                      :src="require('~/assets/img/ai.png')"
-                      alt="nemo"
-                      fit="contain"
-                      size="large"
-                    />
-                  </div>
-                  <el-input
-                    id="default-input-search"
-                    v-model="replyText"
-                    class="el-default-input"
-                    :placeholder="'Send an email'"
-                    type="textarea"
-                    :rows="4"
-                  >
-                  </el-input>
-                  <div class="ml-3 flex items-center justify-self-center">
-                    <fa
-                      class="text-theme-1 cursor-pointer"
-                      style="font-size: 28px;"
-                      :icon="['fas', 'paper-plane']"
-                    />
                   </div>
                 </div>
               </el-col>
@@ -360,4 +330,21 @@
   </el-main>
 </template>
 <script src="./script.js"></script>
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss" scoped></style>
+<style lang="scss">
+.el-default-input {
+  textarea {
+    overflow-y: hidden;
+    resize: none;
+    border-radius: 24px;
+    max-height: 48px !important;
+    padding: 14px 21px 8px 28px !important;
+  }
+}
+.el-override-chat-input {
+  .el-input__inner {
+    border-radius: 0px !important;
+    background: #fff;
+  }
+}
+</style>
