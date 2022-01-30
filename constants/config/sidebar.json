@@ -47,14 +47,6 @@
             "to": "/internal/services",
             "role": "SUPERADMIN|MODERATOR|AGENT",
             "children": []
-        },
-        {
-            "title": "sidebar.setting",
-            "icon": "el-icon-s-tools",
-            "icon-color": "var(--color-theme-1)",
-            "to": "/internal/settings",
-            "role": "SUPERADMIN",
-            "children": []
         }
     ]
 }

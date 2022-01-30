@@ -2,6 +2,9 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Chatbot',
   layout: 'client',
+  components: {
+    GoogleMap: () => import('~/components/common/Templates/Map/GMap.vue'),
+  },
   async fetch() {
     try {
       const customerId = this.$route?.query?.c
@@ -29,12 +32,17 @@ export default {
       replyText: '',
       customerId: null,
       isSending: false,
+      selectedService: null,
+      serviceDialog: false,
+      allServices: [],
+      locationDialogVisible: false,
     }
   },
   methods: {
     ...mapActions({
       webhook: 'message/webhook',
       getCustomerMessage: 'message/public_xhr',
+      customerServices: 'message/customer_services',
     }),
     shouldShowTimeStamp(index) {
       /**
@@ -44,10 +52,10 @@ export default {
         if (index === 0) {
           return true
         } else {
-          const TWO_HOUR = 60 * 60 * 2000
+          const FIFTEEN_MINUTES = 15 * 60 * 1000
           const currentTimestamp = Date.parse(this.messages[index].created_at)
           const lastTimeStamp = Date.parse(this.messages[index - 1].created_at)
-          return currentTimestamp - lastTimeStamp > TWO_HOUR
+          return currentTimestamp - lastTimeStamp > FIFTEEN_MINUTES
         }
       } catch (e) {
         console.log(e)
@@ -86,6 +94,7 @@ export default {
             isMock: true,
           })
           if (body === 'new') {
+            this.selectedService = null
             // Start a new conversation again
             await this.startNewConversation()
           } else {
@@ -126,6 +135,7 @@ export default {
         id: message.id,
         owner: message.owner,
         body: message.body,
+        type: message.type,
         created_at: message.createdAt,
       }))
       if (formattedMessages.length > 0) {
@@ -168,6 +178,17 @@ export default {
           behavior: 'smooth',
         })
       })
+    },
+    async getAllSelectedService(messageId) {
+      this.serviceDialog = true
+      this.allServices = []
+      const result = await this.customerServices(messageId)
+      this.allServices = result.data
+    },
+    getDetailService(serviceId) {
+      this.selectedService =
+        this.allServices.find((service) => service.id === serviceId) || null
+      this.serviceDialog = false
     },
   },
 }

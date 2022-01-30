@@ -16,8 +16,7 @@
     "location": "Thông tin địa điểm",
     "category": "Loại hình dịch vụ",
     "service": "Danh sách dịch vụ",
-    "amenity": "Tiện ích dịch vụ",
-    "setting": "Cài đặt hệ thống"
+    "amenity": "Tiện ích dịch vụ"
   },
   "navbar": {
     "profile": "Tài khoản",
