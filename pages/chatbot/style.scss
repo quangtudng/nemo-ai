@@ -19,6 +19,13 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+.service-without-background-section {
+  width: calc(100% - 370px);
+  border: 1px solid #dadce0;
+  border-radius: 12px;
+  margin-right: 1rem;
+  background-color: #fff;
+}
 .nemo-title {
   color: #f9b047;
   font-size: 25px;
@@ -127,4 +134,10 @@
 }
 .tidot:nth-child(3){
   animation-delay:400ms;
+}
+.dotted-text {
+  border-bottom: 1px dotted var(--color-gray-500);
+  &:hover {
+    border-bottom: 1px solid var(--color-gray-500);
+  }
 }

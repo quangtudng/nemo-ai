@@ -84,8 +84,15 @@ export default {
         this.customers = customers
       }
       // If there is no selected customer, then automatically assign it to the first customer in the list
-      if (this.customers.length > 0 && !this.selectedCustomer) {
-        this.selectedCustomer = this.customers[0]
+      // If there is current selected customer, update it with newer information
+      if (this.customers.length > 0) {
+        if (!this.selectedCustomer) {
+          this.selectedCustomer = this.customers[0]
+        } else {
+          this.selectedCustomer = this.customers.find(
+            (customer) => customer.id === this.selectedCustomer.id
+          )
+        }
       }
     },
     async syncNewMessages() {
@@ -119,10 +126,10 @@ export default {
         if (index === 0) {
           return true
         } else {
-          const TWO_HOUR = 60 * 60 * 2000
+          const FIFTEEN_MINUTES = 15 * 60 * 1000
           const currentTimestamp = Date.parse(messages[index].created_at)
           const lastTimeStamp = Date.parse(messages[index - 1].created_at)
-          return currentTimestamp - lastTimeStamp > TWO_HOUR
+          return currentTimestamp - lastTimeStamp > FIFTEEN_MINUTES
         }
       } catch (e) {
         console.log(e)

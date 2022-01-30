@@ -15,8 +15,7 @@
     "location": "Service locations",
     "category": "Categories",
     "service": "Service catalog",
-    "amenity": "Amenity builder",
-    "setting": "System setting"
+    "amenity": "Amenity builder"
   },
   "navbar": {
     "profile": "Profile",

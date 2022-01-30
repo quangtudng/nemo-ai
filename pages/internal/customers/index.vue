@@ -69,8 +69,8 @@
                   >
                     <div class="messenger-inner-box">
                       <div class="customer-info-box">
-                        <p class="customer-name">
-                          Khách hàng
+                        <p class="customer-email">
+                          {{ customer.email || 'No email provided' }}
                         </p>
                         <p class="customer-last-timestamp">
                           {{
@@ -81,7 +81,7 @@
                       </div>
                       <div class="customer-message-box">
                         <p class="customer-message">
-                          {{ customer.email || 'No email provided' }}
+                          Conversation started
                         </p>
                         <div class="flex justify-between">
                           <p
@@ -131,28 +131,28 @@
                   size="large"
                   class="ml-5 self-center"
                 />
-                <div class="ml-4">
-                  <p class="text-base text-gray-600">
+                <div class="ml-6">
+                  <p
+                    class="text-lg font-bold text-gray-700"
+                    style="line-height: 48px;"
+                  >
                     Khách hàng
-                  </p>
-                  <p class="text-xs text-gray-500">
-                    <el-tag type="success" effect="dark" size="mini">
-                      Active now
-                    </el-tag>
                   </p>
                 </div>
               </div>
               <div class="flex items-center mr-5">
                 <el-button
-                  class="bg-theme-1 text-light hover:bg-theme-1-600 shadow border-none"
+                  class="text-light shadow border-none"
                   size="mini"
+                  style="background-color: #adb5bd;"
                 >
                   <span class="text-sm">Conversation started</span>
                 </el-button>
                 <el-button size="mini" @click="showCustomerDetail = true">
                   <fa
-                    class="cursor-pointer text-theme-1 text-sm"
+                    class="cursor-pointer text-sm"
                     :icon="['fas', 'ellipsis-h']"
+                    style="color: #adb5bd;"
                   />
                   <span class="text-sm">More</span>
                 </el-button>
@@ -162,20 +162,23 @@
                   width="60%"
                 >
                   <el-card class="mb-5 rounded-none" shadow="hover">
-                    <p class="mb-4">
+                    <p class="mb-4 font-bold">
                       Customer summary
                     </p>
                     <el-row>
                       <el-col :span="24">
                         <em class="el-icon-message text-gray-500 mb-2" />
                         <span class="text-gray-600 text-sm">
-                          Email: Not provided
+                          Email: {{ selectedCustomer.email || 'Not provided' }}
                         </span>
                       </el-col>
                       <el-col :span="24">
                         <em class="el-icon-date text-gray-500 mb-2" />
                         <span class="text-gray-600 text-sm">
-                          First contacted: 12/12/2021 - 5:24 pm
+                          First contacted:
+                          {{
+                            selectedCustomer.first_contacted | formatDateTime
+                          }}
                         </span>
                       </el-col>
                       <el-col :span="24">
@@ -189,16 +192,16 @@
                       <el-col :span="24">
                         <em class="el-icon-timer text-gray-500 mb-2" />
                         <span class="text-gray-600 text-sm">
-                          Last contacted: 12/12/2021 - 6:24 pm
+                          Last contacted:
+                          {{ selectedCustomer.last_contacted | formatDateTime }}
                         </span>
                       </el-col>
                     </el-row>
                   </el-card>
                   <el-card class="mb-5 rounded-none" shadow="hover">
-                    <p>Activities</p>
-                  </el-card>
-                  <el-card class="mb-5 rounded-none" shadow="hover">
-                    <p>Service interest</p>
+                    <p class="font-bold">
+                      Service interest
+                    </p>
                   </el-card>
                   <span slot="footer" class="dialog-footer">
                     <el-button @click="showCustomerDetail = false">
@@ -279,48 +282,65 @@
                   </div>
                 </div>
               </el-col>
-              <el-col
-                :span="13"
-                class="hidden xl:block"
-                style="padding: 24px 16px;"
-              >
-                <el-card class="mb-5 rounded-none" shadow="hover">
-                  <p class="mb-4">
-                    Customer summary
-                  </p>
-                  <el-row>
-                    <el-col :span="24">
-                      <em class="el-icon-message text-gray-500 mb-2" />
-                      <span class="text-gray-600 text-sm">
-                        Email: Not provided
-                      </span>
-                    </el-col>
-                    <el-col :span="24">
-                      <em class="el-icon-date text-gray-500 mb-2" />
-                      <span class="text-gray-600 text-sm">
-                        First contacted: 12/12/2021 - 5:24 pm
-                      </span>
-                    </el-col>
-                    <el-col :span="24">
-                      <em class="el-icon-location-outline text-gray-500 mb-2" />
-                      <span class="text-gray-600 text-sm">
-                        Location: Vietnam
-                      </span>
-                    </el-col>
-                    <el-col :span="24">
-                      <em class="el-icon-timer text-gray-500 mb-2" />
-                      <span class="text-gray-600 text-sm">
-                        Last contacted: 12/12/2021 - 6:24 pm
-                      </span>
-                    </el-col>
-                  </el-row>
-                </el-card>
-                <el-card class="mb-5 rounded-none" shadow="hover">
-                  <p>Activities</p>
-                </el-card>
-                <el-card class="mb-5 rounded-none" shadow="hover">
-                  <p>Service interest</p>
-                </el-card>
+              <el-col :span="13" class="hidden xl:block">
+                <div class="status-information">
+                  <em class="el-icon-date text-lg" />
+                  <span class="text-sm ml-2">Conversation started</span>
+                </div>
+                <div style="padding: 24px 16px;">
+                  <el-card class="mb-5 rounded-none" shadow="hover">
+                    <p class="mb-4 font-semibold">
+                      Customer summary
+                    </p>
+                    <el-row>
+                      <el-col :span="24">
+                        <em class="el-icon-message text-gray-500 mb-2" />
+                        <span class="text-gray-600 text-sm font-semibold">
+                          Email:
+                        </span>
+                        <span class="text-gray-600 text-sm">
+                          {{ selectedCustomer.email || 'Not provided' }}
+                        </span>
+                      </el-col>
+                      <el-col :span="24">
+                        <em class="el-icon-date text-gray-500 mb-2" />
+                        <span class="text-gray-600 text-sm font-semibold">
+                          First contacted:
+                        </span>
+                        <span class="text-gray-600 text-sm">
+                          {{
+                            selectedCustomer.first_contacted | formatDateTime
+                          }}
+                        </span>
+                      </el-col>
+                      <el-col :span="24">
+                        <em
+                          class="el-icon-location-outline text-gray-500 mb-2"
+                        />
+                        <span class="text-gray-600 text-sm font-semibold">
+                          Location:
+                        </span>
+                        <span class="text-gray-600 text-sm">
+                          Vietnam
+                        </span>
+                      </el-col>
+                      <el-col :span="24">
+                        <em class="el-icon-timer text-gray-500 mb-2" />
+                        <span class="text-gray-600 text-sm font-semibold">
+                          Last contacted:
+                        </span>
+                        <span class="text-gray-600 text-sm">
+                          {{ selectedCustomer.last_contacted | formatDateTime }}
+                        </span>
+                      </el-col>
+                    </el-row>
+                  </el-card>
+                  <el-card class="mb-5 rounded-none" shadow="hover">
+                    <p class="font-semibold">
+                      Service interest
+                    </p>
+                  </el-card>
+                </div>
               </el-col>
             </el-row>
           </el-col>
