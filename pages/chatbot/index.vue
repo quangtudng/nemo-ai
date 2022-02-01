@@ -171,7 +171,7 @@
                           <p v-if="selectedService.description">
                             {{ selectedService.description }}
                           </p>
-                          <p else>
+                          <p v-else>
                             Chưa cập nhật
                           </p>
                         </div>
