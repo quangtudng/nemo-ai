@@ -202,6 +202,63 @@
                     <p class="font-bold">
                       Service interest
                     </p>
+                    <el-table
+                      class="datatable"
+                      :data="selectedCustomer.selectedInterests"
+                      border
+                      style="width: 100%;"
+                      max-height="450"
+                    >
+                      <el-table-column prop="thumbnail" label="Ảnh" width="100">
+                        <template slot-scope="scope">
+                          <img
+                            v-if="scope.row.thumbnail"
+                            :src="scope.row.thumbnail"
+                            alt="Map thumbnail"
+                          />
+                          <img
+                            v-else
+                            :src="require('~/assets/img/no-img.jpg')"
+                            alt="Map thumbnail"
+                          />
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="title" label="Tên">
+                        <template slot-scope="scope">
+                          <span
+                            class="break-words whitespace-pre-line"
+                            style="word-break: break-word;"
+                          >
+                            {{ scope.row.title }}
+                          </span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="location.name" label="Khu vực">
+                        <template slot-scope="scope">
+                          <span
+                            class="break-words whitespace-pre-line"
+                            style="word-break: break-word;"
+                          >
+                            {{ scope.row.location.name }}
+                          </span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column
+                        prop="category.title"
+                        label="Loại dịch vụ"
+                      >
+                        <template slot-scope="scope">
+                          <span
+                            class="break-words whitespace-pre-line"
+                            style="word-break: break-word;"
+                          >
+                            {{
+                              scope.row.category ? scope.row.category.title : ''
+                            }}
+                          </span>
+                        </template>
+                      </el-table-column>
+                    </el-table>
                   </el-card>
                   <span slot="footer" class="dialog-footer">
                     <el-button @click="showCustomerDetail = false">
@@ -335,10 +392,71 @@
                       </el-col>
                     </el-row>
                   </el-card>
-                  <el-card class="mb-5 rounded-none" shadow="hover">
-                    <p class="font-semibold">
+                  <el-card
+                    class="mb-5 rounded-none"
+                    shadow="hover"
+                    style="max-height: 470px;"
+                  >
+                    <p class="mb-4 font-semibold">
                       Service interest
                     </p>
+                    <el-table
+                      class="datatable"
+                      :data="selectedCustomer.selectedInterests"
+                      border
+                      style="width: 100%;"
+                      max-height="390"
+                    >
+                      <el-table-column prop="thumbnail" label="Ảnh" width="100">
+                        <template slot-scope="scope">
+                          <img
+                            v-if="scope.row.thumbnail"
+                            :src="scope.row.thumbnail"
+                            alt="Map thumbnail"
+                          />
+                          <img
+                            v-else
+                            :src="require('~/assets/img/no-img.jpg')"
+                            alt="Map thumbnail"
+                          />
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="title" label="Tên">
+                        <template slot-scope="scope">
+                          <span
+                            class="break-words whitespace-pre-line"
+                            style="word-break: break-word;"
+                          >
+                            {{ scope.row.title }}
+                          </span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column prop="location.name" label="Khu vực">
+                        <template slot-scope="scope">
+                          <span
+                            class="break-words whitespace-pre-line"
+                            style="word-break: break-word;"
+                          >
+                            {{ scope.row.location.name }}
+                          </span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column
+                        prop="category.title"
+                        label="Loại dịch vụ"
+                      >
+                        <template slot-scope="scope">
+                          <span
+                            class="break-words whitespace-pre-line"
+                            style="word-break: break-word;"
+                          >
+                            {{
+                              scope.row.category ? scope.row.category.title : ''
+                            }}
+                          </span>
+                        </template>
+                      </el-table-column>
+                    </el-table>
                   </el-card>
                 </div>
               </el-col>
