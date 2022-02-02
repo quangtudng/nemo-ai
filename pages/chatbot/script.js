@@ -43,6 +43,7 @@ export default {
       webhook: 'message/webhook',
       getCustomerMessage: 'message/public_xhr',
       customerServices: 'message/customer_services',
+      saveCustomerInterests: 'customer/saveCustomerInterests',
     }),
     shouldShowTimeStamp(index) {
       /**
@@ -185,10 +186,14 @@ export default {
       const result = await this.customerServices(messageId)
       this.allServices = result.data
     },
-    getDetailService(serviceId) {
+    async getDetailService(serviceId) {
       this.selectedService =
         this.allServices.find((service) => service.id === serviceId) || null
       this.serviceDialog = false
+      await this.saveCustomerInterests({
+        customerLongId: this.customerId,
+        interestId: this.selectedService.id,
+      })
     },
   },
 }

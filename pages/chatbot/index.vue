@@ -532,23 +532,32 @@
         </el-table-column>
         <el-table-column prop="title" label="Tên địa điểm">
           <template slot-scope="scope">
-            <span class="break-words whitespace-pre-line">{{
-              scope.row.title
-            }}</span>
+            <span
+              class="break-words whitespace-pre-line"
+              style="word-break: break-word;"
+            >
+              {{ scope.row.title }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column prop="location.name" label="Khu vực" width="180">
           <template slot-scope="scope">
-            <span class="break-words whitespace-pre-line">{{
-              scope.row.location.name
-            }}</span>
+            <span
+              class="break-words whitespace-pre-line"
+              style="word-break: break-word;"
+            >
+              {{ scope.row.location.name }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column prop="category.title" label="Loại dịch vụ">
           <template slot-scope="scope">
-            <span class="break-words whitespace-pre-line">{{
-              scope.row.category.title
-            }}</span>
+            <span
+              class="break-words whitespace-pre-line"
+              style="word-break: break-word;"
+            >
+              {{ scope.row.category.title }}
+            </span>
           </template>
         </el-table-column>
       </el-table>
