@@ -111,6 +111,7 @@
     "title": "Amenity management",
     "search": "Finding amenities",
     "name": "Name",
+    "icon": "Icon",
     "description": "Description",
     "create-new": "Create new amenity",
     "edit": "Edit amenity"

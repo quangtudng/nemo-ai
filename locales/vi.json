@@ -112,6 +112,7 @@
     "title": "Quản lý tiện ích",
     "search": "Tìm kiếm tiện ích",
     "name": "Tên tiện ích",
+    "icon": "Icon",
     "description": "Thông tin tiện ích",
     "create-new": "Tạo mới tiện ích",
     "edit": "Sửa tiện ích"

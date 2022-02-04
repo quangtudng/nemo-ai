@@ -70,7 +70,14 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
-          <el-table-column :label="$t('amenities.name')" prop="title" />
+          <el-table-column :label="$t('amenities.name')">
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row.title }}
+              </span>
+              <fa :icon="['fas', scope.row.icon]" class="ml-1" />
+            </template>
+          </el-table-column>
           <el-table-column
             :label="$t('amenities.description')"
             prop="description"
@@ -114,6 +121,29 @@
                       :rows="4"
                     >
                     </el-input>
+                  </InputWrapper>
+                </div>
+                <!-- Icon holder -->
+                <div class="mt-5">
+                  <label class="text-theme-1">
+                    {{ $t('amenities.icon') }}
+                  </label>
+                  <InputWrapper>
+                    <el-select
+                      v-model="createForm.icon"
+                      filterable
+                      class="el-default-input"
+                      :placeholder="$t('common.select')"
+                    >
+                      <el-option
+                        v-for="icon in icons"
+                        :key="'role-' + icon"
+                        :value="icon"
+                      >
+                        <fa :icon="['fas', icon]" />
+                        <span class="ml-1">{{ icon }}</span>
+                      </el-option>
+                    </el-select>
                   </InputWrapper>
                 </div>
               </el-col>
@@ -175,6 +205,29 @@
                       :rows="4"
                     >
                     </el-input>
+                  </InputWrapper>
+                </div>
+                <!-- Icon holder -->
+                <div class="mt-5">
+                  <label class="text-theme-1">
+                    {{ $t('amenities.icon') }}
+                  </label>
+                  <InputWrapper>
+                    <el-select
+                      v-model="updateForm.icon"
+                      filterable
+                      class="el-default-input"
+                      :placeholder="$t('common.select')"
+                    >
+                      <el-option
+                        v-for="icon in icons"
+                        :key="'role-' + icon"
+                        :value="icon"
+                      >
+                        <fa :icon="['fas', icon]" />
+                        <span class="ml-1">{{ icon }}</span>
+                      </el-option>
+                    </el-select>
                   </InputWrapper>
                 </div>
               </el-col>

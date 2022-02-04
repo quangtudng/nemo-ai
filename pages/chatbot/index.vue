@@ -148,7 +148,7 @@
                     </span>
                   </div>
                   <el-row class="mt-6">
-                    <el-col :span="24" :lg="12" class="pr-6 mb-5">
+                    <el-col :span="24" :lg="10" class="pr-6 mb-5">
                       <div class="mb-4">
                         <p class="font-semibold mb-1">
                           Khoảng giá
@@ -177,55 +177,89 @@
                         </div>
                       </div>
                     </el-col>
-                    <el-col :span="24" :lg="12">
+                    <el-col :span="24" :lg="14">
                       <div class="mb-4">
                         <p class="font-semibold mb-1">
                           Tiện nghi
                         </p>
                         <div class="text-sm">
-                          <span v-if="selectedService.amenities.length > 0">
-                            {{
-                              selectedService.amenities
-                                .map((amenity) => amenity.title)
-                                .join(', ')
-                            }}
+                          <div v-if="selectedService.amenities.length > 0">
+                            <el-row>
+                              <el-col
+                                v-for="(am, i) in selectedService.amenities"
+                                :key="'amenity-' + am.id"
+                                :span="24"
+                                :lg="12"
+                              >
+                                <div
+                                  v-if="i < 20 || amenityExpaned"
+                                  class="text-sm mb-2"
+                                  style="max-width: 200px;"
+                                >
+                                  <fa :icon="['fas', am.icon]" class="mr-1" />
+                                  <span>{{ am.title }}</span>
+                                </div>
+                              </el-col>
+                            </el-row>
+                          </div>
+                          <span v-else>Chưa cập nhật</span>
+                        </div>
+                        <div v-if="selectedService.amenities.length >= 20">
+                          <span
+                            v-if="!amenityExpaned"
+                            class="text-sm dotted-text cursor-pointer"
+                            @click="amenityExpaned = true"
+                          >
+                            Xem thêm
                           </span>
-                          <span v-else>Chưa cập nhật</span>
-                        </div>
-                      </div>
-                      <div class="mb-4">
-                        <p class="font-semibold mb-1">
-                          Website
-                        </p>
-                        <div class="text-sm">
-                          <fa class="mr-1" :icon="['fas', 'home']" />
-                          <a
-                            v-if="selectedService.originUrl"
-                            :href="selectedService.originUrl"
-                            target="_blank"
+                          <span
+                            v-else
+                            class="text-sm dotted-text cursor-pointer"
+                            @click="amenityExpaned = false"
                           >
-                            <span class="dotted-text">Trang chủ</span>
-                          </a>
-                          <span v-else>Chưa cập nhật</span>
+                            Thu gọn
+                          </span>
                         </div>
                       </div>
-                      <div class="mb-4">
-                        <p class="font-semibold mb-1">
-                          Số điện thoại
-                        </p>
-                        <div class="text-sm">
-                          <fa class="mr-1" :icon="['fas', 'phone']" />
-                          <a
-                            v-if="selectedService.phoneNumber"
-                            :href="`tel:${selectedService.phoneNumber}`"
-                          >
-                            <span class="dotted-text">
-                              {{ selectedService.phoneNumber }}
-                            </span>
-                          </a>
-                          <span v-else>Chưa cập nhật</span>
-                        </div>
-                      </div>
+                      <el-row>
+                        <el-col :span="12">
+                          <div class="mb-4">
+                            <p class="font-semibold mb-1">
+                              Website
+                            </p>
+                            <div class="text-sm">
+                              <fa class="mr-1" :icon="['fas', 'home']" />
+                              <a
+                                v-if="selectedService.originUrl"
+                                :href="selectedService.originUrl"
+                                target="_blank"
+                              >
+                                <span class="dotted-text">Trang chủ</span>
+                              </a>
+                              <span v-else>Chưa cập nhật</span>
+                            </div>
+                          </div>
+                        </el-col>
+                        <el-col :span="12">
+                          <div class="mb-4">
+                            <p class="font-semibold mb-1">
+                              Số điện thoại
+                            </p>
+                            <div class="text-sm">
+                              <fa class="mr-1" :icon="['fas', 'phone']" />
+                              <a
+                                v-if="selectedService.phoneNumber"
+                                :href="`tel:${selectedService.phoneNumber}`"
+                              >
+                                <span class="dotted-text">
+                                  {{ selectedService.phoneNumber }}
+                                </span>
+                              </a>
+                              <span v-else>Chưa cập nhật</span>
+                            </div>
+                          </div>
+                        </el-col>
+                      </el-row>
                     </el-col>
                   </el-row>
                 </el-card>
