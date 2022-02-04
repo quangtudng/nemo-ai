@@ -36,6 +36,7 @@ export default {
       serviceDialog: false,
       allServices: [],
       locationDialogVisible: false,
+      amenityExpaned: false,
     }
   },
   methods: {
@@ -187,6 +188,7 @@ export default {
       this.allServices = result.data
     },
     async getDetailService(serviceId) {
+      this.amenityExpaned = false
       this.selectedService =
         this.allServices.find((service) => service.id === serviceId) || null
       this.serviceDialog = false
