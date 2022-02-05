@@ -1,8 +1,11 @@
 import { mapActions } from 'vuex'
+import VueWeather from 'vue-weather-widget'
+
 export default {
   name: 'Chatbot',
   layout: 'client',
   components: {
+    VueWeather,
     GoogleMap: () => import('~/components/common/Templates/Map/GMap.vue'),
   },
   async fetch() {
@@ -34,9 +37,15 @@ export default {
       isSending: false,
       selectedService: null,
       serviceDialog: false,
+      weatherDialog: false,
       allServices: [],
       locationDialogVisible: false,
       amenityExpaned: false,
+      weatherLocation: {
+        name: '',
+        latitude: 0,
+        longitude: 0,
+      },
     }
   },
   methods: {
@@ -45,6 +54,7 @@ export default {
       getCustomerMessage: 'message/public_xhr',
       customerServices: 'message/customer_services',
       saveCustomerInterests: 'customer/saveCustomerInterests',
+      weatherRequest: 'message/weatherRequest',
     }),
     shouldShowTimeStamp(index) {
       /**
@@ -186,6 +196,19 @@ export default {
       this.allServices = []
       const result = await this.customerServices(messageId)
       this.allServices = result.data
+    },
+    async getWeatherRequest(messageId) {
+      try {
+        const result = await this.weatherRequest(messageId)
+        if (result.data.name && result.data.latitude && result.data.longitude) {
+          this.weatherLocation.name = result.data.name + ''
+          this.weatherLocation.latitude = result.data.latitude + ''
+          this.weatherLocation.longitude = result.data.longitude + ''
+          this.weatherDialog = true
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
     async getDetailService(serviceId) {
       this.amenityExpaned = false
