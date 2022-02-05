@@ -485,6 +485,13 @@
                       >
                         Hiển thị
                       </span>
+                      <span
+                        v-if="message.type === 3"
+                        class="font-bold cursor-pointer"
+                        @click="getWeatherRequest(message.id)"
+                      >
+                        Hiển thị
+                      </span>
                     </div>
                     <div v-else class="ticontainer">
                       <div class="tiblock">
@@ -595,6 +602,22 @@
           </template>
         </el-table-column>
       </el-table>
+    </el-dialog>
+    <el-dialog
+      :title="`Thông tin thời tiết ở ${weatherLocation.name}`"
+      :visible.sync="weatherDialog"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      width="60%"
+    >
+      <vue-weather
+        api-key="5ef88db6ceb34e45726f2dbafa1cfbc9"
+        units="uk"
+        :hide-header="true"
+        :latitude="weatherLocation.latitude"
+        language="vi"
+        :longitude="weatherLocation.longitude"
+      />
     </el-dialog>
   </div>
 </template>
