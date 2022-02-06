@@ -25,11 +25,12 @@ export default {
       this.isLoading = false
     } catch (error) {
       this.isLoading = false
+      console.log(error)
     }
   },
   data() {
     return {
-      // Submit form data (same parameter with the API)
+      // Submit form data
       form: {
         title: '',
         description: '',
@@ -126,8 +127,9 @@ export default {
           }, 500)
         }
         this.isLoading = false
-      } catch (err) {
+      } catch (error) {
         this.isLoading = false
+        console.log(error)
       }
     },
   },

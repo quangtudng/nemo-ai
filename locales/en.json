@@ -131,5 +131,18 @@
     "phone": "Phonenumber",
     "origin": "Main page",
     "edit": "Edit service"
+  },
+  "chat": {
+    "title": "All conversations",
+    "no-email": "No email found",
+    "customer": "Customer",
+    "last-active": "Last active",
+    "first-contacted": "First contacted",
+    "conversation-started": "Conversation started",
+    "conversation-in-progress": "Conversation In-Progress",
+    "conversation-ended": "Conversation Ended",
+    "general-info": "General customer information",
+    "customer-summary": "Customer summary",
+    "service-interest": "Service interest"
   }
 }

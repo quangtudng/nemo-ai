@@ -67,7 +67,6 @@
             </el-button>
           </div>
         </el-row>
-        <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
           :data="tableData"

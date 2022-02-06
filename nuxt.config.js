@@ -79,7 +79,6 @@ export default {
     '~/plugins/vue2-google-maps.js',
     { src: '~/plugins/vue-tree-select.js', ssr: false },
     // Utilities
-    '~/utils/bus.js', // Event bus
     '~/utils/filters.js', // Filters for custom text formating
     '~/utils/accent.js', // Convert vietnamese character to ASCII character
     '~/mixins' // Global helper functions, use this.function_name() in your component

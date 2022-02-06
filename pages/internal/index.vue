@@ -1,7 +1,5 @@
 <template>
-  <el-main>
-    <!--  -->
-  </el-main>
+  <div></div>
 </template>
 <script>
 export default {

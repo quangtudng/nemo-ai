@@ -78,18 +78,22 @@ export default {
       this.replyText = `${this.replyText}\n`
     },
     async startNewConversation() {
-      const response = await this.sendNewMessage('new')
-      const newMessages = response.data?.messages
-      const newCustomer = response.data?.customer
-      if (newMessages && newCustomer) {
-        this.handleNewMessages(newMessages, true)
-        // Change parameter to customer long id
-        this.customerId = newCustomer.longId
-        history.pushState(
-          {},
-          null,
-          this.$route.path + '?c=' + encodeURIComponent(newCustomer.longId)
-        )
+      try {
+        const response = await this.sendNewMessage('new')
+        const newMessages = response?.data?.messages
+        const newCustomer = response?.data?.customer
+        if (newMessages && newCustomer) {
+          this.handleNewMessages(newMessages, true)
+          // Change parameter to customer long id
+          this.customerId = newCustomer.longId
+          history.pushState(
+            {},
+            null,
+            this.$route.path + '?c=' + encodeURIComponent(newCustomer.longId)
+          )
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     async submitReply() {
@@ -112,7 +116,7 @@ export default {
           } else {
             // Add new message to the server
             const response = await this.sendNewMessage(body)
-            if (response.data?.messages) {
+            if (response?.data?.messages) {
               const messages = response.data?.messages
               this.handleNewMessages(messages)
             } else {
@@ -120,18 +124,26 @@ export default {
             }
           }
         }
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log(error)
         this.handleErrorMessage()
       }
     },
     async sendNewMessage(body) {
-      const newMessage = await this.webhook({
-        body,
-        customerLongId: this.customerId,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      })
-      return newMessage
+      /**
+       * Send new message to the server
+       */
+      try {
+        const newMessage = await this.webhook({
+          body,
+          customerLongId: this.customerId,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        })
+        return newMessage
+      } catch (error) {
+        console.log(error)
+        return null
+      }
     },
     handleErrorMessage() {
       this.messages.push({
@@ -142,35 +154,43 @@ export default {
       })
     },
     handleNewMessages(messages, isClear = false) {
-      // Format message from server and add it to messenger section
-      const formattedMessages = messages.map((message) => ({
-        id: message.id,
-        owner: message.owner,
-        body: message.body,
-        type: message.type,
-        created_at: message.createdAt,
-      }))
-      if (formattedMessages.length > 0) {
-        this.triggerSendAnimation()
-        setTimeout(() => {
-          this.triggerSendAnimation(false)
-          // Remove mock message
-          this.messages = this.messages.filter((message) => !message.isMock)
-          // Update with server messages
-          this.messages = isClear
-            ? formattedMessages
-            : this.messages.concat(formattedMessages)
-          // Scroll to bottom and unlock textarea
-          this.$nextTick(() => {
-            this.scrollToBottom()
-            this.$el.querySelector('textarea').focus()
-          })
-        }, 2500)
+      /**
+       * Format message from server and add it to messenger section
+       */
+      try {
+        const formattedMessages = messages.map((message) => ({
+          id: message.id,
+          owner: message.owner,
+          body: message.body,
+          type: message.type,
+          created_at: message.createdAt,
+        }))
+        if (formattedMessages.length > 0) {
+          this.triggerSendAnimation()
+          setTimeout(() => {
+            this.triggerSendAnimation(false)
+            // Remove mock message
+            this.messages = this.messages.filter((message) => !message.isMock)
+            // Update with server messages
+            this.messages = isClear
+              ? formattedMessages
+              : this.messages.concat(formattedMessages)
+            // Scroll to bottom and unlock textarea
+            this.$nextTick(() => {
+              this.scrollToBottom()
+              this.$el.querySelector('textarea').focus()
+            })
+          }, 2500)
+        }
+        this.isSending = false
+      } catch (error) {
+        console.log(error)
       }
-      this.isSending = false
     },
     triggerSendAnimation(toggle = true) {
-      // Trigger a sending animation on the messenger chat
+      /**
+       * Trigger a sending animation on the messenger chat
+       */
       if (toggle) {
         this.messages.push({
           id: Date.now(),
@@ -192,12 +212,22 @@ export default {
       })
     },
     async getAllSelectedService(messageId) {
-      this.serviceDialog = true
-      this.allServices = []
-      const result = await this.customerServices(messageId)
-      this.allServices = result.data
+      /**
+       * Get all selected services from the server when customer clicks on the show more text
+       */
+      try {
+        this.serviceDialog = true
+        this.allServices = []
+        const result = await this.customerServices(messageId)
+        this.allServices = result.data
+      } catch (error) {
+        console.log(error)
+      }
     },
     async getWeatherRequest(messageId) {
+      /**
+       * Get weather request from server by getting longtitude and latitude
+       */
       try {
         const result = await this.weatherRequest(messageId)
         if (result.data.name && result.data.latitude && result.data.longitude) {
@@ -211,14 +241,21 @@ export default {
       }
     },
     async getDetailService(serviceId) {
-      this.amenityExpaned = false
-      this.selectedService =
-        this.allServices.find((service) => service.id === serviceId) || null
-      this.serviceDialog = false
-      await this.saveCustomerInterests({
-        customerLongId: this.customerId,
-        interestId: this.selectedService.id,
-      })
+      /**
+       * Get the detail of a service when user click on a service in the list
+       */
+      try {
+        this.amenityExpaned = false
+        this.selectedService =
+          this.allServices.find((service) => service.id === serviceId) || null
+        this.serviceDialog = false
+        await this.saveCustomerInterests({
+          customerLongId: this.customerId,
+          interestId: this.selectedService.id,
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

@@ -18,10 +18,12 @@ Vue.filter('formatDateTime', (val) => {
   const moment = require('moment')
   return moment(val).format('DD/MM/YYYY - h:mm a')
 })
+
 Vue.filter('formatTime', (val) => {
   const moment = require('moment')
   return moment(val).format('h:mm a')
 })
+
 Vue.filter('slugify', (val) => {
   // For more information, visit https://www.npmjs.com/package/slug
   const slug = require('slug')
