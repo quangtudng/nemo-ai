@@ -12,7 +12,7 @@ export default {
     DataTable,
     Breadcrumb,
   },
-  middleware({ store, redirect, app }) {
+  middleware({ store, redirect }) {
     const roleLabel = store.state.auth.data?.role?.label || ''
     if (!permissions.includes(roleLabel)) {
       Message.error(this.$t('error.PERMISSION_DENIED'))
@@ -62,39 +62,54 @@ export default {
       }
     },
     onDelete(payload) {
-      if (this.auth.id === payload.rowData.id) {
-        this.$message.error(this.$t('validation.delete_self'))
-      } else if (payload.rowData.role.label === 'SUPERADMIN') {
-        this.$message.error(this.$t('validation.delete_admin'))
-      } else {
-        this.$confirm(this.$t('validation.delete_confirmation'), 'Warning', {
-          confirmButtonText: this.$t('common.delete'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning',
-        }).then(async () => {
-          const result = await this.deleteSingle(payload.rowData.id)
-          if (result.status === 200) {
-            this.$message.success(this.$t('info.RESOURCE_DELETED_SUCCESS'))
-          }
-          await this.onClearFilter()
-        })
+      try {
+        if (this.auth.id === payload.rowData.id) {
+          // Prevent user from deleting himself
+          this.$message.error(this.$t('validation.delete_self'))
+        } else if (payload.rowData.role.label === 'SUPERADMIN') {
+          // Prevent user from deleting SUPERADMIN
+          this.$message.error(this.$t('validation.delete_admin'))
+        } else {
+          // Confirm deletion
+          this.$confirm(this.$t('validation.delete_confirmation'), 'Warning', {
+            confirmButtonText: this.$t('common.delete'),
+            cancelButtonText: this.$t('common.cancel'),
+            type: 'warning',
+          }).then(async () => {
+            const result = await this.deleteSingle(payload.rowData.id)
+            if (result.status === 200) {
+              this.$message.success(this.$t('info.RESOURCE_DELETED_SUCCESS'))
+            }
+            await this.onClearFilter()
+          })
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     async onFilter() {
-      const roleId = this.roleQuery || 0
-      const filter = this.searchQuery
-        ? { fullname: this.searchQuery, roleId }
-        : { fullname: '', roleId }
-      this.setDataQuery({
-        page: 1,
-        ...filter,
-      })
-      await this.$fetch()
+      try {
+        const roleId = this.roleQuery || 0
+        const filter = this.searchQuery
+          ? { fullname: this.searchQuery, roleId }
+          : { fullname: '', roleId }
+        this.setDataQuery({
+          page: 1,
+          ...filter,
+        })
+        await this.$fetch()
+      } catch (error) {
+        console.log(error)
+      }
     },
     async onClearFilter() {
-      this.roleQuery = null
-      this.searchQuery = ''
-      await this.onRefresh()
+      try {
+        this.roleQuery = null
+        this.searchQuery = ''
+        await this.onRefresh()
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

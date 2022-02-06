@@ -12,6 +12,7 @@
             >
               <el-row :gutter="20" class="relative m-0">
                 <el-col :span="14">
+                  <!-- Fullname -->
                   <div class="mt-5">
                     <label class="text-theme-1">
                       {{ $t('users.fullname') }}
@@ -23,6 +24,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- Email -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       Email
@@ -33,6 +35,7 @@
                       class="el-default-input"
                     ></el-input>
                   </div>
+                  <!-- Password -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.password') }}
@@ -45,6 +48,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- Phonenumber -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.phonenumber') }}
@@ -56,6 +60,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- User role -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.role') }}
@@ -77,6 +82,7 @@
                       </el-select>
                     </div>
                   </div>
+                  <!-- User bio -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.bio') }}
@@ -91,6 +97,7 @@
                       </el-input>
                     </InputWrapper>
                   </div>
+                  <!-- User status -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.status') }}
@@ -106,6 +113,7 @@
                   </div>
                 </el-col>
                 <el-col :span="10">
+                  <!-- Avatar -->
                   <div class="mt-5 pl-5">
                     <label class="text-theme-1">
                       {{ $t('users.avatar') }}

@@ -36,6 +36,7 @@ export default {
       this.isLoading = false
     } catch (error) {
       this.isLoading = false
+      console.log(error)
     }
   },
   data() {
@@ -87,9 +88,9 @@ export default {
           this.form.avatar = ''
         }
         this.isLoading = false
-      } catch (e) {
+      } catch (error) {
         this.isLoading = false
-        console.log(e)
+        console.log(error)
       }
     },
     async submitUpdate() {
@@ -112,6 +113,7 @@ export default {
         this.isLoading = false
       } catch (error) {
         this.isLoading = false
+        console.log(error)
       }
     },
   },

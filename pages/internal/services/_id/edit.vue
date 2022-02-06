@@ -34,7 +34,7 @@
                         v-model="form.description"
                         class="el-default-input"
                         type="textarea"
-                        :rows="4"
+                        autosize
                       >
                       </el-input>
                     </InputWrapper>
@@ -152,7 +152,6 @@
                     </InputWrapper>
                   </div>
                 </el-col>
-                <!-- Right side -->
                 <el-col :span="10">
                   <!-- Thumbnail -->
                   <div class="mt-5">

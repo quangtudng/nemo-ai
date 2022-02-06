@@ -10,13 +10,12 @@
   }
   /* Track */
   ::-webkit-scrollbar-track {
-    background: white;
+    background: var(--color-theme-1-100);
   }
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background-color: var(--color-theme-1-200);
     transition-duration: 0.5s;
-    border-radius: 4px;
   }
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {

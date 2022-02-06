@@ -1,7 +1,6 @@
 import { LoginForm } from '~/components/common'
 export default {
   layout: 'auth',
-  // Back to home if you've already been authenticated
   components: {
     LoginForm,
   },
@@ -21,6 +20,7 @@ export default {
         this.$router.push('/internal')
         this.isLoading = false
       } catch (error) {
+        console.log(error)
         this.isLoading = false
       }
     },

@@ -16,7 +16,7 @@ export default {
       default: 500,
     },
   },
-  layout: 'error', // you can set a custom layout for the error page
+  layout: 'error',
 }
 </script>
 <style scoped>

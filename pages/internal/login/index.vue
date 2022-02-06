@@ -5,7 +5,6 @@
         {{ $t('login.title') }}
       </h1>
       <div class="sy-3"></div>
-      <!-- Form goes here -->
       <LoginForm
         v-loading.fullscreen.lock="isLoading"
         @my-login-form-submit="postLogin"

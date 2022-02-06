@@ -26,6 +26,7 @@ export default {
       this.roles = allRoles?.data?.data || []
       this.isLoading = false
     } catch (error) {
+      console.error(error)
       this.isLoading = false
     }
   },
