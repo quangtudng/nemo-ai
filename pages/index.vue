@@ -3,8 +3,8 @@
 </template>
 <script>
 export default {
-  name: 'Home',
   layout: 'client',
+  name: 'Home',
   middleware({ redirect }) {
     return redirect('/chatbot')
   },

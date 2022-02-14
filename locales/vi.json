@@ -16,8 +16,7 @@
     "location": "Thông tin địa điểm",
     "category": "Loại hình dịch vụ",
     "service": "Danh sách dịch vụ",
-    "amenity": "Tiện ích dịch vụ",
-    "setting": "Cài đặt hệ thống"
+    "amenity": "Tiện ích dịch vụ"
   },
   "navbar": {
     "profile": "Tài khoản",
@@ -69,7 +68,8 @@
     "PERMISSION_DENIED": "Lỗi quyền hạn. Bạn không thể truy cập vào nội dung này",
     "FILE_UPLOADED_FAILED": "Xảy ra lỗi khi đăng tải hình ảnh của bạn. Vui lòng thử lại sau",
     "RESOURCE_CREATED_FAILED": "Xảy ra lỗi khi tạo tài nguyên mới trong hệ thống. Vui lòng thử lại sau",
-    "DUPLICATED": "Thông tin tài nguyên đã tồn tại. Vui lòng kiểm tra sau"
+    "DUPLICATED": "Thông tin tài nguyên đã tồn tại. Vui lòng kiểm tra sau",
+    "NOT_FOUND": "Không tìm thấy tài nguyên"
   },
   "users": {
     "title": "Quản lý nhân viên",
@@ -113,6 +113,7 @@
     "title": "Quản lý tiện ích",
     "search": "Tìm kiếm tiện ích",
     "name": "Tên tiện ích",
+    "icon": "Icon",
     "description": "Thông tin tiện ích",
     "create-new": "Tạo mới tiện ích",
     "edit": "Sửa tiện ích"
@@ -121,16 +122,29 @@
     "title": "Quản lý dịch vụ",
     "search": "Tìm kiếm dịch vụ",
     "category": "Loại hình dịch vụ",
-    "location": "Địa điểm dịch vụ",
+    "location": "Địa điểm",
     "name": "Tên dịch vụ",
-    "description": "Mô tả dịch vụ",
+    "description": "Mô tả",
     "price": "Giá dịch vụ",
-    "amenities": "Tiện ích dịch vụ",
-    "address": "Địa chỉ dịch vụ",
+    "amenities": "Tiện ích",
+    "address": "Địa chỉ",
     "images": "Hình ảnh",
     "thumbnail": "Ảnh đầu tiên là thumbnail",
-    "phone": "Số điện thoại dịch vụ",
+    "phone": "Số điện thoại",
     "origin": "Trang chủ",
     "edit": "Chỉnh sửa dịch vụ"
+  },
+  "chat": {
+    "title": "Cuộc hội thoại",
+    "no-email": "Không có email",
+    "customer": "Khách hàng",
+    "last-active": "Hoạt động lần cuối",
+    "first-contacted": "Lần đầu liên lạc",
+    "conversation-started": "Bắt đầu cuộc hội thoại",
+    "conversation-in-progress": "Đang diễn ra",
+    "conversation-ended": "Đã kết thúc",
+    "general-info": "Thông tin chung của khách hàng",
+    "customer-summary": "Thông tin khách hàng",
+    "service-interest": "Dịch vụ quan tâm"
   }
 }

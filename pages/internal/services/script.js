@@ -1,8 +1,6 @@
 import { mapActions, mapState } from 'vuex'
-import { Message } from 'element-ui'
 import { DataTable, Breadcrumb, ExcelUploader } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
 export default {
   layout: 'internal',
   mixins: [dataTableMixin],
@@ -14,7 +12,6 @@ export default {
   },
   async fetch() {
     try {
-      // Fetch table data
       const services = await this.fetchTableData(this.query)
       this.tableData = services?.data?.data || []
       this.tableDataTotal = services?.data?.total || 0
@@ -22,17 +19,14 @@ export default {
       console.log(error)
     }
   },
-  middleware({ store, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/internal')
-    }
-  },
   data() {
     return {
+      // Text filter
       searchQuery: '',
+      // Service category filter
       serviceCategoryFilter: null,
       serviceCategories: [],
+      // Location tree select filter
       locations: [],
       locationFilter: null,
       normalizer(node) {
@@ -42,6 +36,7 @@ export default {
           children: node.children,
         }
       },
+      // Form to display general information of service
       detailPageVisible: false,
       form: {
         title: '',
@@ -58,18 +53,22 @@ export default {
     }
   },
   async created() {
-    this.isLoading = true
-    // Fetch service categories
-    const serviceCategories = await this.fetchServiceCategories({
-      limit: 100,
-    })
-    this.serviceCategories = serviceCategories?.data?.data || []
-    // Fetch service locations
-    const locations = await this.fetchLocations()
-    if (locations?.data) {
-      this.locations = locations.data
+    try {
+      this.isLoading = true
+      // Fetch service categories
+      const serviceCategories = await this.fetchServiceCategories({
+        limit: 100,
+      })
+      this.serviceCategories = serviceCategories?.data?.data || []
+      // Fetch service locations
+      const locations = await this.fetchLocations()
+      if (locations?.data) {
+        this.locations = locations.data
+      }
+      this.isLoading = false
+    } catch (error) {
+      console.log(error)
     }
-    this.isLoading = false
   },
   computed: {
     ...mapState({
@@ -116,22 +115,30 @@ export default {
       }
     },
     async onFilter() {
-      const locationId = this.locationFilter || 0
-      const categoryId = this.serviceCategoryFilter || 0
-      const filter = this.searchQuery
-        ? { title: this.searchQuery, locationId, categoryId }
-        : { title: '', locationId, categoryId }
-      this.setDataQuery({
-        page: 1,
-        ...filter,
-      })
-      await this.$fetch()
+      try {
+        const locationId = this.locationFilter || 0
+        const categoryId = this.serviceCategoryFilter || 0
+        const filter = this.searchQuery
+          ? { title: this.searchQuery, locationId, categoryId }
+          : { title: '', locationId, categoryId }
+        this.setDataQuery({
+          page: 1,
+          ...filter,
+        })
+        await this.$fetch()
+      } catch (error) {
+        console.log(error)
+      }
     },
     async onClearFilter() {
-      this.locationFilter = null
-      this.serviceCategoryFilter = null
-      this.searchQuery = ''
-      await this.onRefresh()
+      try {
+        this.locationFilter = null
+        this.serviceCategoryFilter = null
+        this.searchQuery = ''
+        await this.onRefresh()
+      } catch (error) {
+        console.log(error)
+      }
     },
     fetchCategoryButtonStyle(price) {
       let colorClass
@@ -146,11 +153,15 @@ export default {
     },
     handleExcelUpload(fileList) {
       try {
-        this.$confirm('Do you want to upload this excel file', 'Warning', {
-          confirmButtonText: this.$t('common.delete'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning',
-        }).then(async () => {
+        this.$confirm(
+          this.$t('validation.upload_confirmation'),
+          this.$t('common.add-new'),
+          {
+            confirmButtonText: this.$t('common.delete'),
+            cancelButtonText: this.$t('common.cancel'),
+            type: 'warning',
+          }
+        ).then(async () => {
           if (fileList && fileList.length) {
             const file = fileList[0]?.raw
             const result = await this.uploadServiceExcel([file])

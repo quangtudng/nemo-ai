@@ -12,6 +12,7 @@
             >
               <el-row :gutter="20" class="relative m-0">
                 <el-col :span="14">
+                  <!-- Fullname -->
                   <div class="mt-5">
                     <label class="text-theme-1">
                       {{ $t('users.fullname') }}
@@ -23,6 +24,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- Email -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       Email
@@ -34,6 +36,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- Password -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.password') }}
@@ -46,6 +49,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- Phonenumber -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.phonenumber') }}
@@ -57,6 +61,7 @@
                       ></el-input>
                     </InputWrapper>
                   </div>
+                  <!-- User role -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.role') }}
@@ -78,6 +83,7 @@
                       </el-select>
                     </InputWrapper>
                   </div>
+                  <!-- User bio -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.bio') }}
@@ -87,11 +93,12 @@
                         v-model="form.bio"
                         class="el-default-input"
                         type="textarea"
-                        :rows="4"
+                        autosize
                       >
                       </el-input>
                     </InputWrapper>
                   </div>
+                  <!-- User status -->
                   <div class="mt-10">
                     <label class="text-theme-1">
                       {{ $t('users.status') }}
@@ -105,6 +112,7 @@
                     </el-switch>
                   </div>
                 </el-col>
+                <!-- User avatar -->
                 <el-col :span="10">
                   <div class="mt-5 pl-5">
                     <label class="text-theme-1">

@@ -2,7 +2,6 @@
   <el-main>
     <el-container class="pl-3 pr-3 pt-0">
       <el-row class="w-full">
-        <!-- Title -->
         <h1 class="text-3xl font-bold text-light inline-block mr-3">
           {{ $t('amenities.title') }}
         </h1>
@@ -15,7 +14,7 @@
     </el-container>
     <el-container class="p-3">
       <el-card shadow="always" class="border-0 rounded-lg w-full p-5">
-        <el-row class="flex flex-row mb-10">
+        <el-row class="flex flex-row mb-5">
           <div class="text-theme-1 mr-5">
             <label for="default-input-search">
               {{ $t('amenities.search') }}
@@ -49,7 +48,6 @@
             </el-button>
           </div>
         </el-row>
-        <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
           :data="tableData"
@@ -70,12 +68,20 @@
           @my-table-refresh="onRefresh"
         >
           <el-table-column type="index" width="50" />
-          <el-table-column :label="$t('amenities.name')" prop="title" />
+          <el-table-column :label="$t('amenities.name')">
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row.title }}
+              </span>
+              <fa :icon="['fas', scope.row.icon]" class="ml-1" />
+            </template>
+          </el-table-column>
           <el-table-column
             :label="$t('amenities.description')"
             prop="description"
           />
         </DataTable>
+
         <!-- Create dialog -->
         <FormWrapper
           v-loading="isLoading"
@@ -111,9 +117,32 @@
                       v-model="createForm.description"
                       class="el-default-input"
                       type="textarea"
-                      :rows="4"
+                      autosize
                     >
                     </el-input>
+                  </InputWrapper>
+                </div>
+                <!-- Icon holder -->
+                <div class="mt-5">
+                  <label class="text-theme-1">
+                    {{ $t('amenities.icon') }}
+                  </label>
+                  <InputWrapper>
+                    <el-select
+                      v-model="createForm.icon"
+                      filterable
+                      class="el-default-input"
+                      :placeholder="$t('common.select')"
+                    >
+                      <el-option
+                        v-for="icon in icons"
+                        :key="'role-' + icon"
+                        :value="icon"
+                      >
+                        <fa :icon="['fas', icon]" />
+                        <span class="ml-1">{{ icon }}</span>
+                      </el-option>
+                    </el-select>
                   </InputWrapper>
                 </div>
               </el-col>
@@ -137,6 +166,7 @@
             </span>
           </el-dialog>
         </FormWrapper>
+
         <!-- Update dialog -->
         <FormWrapper
           v-loading="isLoading"
@@ -172,9 +202,32 @@
                       v-model="updateForm.description"
                       class="el-default-input"
                       type="textarea"
-                      :rows="4"
+                      autosize
                     >
                     </el-input>
+                  </InputWrapper>
+                </div>
+                <!-- Icon holder -->
+                <div class="mt-5">
+                  <label class="text-theme-1">
+                    {{ $t('amenities.icon') }}
+                  </label>
+                  <InputWrapper>
+                    <el-select
+                      v-model="updateForm.icon"
+                      filterable
+                      class="el-default-input"
+                      :placeholder="$t('common.select')"
+                    >
+                      <el-option
+                        v-for="icon in icons"
+                        :key="'role-' + icon"
+                        :value="icon"
+                      >
+                        <fa :icon="['fas', icon]" />
+                        <span class="ml-1">{{ icon }}</span>
+                      </el-option>
+                    </el-select>
                   </InputWrapper>
                 </div>
               </el-col>

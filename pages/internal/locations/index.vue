@@ -83,6 +83,7 @@
               <el-row>
                 <FormWrapper class="block" @my-form-submit="onSubmitUpdate">
                   <el-col :span="24">
+                    <!-- Location name -->
                     <div class="mt-10">
                       <label class="text-theme-1">
                         {{ $t('locations.label') }}
@@ -95,6 +96,7 @@
                         ></el-input>
                       </InputWrapper>
                     </div>
+                    <!-- Location type -->
                     <div class="mt-10">
                       <label class="text-theme-1">
                         {{ $t('locations.type') }}
@@ -107,6 +109,7 @@
                         ></el-input>
                       </InputWrapper>
                     </div>
+                    <!-- Location description -->
                     <div class="mt-10">
                       <label class="text-theme-1">
                         {{ $t('locations.description') }}
@@ -116,11 +119,12 @@
                           v-model="form.description"
                           class="el-default-input"
                           type="textarea"
-                          :rows="4"
+                          autosize
                         >
                         </el-input>
                       </InputWrapper>
                     </div>
+                    <!-- Location thumbnail -->
                     <div class="mt-10">
                       <img
                         src="~/assets/img/internal/map-thumbnail.png"
@@ -147,6 +151,7 @@
                         />
                       </el-dialog>
                     </div>
+                    <!-- Location category table -->
                     <div class="mt-10">
                       <el-table
                         class="datatable"
@@ -158,19 +163,16 @@
                           prop="category_id"
                           label="ID"
                           width="180"
-                        >
-                        </el-table-column>
+                        />
                         <el-table-column
                           prop="category_title"
                           :label="$t('locations.category')"
                           width="180"
-                        >
-                        </el-table-column>
+                        />
                         <el-table-column
                           prop="count"
                           :label="$t('locations.service_count')"
-                        >
-                        </el-table-column>
+                        />
                       </el-table>
                     </div>
                     <div class="mt-5 text-right">

@@ -67,7 +67,6 @@
             </el-button>
           </div>
         </el-row>
-        <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
           :data="tableData"
@@ -96,7 +95,7 @@
           >
             <template slot-scope="scope">
               <el-tooltip
-                :content="$t('info.ACCOUNT_DISABLED')"
+                :content="$t('info.ACCOUNT_NOT_DISABLED')"
                 placement="top"
               >
                 <fa
@@ -106,7 +105,7 @@
                 />
               </el-tooltip>
               <el-tooltip
-                :content="$t('info.ACCOUNT_NOT_DISABLED')"
+                :content="$t('info.ACCOUNT_DISABLED')"
                 placement="top"
               >
                 <fa

@@ -49,7 +49,6 @@
             </el-button>
           </div>
         </el-row>
-        <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
           :data="tableData"
@@ -86,6 +85,7 @@
             prop="description"
           />
         </DataTable>
+
         <!-- Create dialog -->
         <FormWrapper
           v-loading="isLoading"
@@ -121,7 +121,7 @@
                       v-model="createForm.description"
                       class="el-default-input"
                       type="textarea"
-                      :rows="4"
+                      autosize
                     >
                     </el-input>
                   </InputWrapper>
@@ -147,6 +147,7 @@
             </span>
           </el-dialog>
         </FormWrapper>
+
         <!-- Update dialog -->
         <FormWrapper
           v-loading="isLoading"
@@ -182,7 +183,7 @@
                       v-model="updateForm.description"
                       class="el-default-input"
                       type="textarea"
-                      :rows="4"
+                      autosize
                     >
                     </el-input>
                   </InputWrapper>

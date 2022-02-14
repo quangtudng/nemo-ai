@@ -5,10 +5,5 @@
 export default {
   name: 'Home',
   layout: 'client',
-  data() {
-    return {
-      maintenanceMode: false,
-    }
-  },
 }
 </script>

@@ -16,7 +16,6 @@ export default {
       // Misc data
       searchQuery: '',
       activeHoverItem: 0,
-      showCustomerDetail: false,
       isLoading: false,
       // XHR parameter
       customerXHR: null,
@@ -44,14 +43,6 @@ export default {
       fetchCustomers: 'customer/fetchData',
       getCustomerMessage: 'message/public_xhr',
     }),
-    handleCustomerScroll(el) {
-      if (
-        el.srcElement.offsetHeight + el.srcElement.scrollTop >=
-        el.srcElement.scrollHeight - 10
-      ) {
-        console.log('scroll to bottom')
-      }
-    },
     async onChangeCustomer(customer) {
       if (
         !this.isLoading &&
@@ -78,40 +69,59 @@ export default {
       )
     },
     async syncNewCustomers() {
-      const response = await this.fetchCustomers()
-      const customers = response?.data?.data
-      if (customers) {
-        this.customers = customers
-      }
-      // If there is no selected customer, then automatically assign it to the first customer in the list
-      if (this.customers.length > 0 && !this.selectedCustomer) {
-        this.selectedCustomer = this.customers[0]
+      try {
+        const response = await this.fetchCustomers()
+        const customers = response?.data?.data
+        if (customers) {
+          this.customers = customers
+        }
+        // If there is no selected customer, then automatically assign it to the first customer in the list
+        // If there is current selected customer, update it with newer information
+        if (this.customers.length > 0) {
+          if (!this.selectedCustomer) {
+            this.selectedCustomer = this.customers[0]
+          } else {
+            this.selectedCustomer = this.customers.find(
+              (customer) => customer.id === this.selectedCustomer.id
+            )
+          }
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     async syncNewMessages() {
-      // Attempt to get the customer's messages
-      if (this.selectedCustomer?.long_id) {
-        this.selectedCustomer.viewed = 1
-        const messageResponse = await this.getCustomerMessage(
-          this.selectedCustomer.long_id
-        )
-        const existMessages = messageResponse.data?.data
-        if (existMessages && existMessages?.length > 0) {
-          this.handleNewMessages(existMessages)
+      try {
+        // Attempt to get the customer's messages
+        if (this.selectedCustomer?.long_id) {
+          this.selectedCustomer.viewed = 1
+          const messageResponse = await this.getCustomerMessage(
+            this.selectedCustomer.long_id
+          )
+          const existMessages = messageResponse.data?.data
+          if (existMessages && existMessages?.length > 0) {
+            this.handleNewMessages(existMessages)
+          }
         }
+      } catch (error) {
+        console.log(error)
       }
     },
     handleNewMessages(messages) {
-      // Format message from server and add it to messenger section
-      const formattedMessages = messages.map((message) => ({
-        id: message.id,
-        owner: message.owner,
-        body: message.body,
-        created_at: message.createdAt,
-      }))
-      if (formattedMessages.length > 0) {
-        // Update with server messages
-        this.messages = formattedMessages
+      try {
+        // Format message from server and add it to messenger section
+        const formattedMessages = messages.map((message) => ({
+          id: message.id,
+          owner: message.owner,
+          body: message.body,
+          created_at: message.createdAt,
+        }))
+        if (formattedMessages.length > 0) {
+          // Update with server messages
+          this.messages = formattedMessages
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     shouldShowTimeStamp(messages, index) {
@@ -119,13 +129,32 @@ export default {
         if (index === 0) {
           return true
         } else {
-          const TWO_HOUR = 60 * 60 * 2000
+          const FIFTEEN_MINUTES = 15 * 60 * 1000
           const currentTimestamp = Date.parse(messages[index].created_at)
           const lastTimeStamp = Date.parse(messages[index - 1].created_at)
-          return currentTimestamp - lastTimeStamp > TWO_HOUR
+          return currentTimestamp - lastTimeStamp > FIFTEEN_MINUTES
         }
       } catch (e) {
         console.log(e)
+        return false
+      }
+    },
+    isInConversation(customer) {
+      try {
+        if (customer) {
+          const THIRTY_MINUTES = 30 * 60 * 1000
+          const lastMessageTimestamp = Date.parse(
+            customer.last_message.created_at
+          )
+          const currentTimestamp = Date.now()
+          if (currentTimestamp - lastMessageTimestamp > THIRTY_MINUTES) {
+            return false
+          }
+          return true
+        }
+        return false
+      } catch (error) {
+        console.log(error)
         return false
       }
     },

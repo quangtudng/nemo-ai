@@ -82,7 +82,6 @@
             </el-button>
           </div>
         </el-row>
-        <!-- Start data table -->
         <DataTable
           v-loading="$fetchState.pending"
           :data="tableData"
@@ -149,14 +148,13 @@
         </DataTable>
         <el-dialog
           destroy-on-close
-          title="Thông tin chi tiết"
           :visible.sync="detailPageVisible"
           width="60%"
         >
           <div>
             <div>
               <label class="text-theme-1">
-                Tiêu đề
+                {{ $t('services.name') }}
               </label>
               <el-input
                 v-model="form.title"
@@ -166,20 +164,20 @@
             </div>
             <div class="mt-5">
               <label class="text-theme-1">
-                Mô tả
+                {{ $t('services.description') }}
               </label>
               <el-input
                 v-model="form.description"
                 class="el-default-input"
                 type="textarea"
                 disabled
-                :rows="4"
+                autosize
               >
               </el-input>
             </div>
             <div class="mt-5">
               <label class="text-theme-1">
-                Trang chủ dịch vụ
+                {{ $t('services.origin') }}
               </label>
               <el-input
                 v-model="form.originUrl"
@@ -189,7 +187,7 @@
             </div>
             <div class="mt-5">
               <label class="text-theme-1">
-                Địa chỉ dịch vụ
+                {{ $t('services.address') }}
               </label>
               <el-input
                 v-model="form.fullAddress"
@@ -199,7 +197,7 @@
             </div>
             <div class="mt-5">
               <label class="text-theme-1">
-                Số điện thoại
+                {{ $t('services.phone') }}
               </label>
               <el-input
                 v-model="form.phoneNumber"
@@ -209,7 +207,7 @@
             </div>
             <div class="mt-5">
               <label class="text-theme-1">
-                Loại hình dịch vụ
+                {{ $t('services.category') }}
               </label>
               <el-input
                 v-model="form.categoryName"
@@ -219,7 +217,7 @@
             </div>
             <div class="mt-5">
               <label class="text-theme-1">
-                Địa điểm dịch vụ
+                {{ $t('services.location') }}
               </label>
               <el-input
                 v-model="form.locationName"
@@ -230,7 +228,7 @@
           </div>
           <div v-if="form.serviceAmenities.length > 0" class="mt-5">
             <label class="text-theme-1">
-              Tiện ích dịch vụ
+              {{ $t('services.amenities') }}
             </label>
             <el-table
               :data="form.serviceAmenities"
@@ -251,7 +249,9 @@
             />
           </div>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="detailPageVisible = false">Close</el-button>
+            <el-button @click="detailPageVisible = false">
+              {{ $t('common.cancel') }}
+            </el-button>
           </span>
         </el-dialog>
       </el-card>

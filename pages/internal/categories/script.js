@@ -12,7 +12,7 @@ export default {
     DataTable,
     Breadcrumb,
   },
-  middleware({ store, redirect, app }) {
+  middleware({ store, redirect }) {
     const roleLabel = store.state.auth.data?.role?.label || ''
     if (!permissions.includes(roleLabel)) {
       Message.error(this.$t('error.PERMISSION_DENIED'))
@@ -118,14 +118,18 @@ export default {
       }
     },
     async onFilter() {
-      const filter = this.searchQuery
-        ? { title: this.searchQuery }
-        : { title: '' }
-      this.setDataQuery({
-        page: 1,
-        ...filter,
-      })
-      await this.onClearFilter()
+      try {
+        const filter = this.searchQuery
+          ? { title: this.searchQuery }
+          : { title: '' }
+        this.setDataQuery({
+          page: 1,
+          ...filter,
+        })
+        await this.$fetch()
+      } catch (error) {
+        console.log(error)
+      }
     },
     async onClearFilter() {
       this.searchQuery = ''

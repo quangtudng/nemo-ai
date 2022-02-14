@@ -15,8 +15,7 @@
     "location": "Service locations",
     "category": "Categories",
     "service": "Service catalog",
-    "amenity": "Amenity builder",
-    "setting": "System setting"
+    "amenity": "Amenity builder"
   },
   "navbar": {
     "profile": "Profile",
@@ -68,7 +67,8 @@
     "PERMISSION_DENIED": "Unauthorized access. You cannot access to this content at this moment",
     "FILE_UPLOADED_FAILED": "An error has occurred while trying to upload your image. Please try again",
     "RESOURCE_CREATED_FAILED": "An error has occurred while trying to submit. Please try again",
-    "DUPLICATED": "Resource information is duplicated with another. Please check again"
+    "DUPLICATED": "Resource information is duplicated with another. Please check again",
+    "NOT_FOUND": "Resource not found"
   },
   "users": {
     "title": "User management",
@@ -112,6 +112,7 @@
     "title": "Amenity management",
     "search": "Finding amenities",
     "name": "Name",
+    "icon": "Icon",
     "description": "Description",
     "create-new": "Create new amenity",
     "edit": "Edit amenity"
@@ -119,17 +120,30 @@
   "services": {
     "title": "Service management",
     "search": "Finding services",
-    "category": "Service category",
-    "location": "Location service",
+    "category": "Category",
+    "location": "Location",
     "name": "Name",
     "description": "Description",
     "price": "Service price",
-    "amenities": "Service amenities",
-    "address": "Service address",
-    "images": "Service images",
+    "amenities": "Amenities",
+    "address": "Address",
+    "images": "Images",
     "thumbnail": "First image will be thumbnail",
-    "phone": "Phonenumber",
+    "phone": "Phone number",
     "origin": "Main page",
     "edit": "Edit service"
+  },
+  "chat": {
+    "title": "All conversations",
+    "no-email": "No email found",
+    "customer": "Customer",
+    "last-active": "Last active",
+    "first-contacted": "First contacted",
+    "conversation-started": "Conversation started",
+    "conversation-in-progress": "Conversation In-Progress",
+    "conversation-ended": "Conversation Ended",
+    "general-info": "General customer information",
+    "customer-summary": "Customer summary",
+    "service-interest": "Service interest"
   }
 }

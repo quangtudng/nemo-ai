@@ -1,7 +1,13 @@
 import { mapActions } from 'vuex'
+import VueWeather from 'vue-weather-widget'
+
 export default {
   name: 'Chatbot',
   layout: 'client',
+  components: {
+    VueWeather,
+    GoogleMap: () => import('~/components/common/Templates/Map/GMap.vue'),
+  },
   async fetch() {
     try {
       const customerId = this.$route?.query?.c
@@ -29,12 +35,26 @@ export default {
       replyText: '',
       customerId: null,
       isSending: false,
+      selectedService: null,
+      serviceDialog: false,
+      weatherDialog: false,
+      allServices: [],
+      locationDialogVisible: false,
+      amenityExpaned: false,
+      weatherLocation: {
+        name: '',
+        latitude: 0,
+        longitude: 0,
+      },
     }
   },
   methods: {
     ...mapActions({
       webhook: 'message/webhook',
       getCustomerMessage: 'message/public_xhr',
+      customerServices: 'message/customer_services',
+      saveCustomerInterests: 'customer/saveCustomerInterests',
+      weatherRequest: 'message/weatherRequest',
     }),
     shouldShowTimeStamp(index) {
       /**
@@ -44,10 +64,10 @@ export default {
         if (index === 0) {
           return true
         } else {
-          const TWO_HOUR = 60 * 60 * 2000
+          const FIFTEEN_MINUTES = 15 * 60 * 1000
           const currentTimestamp = Date.parse(this.messages[index].created_at)
           const lastTimeStamp = Date.parse(this.messages[index - 1].created_at)
-          return currentTimestamp - lastTimeStamp > TWO_HOUR
+          return currentTimestamp - lastTimeStamp > FIFTEEN_MINUTES
         }
       } catch (e) {
         console.log(e)
@@ -58,18 +78,22 @@ export default {
       this.replyText = `${this.replyText}\n`
     },
     async startNewConversation() {
-      const response = await this.sendNewMessage('new')
-      const newMessages = response.data?.messages
-      const newCustomer = response.data?.customer
-      if (newMessages && newCustomer) {
-        this.handleNewMessages(newMessages, true)
-        // Change parameter to customer long id
-        this.customerId = newCustomer.longId
-        history.pushState(
-          {},
-          null,
-          this.$route.path + '?c=' + encodeURIComponent(newCustomer.longId)
-        )
+      try {
+        const response = await this.sendNewMessage('new')
+        const newMessages = response?.data?.messages
+        const newCustomer = response?.data?.customer
+        if (newMessages && newCustomer) {
+          this.handleNewMessages(newMessages, true)
+          // Change parameter to customer long id
+          this.customerId = newCustomer.longId
+          history.pushState(
+            {},
+            null,
+            this.$route.path + '?c=' + encodeURIComponent(newCustomer.longId)
+          )
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     async submitReply() {
@@ -86,12 +110,13 @@ export default {
             isMock: true,
           })
           if (body === 'new') {
+            this.selectedService = null
             // Start a new conversation again
             await this.startNewConversation()
           } else {
             // Add new message to the server
             const response = await this.sendNewMessage(body)
-            if (response.data?.messages) {
+            if (response?.data?.messages) {
               const messages = response.data?.messages
               this.handleNewMessages(messages)
             } else {
@@ -99,18 +124,26 @@ export default {
             }
           }
         }
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log(error)
         this.handleErrorMessage()
       }
     },
     async sendNewMessage(body) {
-      const newMessage = await this.webhook({
-        body,
-        customerLongId: this.customerId,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      })
-      return newMessage
+      /**
+       * Send new message to the server
+       */
+      try {
+        const newMessage = await this.webhook({
+          body,
+          customerLongId: this.customerId,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        })
+        return newMessage
+      } catch (error) {
+        console.log(error)
+        return null
+      }
     },
     handleErrorMessage() {
       this.messages.push({
@@ -121,34 +154,43 @@ export default {
       })
     },
     handleNewMessages(messages, isClear = false) {
-      // Format message from server and add it to messenger section
-      const formattedMessages = messages.map((message) => ({
-        id: message.id,
-        owner: message.owner,
-        body: message.body,
-        created_at: message.createdAt,
-      }))
-      if (formattedMessages.length > 0) {
-        this.triggerSendAnimation()
-        setTimeout(() => {
-          this.triggerSendAnimation(false)
-          // Remove mock message
-          this.messages = this.messages.filter((message) => !message.isMock)
-          // Update with server messages
-          this.messages = isClear
-            ? formattedMessages
-            : this.messages.concat(formattedMessages)
-          // Scroll to bottom and unlock textarea
-          this.$nextTick(() => {
-            this.scrollToBottom()
-            this.$el.querySelector('textarea').focus()
-          })
-        }, 2500)
+      /**
+       * Format message from server and add it to messenger section
+       */
+      try {
+        const formattedMessages = messages.map((message) => ({
+          id: message.id,
+          owner: message.owner,
+          body: message.body,
+          type: message.type,
+          created_at: message.createdAt,
+        }))
+        if (formattedMessages.length > 0) {
+          this.triggerSendAnimation()
+          setTimeout(() => {
+            this.triggerSendAnimation(false)
+            // Remove mock message
+            this.messages = this.messages.filter((message) => !message.isMock)
+            // Update with server messages
+            this.messages = isClear
+              ? formattedMessages
+              : this.messages.concat(formattedMessages)
+            // Scroll to bottom and unlock textarea
+            this.$nextTick(() => {
+              this.scrollToBottom()
+              this.$el.querySelector('textarea').focus()
+            })
+          }, 2500)
+        }
+        this.isSending = false
+      } catch (error) {
+        console.log(error)
       }
-      this.isSending = false
     },
     triggerSendAnimation(toggle = true) {
-      // Trigger a sending animation on the messenger chat
+      /**
+       * Trigger a sending animation on the messenger chat
+       */
       if (toggle) {
         this.messages.push({
           id: Date.now(),
@@ -168,6 +210,52 @@ export default {
           behavior: 'smooth',
         })
       })
+    },
+    async getAllSelectedService(messageId) {
+      /**
+       * Get all selected services from the server when customer clicks on the show more text
+       */
+      try {
+        this.serviceDialog = true
+        this.allServices = []
+        const result = await this.customerServices(messageId)
+        this.allServices = result.data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getWeatherRequest(messageId) {
+      /**
+       * Get weather request from server by getting longtitude and latitude
+       */
+      try {
+        const result = await this.weatherRequest(messageId)
+        if (result.data.name && result.data.latitude && result.data.longitude) {
+          this.weatherLocation.name = result.data.name + ''
+          this.weatherLocation.latitude = result.data.latitude + ''
+          this.weatherLocation.longitude = result.data.longitude + ''
+          this.weatherDialog = true
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getDetailService(serviceId) {
+      /**
+       * Get the detail of a service when user click on a service in the list
+       */
+      try {
+        this.amenityExpaned = false
+        this.selectedService =
+          this.allServices.find((service) => service.id === serviceId) || null
+        this.serviceDialog = false
+        await this.saveCustomerInterests({
+          customerLongId: this.customerId,
+          interestId: this.selectedService.id,
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

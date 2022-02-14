@@ -73,6 +73,7 @@ export default {
           this.form.avatar = ''
         }
       } catch (error) {
+        this.form.avatar = ''
         console.log(error)
       }
     },
