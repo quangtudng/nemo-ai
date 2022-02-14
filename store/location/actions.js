@@ -1,32 +1,14 @@
 import qs from 'qs'
 export default {
-  async fetchData({ rootState }, query) {
-    try {
-      const result = await this.$authApi.get(
-        '/locations?' + qs.stringify(query, { arrayFormat: 'repeat' })
-      )
-      return result
-    } catch (e) {
-      console.log(e)
-    }
+  fetchData({ rootState }, query) {
+    return this.$clientApi.get(
+      '/locations?' + qs.stringify(query, { arrayFormat: 'repeat' })
+    )
   },
-  async fetchSingle({ rootState }, id) {
-    try {
-      const result = await this.$authApi.get('/locations/' + id)
-      return result
-    } catch (e) {
-      console.log(e)
-    }
+  fetchSingle({ rootState }, id) {
+    return this.$clientApi.get('/locations/' + id)
   },
-  async updateSingle({ rootState }, data) {
-    try {
-      const result = await this.$authApi.patch(
-        '/locations/' + data.id,
-        data.form
-      )
-      return result
-    } catch (e) {
-      console.log(e)
-    }
+  updateSingle({ rootState }, data) {
+    return this.$authApi.patch('/locations/' + data.id, data.form)
   },
 }

@@ -68,7 +68,8 @@
     "PERMISSION_DENIED": "Lỗi quyền hạn. Bạn không thể truy cập vào nội dung này",
     "FILE_UPLOADED_FAILED": "Xảy ra lỗi khi đăng tải hình ảnh của bạn. Vui lòng thử lại sau",
     "RESOURCE_CREATED_FAILED": "Xảy ra lỗi khi tạo tài nguyên mới trong hệ thống. Vui lòng thử lại sau",
-    "DUPLICATED": "Thông tin tài nguyên đã tồn tại. Vui lòng kiểm tra sau"
+    "DUPLICATED": "Thông tin tài nguyên đã tồn tại. Vui lòng kiểm tra sau",
+    "NOT_FOUND": "Không tìm thấy tài nguyên"
   },
   "users": {
     "title": "Quản lý nhân viên",
