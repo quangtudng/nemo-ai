@@ -1,8 +1,6 @@
 import { mapActions, mapState } from 'vuex'
-import { Message } from 'element-ui'
 import { DataTable, Breadcrumb, ExcelUploader } from '~/components/common'
 import { dataTableMixin } from '~/mixins'
-const permission = 'SUPERADMIN'
 export default {
   layout: 'internal',
   mixins: [dataTableMixin],
@@ -19,12 +17,6 @@ export default {
       this.tableDataTotal = services?.data?.total || 0
     } catch (error) {
       console.log(error)
-    }
-  },
-  middleware({ store, redirect }) {
-    if (!permission.includes(store.state.auth.data.role.label)) {
-      Message.error('Permission denied')
-      return redirect('/internal')
     }
   },
   data() {

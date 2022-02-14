@@ -95,7 +95,7 @@
           >
             <template slot-scope="scope">
               <el-tooltip
-                :content="$t('info.ACCOUNT_DISABLED')"
+                :content="$t('info.ACCOUNT_NOT_DISABLED')"
                 placement="top"
               >
                 <fa
@@ -105,7 +105,7 @@
                 />
               </el-tooltip>
               <el-tooltip
-                :content="$t('info.ACCOUNT_NOT_DISABLED')"
+                :content="$t('info.ACCOUNT_DISABLED')"
                 placement="top"
               >
                 <fa

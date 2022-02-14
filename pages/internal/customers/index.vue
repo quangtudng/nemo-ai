@@ -73,8 +73,14 @@
                       </p>
                     </div>
                     <div class="customer-message-box">
-                      <p class="customer-message">
+                      <p
+                        v-if="isInConversation(customer)"
+                        class="customer-message"
+                      >
                         {{ $t('chat.conversation-in-progress') }}
+                      </p>
+                      <p v-else class="customer-message">
+                        {{ $t('chat.conversation-ended') }}
                       </p>
                       <div class="flex justify-between">
                         <p
