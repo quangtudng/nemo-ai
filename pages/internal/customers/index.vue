@@ -67,9 +67,7 @@
                         {{ customer.email || $t('chat.no-email') }}
                       </p>
                       <p class="customer-last-timestamp">
-                        {{
-                          customer.last_message.created_at | formatRelativeTime
-                        }}
+                        {{ customer.last_contacted | formatRelativeTime }}
                       </p>
                     </div>
                     <div class="customer-message-box">
@@ -136,10 +134,7 @@
                 </p>
                 <p class="text-xs text-gray-600">
                   {{ $t('chat.last-active') }}
-                  {{
-                    selectedCustomer.last_message.created_at
-                      | formatRelativeTime
-                  }}
+                  {{ selectedCustomer.last_contacted | formatRelativeTime }}
                 </p>
               </div>
             </div>
@@ -279,7 +274,7 @@
                       {{ $t('chat.service-interest') }}
                     </p>
                     <el-table
-                      :data="selectedCustomer.selectedInterests"
+                      :data="selectedCustomer.interests"
                       border
                       style="width: 100%;"
                       max-height="500"
@@ -305,7 +300,7 @@
                             effect="dark"
                             size="small"
                           >
-                            {{ scope.row.location.name }}
+                            {{ scope.row.location }}
                           </el-tag>
                         </template>
                       </el-table-column>
@@ -317,7 +312,7 @@
                             effect="dark"
                             size="small"
                           >
-                            {{ scope.row.category.title }}
+                            {{ scope.row.category }}
                           </el-tag>
                         </template>
                       </el-table-column>

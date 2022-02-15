@@ -143,9 +143,7 @@ export default {
       try {
         if (customer) {
           const THIRTY_MINUTES = 30 * 60 * 1000
-          const lastMessageTimestamp = Date.parse(
-            customer.last_message.created_at
-          )
+          const lastMessageTimestamp = Date.parse(customer.last_contacted)
           const currentTimestamp = Date.now()
           if (currentTimestamp - lastMessageTimestamp > THIRTY_MINUTES) {
             return false
