@@ -46,7 +46,22 @@ export default {
         latitude: 0,
         longitude: 0,
       },
+      imageLists: [
+        require('~/assets/img/chatbot-background.png'),
+        require('~/assets/img/chatbot-background-1.png'),
+        require('~/assets/img/chatbot-background-2.png'),
+        require('~/assets/img/chatbot-background-3.png'),
+        require('~/assets/img/chatbot-background-4.png'),
+        require('~/assets/img/chatbot-background-5.png'),
+      ],
+      background: require('~/assets/img/chatbot-background.png'),
+      backgroundId: 0,
+      backgroundXHR: null,
     }
+  },
+  created() {
+    console.log('background XHR started')
+    this.startBackgroundXHR()
   },
   methods: {
     ...mapActions({
@@ -73,6 +88,20 @@ export default {
         console.log(e)
         return false
       }
+    },
+    startBackgroundXHR() {
+      this.backgroundXHR = setInterval(
+        function () {
+          const randomIndex = Math.floor(Math.random() * this.imageLists.length)
+          this.background = this.imageLists[randomIndex]
+          this.backgroundId = randomIndex
+        }.bind(this),
+        5000
+      )
+    },
+    destroyed() {
+      console.log('Stop background XHR')
+      clearInterval(this.backgroundXHR)
     },
     newLine() {
       this.replyText = `${this.replyText}\n`
@@ -113,6 +142,10 @@ export default {
             this.selectedService = null
             // Start a new conversation again
             await this.startNewConversation()
+            console.log('Stop background XHR')
+            clearInterval(this.backgroundXHR)
+            console.log('background XHR started')
+            this.startBackgroundXHR()
           } else {
             // Add new message to the server
             const response = await this.sendNewMessage(body)
@@ -253,6 +286,8 @@ export default {
           customerLongId: this.customerId,
           interestId: this.selectedService.id,
         })
+        console.log('Stop background XHR')
+        clearInterval(this.backgroundXHR)
       } catch (error) {
         console.log(error)
       }
